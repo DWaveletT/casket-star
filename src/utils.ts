@@ -1,10 +1,16 @@
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
+
+
 import remarkGfm from 'remark-gfm';
-import remarkMath from './lfm-plugins/remark-math';
-import remarkRehype from 'remark-rehype';
+import remarkMath from './plugins/remark-math-luogu';
+
 import rehypeKatex from 'rehype-katex';
-import rehypeStringify from 'rehype-stringify';
+
+import remarkDirective from 'remark-directive';
+import remarkCallouts from './plugins/remark-callouts';
+import remarkNoHtml from './plugins/remark-no-html';
+
+import rehypeHighlight from 'rehype-highlight';
+
 
 import { CasketView, Plugins } from './StarCasket.vue';
 import { DialogFunction, Toolbar } from './components/MToolbar.vue';
@@ -12,10 +18,10 @@ import { DialogFunction, Toolbar } from './components/MToolbar.vue';
 export function defaultPlugins(): Plugins {
     return {
         remark: [
-            remarkGfm, remarkMath, remarkExtendedTable
+            remarkNoHtml, remarkGfm, remarkDirective, remarkCallouts, remarkMath, remarkExtendedTable
         ],
         rehype: [
-            rehypeKatex
+            rehypeKatex, rehypeHighlight
         ],
         remarkRehypeOptions: {
             handlers: extendedTableHandlers
