@@ -26,8 +26,8 @@
             </div>
 
             <div class="submit-area">
-                <button class="button cancel"  @click="emits('close')" >取消</button>
-                <button class="button confirm" @click="() => {
+                <button class="button info" @click="emits('close')" >取消</button>
+                <button class="button info" @click="() => {
                     emits('confirm', url, alt);
                     emits('close');
                 }" >确认</button>
@@ -120,17 +120,7 @@ const alt = ref('');
         margin-right: 1em;
     }
 
-    &.confirm {
-        border: 1px solid var(--casket-color);
-        background-color: var(--casket-color-l2);
-        color: var(--casket-color-d2);
-
-        &:hover {
-            background-color: var(--casket-color-l1);
-        }
-    }
-
-    &.cancel {
+    &.info {
         border: 1px solid var(--casket-color);
         background-color: var(--casket-color-l2);
         color: var(--casket-color-d2);

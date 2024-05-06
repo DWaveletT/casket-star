@@ -1,6 +1,7 @@
 <template>
     <codemirror
         class="editor" v-model="value" :extensions="extensions"
+        
     />
 </template>
 
@@ -26,7 +27,6 @@ const value = defineModel<string>({
 });
 
 const extensions = [
-    githubLight,
     EditorView.lineWrapping,
     EditorView.theme({
         "&.cm-focused": {
@@ -37,11 +37,16 @@ const extensions = [
         },
     }),
     markdown({
-        extensions: {
-            remove: ['HTMLBlock', 'HTMLTag']
-        },
-        completeHTMLTags: false
-    })
+        extensions: [
+            {
+                remove: ['HTMLBlock', 'HTMLTag']
+            },
+            ...(props.plugins.codemirror?.markdown || [])
+        ],
+        completeHTMLTags: false,
+        
+    }),
+    ...(props.plugins.codemirror?.editor || [])
 ];
 
 </script>

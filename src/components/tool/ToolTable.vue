@@ -198,13 +198,6 @@ function doMerge(){
 
     for(let i = x1;i <= x2;i ++){
         for(let j = y1;j <= y2;j ++){
-            for(let a = 0;a < table.value[i][j].row;++ a){
-                for(let b = 0;b < table.value[i][j].col;++ b){
-                    table.value[i + a][j + b] = {
-                        row: 1, col: 1, merged: false, data: table.value[i][j].data
-                    }
-                }
-            }
             table.value[i][j] = {
                 row: x1, col: y1, merged: true, data: ''
             };

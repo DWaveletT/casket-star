@@ -17,6 +17,7 @@
                     'midline': casket.showViewer,
                     'zone-half': casket.showViewer, 'zone-full': !casket.showViewer
                 }"
+                @scroll="handleEditorScroll"
             >
                 <m-editor v-model="value" :plugins="plugins" @ready="handleEditorReady" />
             </div>
@@ -26,6 +27,7 @@
                 :class="{
                     'zone-half':  casket.showEditor, 'zone-full': !casket.showEditor
                 }"
+                @scroll="handleViewerScroll"
             >
                 <m-viewer v-model="value" :plugins="plugins" />
             </div>
@@ -42,14 +44,14 @@
 </template>
 
 <script setup lang="ts">
-import { type Component, ref, shallowRef, onBeforeMount, provide } from 'vue';
+import { type Component, ref, shallowRef, onBeforeMount } from 'vue';
 
 import MEditor from './components/MEditor.vue';
 import MViewer from './components/MViewer.vue';
 
 import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
-import { EditorState, Extension } from '@codemirror/state';
+import { Extension } from '@codemirror/state';
 import { type MarkdownExtension } from '@lezer/markdown';
 
 import { defaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
@@ -67,8 +69,8 @@ export interface Plugins {
     rehype?: Plugin[],
     remarkRehypeOptions?: Options,
     codemirror?: {
-        editor?: [Extension],
-        markdown?: [MarkdownExtension]
+        editor?: Extension[],
+        markdown?: MarkdownExtension[]
     }
 }
 
@@ -115,6 +117,14 @@ function getCodemirror(){
 
 function getStarCasket(){
     return casket.value;
+}
+
+function handleEditorScroll(e: Event){
+    console.log(e);
+}
+
+function handleViewerScroll(e: Event){
+    console.log(e);
 }
 
 onBeforeMount(() => {

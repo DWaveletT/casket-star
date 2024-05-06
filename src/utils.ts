@@ -8,6 +8,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkDirective from 'remark-directive';
 import remarkCallouts from './plugins/remark-callouts';
 import remarkNoHtml from './plugins/remark-no-html';
+import remarkVideo from './plugins/remark-video';
 
 import rehypeHighlight from 'rehype-highlight';
 
@@ -18,13 +19,16 @@ import { DialogFunction, Toolbar } from './components/MToolbar.vue';
 export function defaultPlugins(): Plugins {
     return {
         remark: [
-            remarkNoHtml, remarkGfm, remarkDirective, remarkCallouts, remarkMath, remarkExtendedTable
+            remarkNoHtml, remarkGfm, remarkDirective, remarkCallouts, remarkVideo, remarkMath, remarkExtendedTable
         ],
         rehype: [
             rehypeKatex, rehypeHighlight
         ],
         remarkRehypeOptions: {
             handlers: extendedTableHandlers
+        },
+        codemirror: {
+            markdown: [LuoguMath]
         }
     }
 }
@@ -39,6 +43,7 @@ import ToolTable, { Node } from './components/tool/ToolTable.vue';
 import ToolLink from './components/tool/ToolLink.vue';
 import ToolBlock from './components/tool/ToolBlock.vue';
 import remarkExtendedTable, { extendedTableHandlers } from 'remark-extended-table';
+import { LuoguMath } from './plugins/codemirror-luogu-math';
 
 export function defaultToolbarL(): Toolbar {
     return [
