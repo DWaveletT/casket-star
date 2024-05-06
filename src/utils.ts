@@ -27,9 +27,9 @@ export function defaultPlugins(): Plugins {
         remarkRehypeOptions: {
             handlers: extendedTableHandlers
         },
-        codemirror: {
-            markdown: [LuoguMath]
-        }
+        // codemirror: {
+        //     markdown: [LuoguMath]
+        // }
     }
 }
 

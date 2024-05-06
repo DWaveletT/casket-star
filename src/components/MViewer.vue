@@ -1,11 +1,9 @@
 <template>
-    <div class="viewer">
-        <div v-html="html" />
-    </div>
+    <div class="viewer" ref="real" />
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, defineModel } from 'vue';
+import { ref, watch, onMounted, defineModel, Ref } from 'vue';
 
 import { Plugin, Processor, unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -23,12 +21,15 @@ const value = defineModel<string>({
     required: true
 });
 
+const real = ref<HTMLDivElement | null>(null);
+const tree = ref<Root | null>(null);
+
 const emits = defineEmits<{
-    update: [Root]
+    update: [Root, HTMLDivElement]
 }>();
 
 const rehypeExpose: Plugin<[], Root, Root> = function (){
-    return (tree) => { emits('update', tree); }
+    return (t) => { tree.value = t; }
 }
 
 function getProcessor(){
@@ -59,8 +60,6 @@ function getProcessor(){
 
 const processor = getProcessor();
 
-const html = ref<string>('');
-
 async function render(markdown: string){
     return processor.process(markdown);
 }
@@ -68,7 +67,9 @@ async function render(markdown: string){
 function updateHTML(){
     try {
         render(value.value).then((m) => {
-            html.value = m.toString();
+            real.value!.innerHTML = m.toString();
+
+            setTimeout(() => emits('update', tree.value as Root, real.value as HTMLDivElement), 100);
         });
     } catch(e){
         console.log(e);
@@ -98,7 +99,8 @@ $succ-color: #67C23A;
 $info-color: #409EFF;
 
 .viewer {
-    overflow-wrap: break-word;
+    position: relative;
+    word-wrap: break-word;
 
     --text-color-h: black;
     --text-color-p: black;

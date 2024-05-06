@@ -17,7 +17,7 @@
                     'midline': casket.showViewer,
                     'zone-half': casket.showViewer, 'zone-full': !casket.showViewer
                 }"
-                @scroll="handleEditorScroll"
+                @mouseover="currentOver = 'editor'"
             >
                 <m-editor v-model="value" :plugins="plugins" @ready="handleEditorReady" />
             </div>
@@ -27,9 +27,11 @@
                 :class="{
                     'zone-half':  casket.showEditor, 'zone-full': !casket.showEditor
                 }"
+                ref="viewer"
                 @scroll="handleViewerScroll"
+                @mouseover="currentOver = 'viewer'"
             >
-                <m-viewer v-model="value" :plugins="plugins" />
+                <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" />
             </div>
         </div>
         <!-- <div class="footer">
@@ -44,21 +46,65 @@
 </template>
 
 <script setup lang="ts">
-import { type Component, ref, shallowRef, onBeforeMount } from 'vue';
+import { type Component, ref, shallowRef, onBeforeMount, onMounted } from 'vue';
 
 import MEditor from './components/MEditor.vue';
 import MViewer from './components/MViewer.vue';
 
 import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
-import { Extension } from '@codemirror/state';
+import { EditorState, Extension } from '@codemirror/state';
 import { type MarkdownExtension } from '@lezer/markdown';
 
 import { defaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
+import { Root } from 'hast';
 
-const value = ref<string>('codes');
+const value = ref<string>(`
+# 1
+
+111111
+
+# 3
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# 5
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# 7
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# 9
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# 11
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# 13
+
+asdasd
+
+# 15
+
+asdasd
+
+# 17
+
+asdasd
+
+# 19
+
+asdasd
+
+
+
+`);
 
 let codemirror: EditorView | undefined = undefined;
 
@@ -104,6 +150,49 @@ function handleEditorReady(payload: {
     view: EditorView
 }){
     codemirror = payload.view;
+    editor.value = codemirror.scrollDOM as HTMLDivElement;
+    editor.value.onscroll = handleEditorScroll;
+}
+
+let top1: number[] = [];
+let top2: number[] = [];
+
+const editor = ref<HTMLDivElement | null>(null);
+const viewer = ref<HTMLDivElement | null>(null);
+
+let tree:           Root | null = null;
+let real: HTMLDivElement | null = null;
+
+function InitSyncScroll(){
+    if(!codemirror || !editor.value || !viewer.value)
+        return;
+    if(!tree || !real)
+        return;
+    
+    top1 = [0], top2 = [0];
+
+    maxEditorTop = editor.value.scrollHeight - editor.value.getBoundingClientRect().height;
+    maxViewerTop = viewer.value.scrollHeight - viewer.value.getBoundingClientRect().height;
+
+    for(const node of tree.children){
+
+        if(node.position?.start.offset){
+            top1.push(node.position.start.offset);
+        }
+    }
+
+    const delta = viewer.value.scrollTop - viewer.value.getBoundingClientRect().top;
+
+    for(const [key, node] of Object.entries(real.children)){
+        top2.push(node.getBoundingClientRect().top + delta);
+    }
+
+}
+
+function handleViewerUpdate(t: Root, r: HTMLDivElement){
+    tree = t;
+    real = r;
+    InitSyncScroll();
 }
 
 function handleDialog(component: Component, confirm?: Function){
@@ -119,13 +208,80 @@ function getStarCasket(){
     return casket.value;
 }
 
+let currentOver = "editor";
+let maxEditorTop = 0;
+let maxViewerTop = 0;
+
 function handleEditorScroll(e: Event){
-    console.log(e);
+    if(currentOver !== "editor" || !codemirror)
+        return;
+
+    const topEditor = (e.target as HTMLDivElement).scrollTop;
+    const pos = codemirror.lineBlockAtHeight(topEditor).from;
+
+    if(topEditor + 10 >= maxEditorTop){
+        viewer.value?.scrollTo({ top: maxViewerTop + 10});
+        return;
+    }
+
+    for(let i = 0;i + 1 < top1.length;i ++){
+        const l = top1[i];
+        const r = top1[i + 1];
+
+        const topl = codemirror.lineBlockAt(l).top;
+        const topr = codemirror.lineBlockAt(r).top;
+
+        if(l <= pos && pos < r){
+            const rate = (topEditor - topl) / (topr - topl);
+            const topViewer = 
+                top2[i] + rate * (top2[i + 1] - top2[i]);
+            viewer.value?.scrollTo({ top: topViewer});
+            return;
+        }
+    }
 }
 
 function handleViewerScroll(e: Event){
-    console.log(e);
+    if(currentOver !== "viewer" || !codemirror)
+        return;
+
+    const topViewer = (e.target as HTMLDivElement).scrollTop;
+    
+    if(topViewer + 10 >= maxViewerTop){
+        editor.value?.scrollTo({ top: maxEditorTop + 10});
+        return;
+    }
+
+    for(let i = 0;i + 1 < top1.length;i ++){
+        const l = top2[i];
+        const r = top2[i + 1];
+
+        const rate = (topViewer - l) / (r - l);
+
+        if(l <= topViewer && topViewer < r){
+            const l = top1[i];
+            const r = top1[i + 1];
+
+            const topl = codemirror.lineBlockAt(l).top;
+            const topr = codemirror.lineBlockAt(r).top;
+
+            const margin = rate * (topr - topl);
+
+            codemirror.dispatch(
+                codemirror.state.update(
+                    {
+                        effects: EditorView.scrollIntoView(top1[i], { y: 'start', yMargin: -margin })
+                    }
+                )
+            );
+            return;
+        }
+    }
 }
+
+onMounted(() => {
+    addEventListener('resize', InitSyncScroll);
+})
 
 onBeforeMount(() => {
     codemirror?.dispatch();
@@ -198,7 +354,6 @@ $casket-color: #FFE300;
 .casket-editor {
     padding: 0 0;
 
-    overflow-y: auto;
 
     box-sizing: border-box;
 

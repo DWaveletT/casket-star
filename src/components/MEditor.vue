@@ -1,7 +1,6 @@
 <template>
     <codemirror
         class="editor" v-model="value" :extensions="extensions"
-        
     />
 </template>
 
@@ -9,7 +8,7 @@
 import { defineModel } from 'vue';
 
 import { Codemirror } from 'vue-codemirror';
-import { EditorView } from '@codemirror/view';
+import { EditorView, scrollPastEnd } from '@codemirror/view';
 
 import { githubLight } from '@ddietr/codemirror-themes/github-light';
 
