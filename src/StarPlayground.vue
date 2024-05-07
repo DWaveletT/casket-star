@@ -3,7 +3,7 @@
         <div class="main">
             <h1>Star Casket / 星之器</h1>
 
-            <p>version: 0.0.1</p>
+            <p>version: 0.0.2</p>
 
             <p>注意：数学公式是用的 micromark-math-extension 进行渲染，与洛谷公式有差别；但因为洛谷魔改版 micromark-math-extension 未公开，于是此 Playground 没有使用魔改版 micromark-math-extension。</p>
 
