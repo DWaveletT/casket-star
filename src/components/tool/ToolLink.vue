@@ -127,12 +127,12 @@ const bilibiliB2A = (bv: string) => {
 
 function updateAV(){
     bv.value = bilibiliA2B(av.value);
-    url.value = av.value.replace(/[^0-9]/gu, '');
+    url.value = '#' + av.value.replace(/[^0-9]/gu, '');
 }
 
 function updateBV(){
     av.value = bilibiliB2A(bv.value);
-    url.value = av.value.replace(/[^0-9]/gu, '');
+    url.value = '#' + av.value.replace(/[^0-9]/gu, '');
 }
 
 </script>

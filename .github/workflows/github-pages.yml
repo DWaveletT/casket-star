@@ -1,0 +1,38 @@
+name: Casket Playground
+ 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      packages: read
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+      
+      - name: Download packages
+        run: npm install --production
+
+      - name: Build
+        run: npm run build-only
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

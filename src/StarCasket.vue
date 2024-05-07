@@ -34,9 +34,16 @@
                 <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" />
             </div>
         </div>
-        <!-- <div class="footer">
-            <m-toolbar v-model="value" />
-        </div> -->
+        <div class="footer">
+            <div class="left">
+                字数统计：{{ getCodemirror()?.state.doc.length || 0 }} 字符
+            </div>
+
+            <div class="right">
+                <span class="button" @click="handleSync">{{ scrollSync ? '禁用滚动' : '启用滚动' }}</span>
+                <span class="button" @click="handleBack">回到顶部</span>
+            </div>
+        </div>
         
         <component v-if="dialog" :is="dialog"
             @close="dialog = undefined" @confirm="dialogConfirm"
@@ -62,50 +69,7 @@ import { Options } from 'remark-rehype';
 import { Root } from 'hast';
 import { visit } from 'unist-util-visit';
 
-const value = ref<string>(`
-# 1
-
-111111
-
-# 3
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-# 5
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-# 7
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-# 9
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-# 11
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-# 13
-
-asdasd
-
-# 15
-
-asdasd
-
-# 17
-
-asdasd
-
-# 19
-
-asdasd
-
-
-
-`);
+const value = ref<string>('');
 
 let codemirror: EditorView | undefined = undefined;
 
@@ -160,6 +124,8 @@ function handleEditorReady(payload: {
 let top1: number[] = [];
 let top2: number[] = [];
 
+const scrollSync = ref<boolean>(true);
+
 const editor = ref<HTMLDivElement | null>(null);
 const viewer = ref<HTMLDivElement | null>(null);
 
@@ -178,7 +144,7 @@ function getMaxViewerTop(){
 }
 
 function InitSyncScroll(){
-    if(!codemirror || !editor.value || !viewer.value)
+    if(!codemirror || !editor.value || !viewer.value || !scrollSync.value)
         return;
     if(!tree || !real)
         return;
@@ -229,7 +195,7 @@ function getStarCasket(){
 let currentOver = "editor";
 
 function handleEditorScroll(e: Event){
-    if(currentOver !== "editor" || !codemirror)
+    if(currentOver !== "editor" || !codemirror || !scrollSync.value)
         return;
 
     const topEditor = (e.target as HTMLDivElement).scrollTop;
@@ -258,7 +224,7 @@ function handleEditorScroll(e: Event){
 }
 
 function handleViewerScroll(e: Event){
-    if(currentOver !== "viewer" || !codemirror)
+    if(currentOver !== "viewer" || !codemirror || !scrollSync.value)
         return;
 
     const topViewer = (e.target as HTMLDivElement).scrollTop;
@@ -299,6 +265,24 @@ function handleViewerScroll(e: Event){
     }
 }
 
+function handleSync(){
+    if(scrollSync.value) {
+        scrollSync.value = false;
+    } else {
+        scrollSync.value = true;
+        InitSyncScroll();
+    }
+}
+
+function handleBack(){
+    if(editor.value){
+        editor.value.scrollTo({ top: 0 });
+    }
+    if(viewer.value){
+        viewer.value.scrollTo({ top: 0 });
+    }
+}
+
 onMounted(() => {
     addEventListener('resize', InitSyncScroll);
 })
@@ -314,7 +298,10 @@ onBeforeMount(() => {
 $casket-color: #FFE300;
 
 .casket {
-    display: block;
+    display: flex;
+    flex-direction: column; 
+
+    background-color: white;
 
     box-sizing: border-box;
 
@@ -341,6 +328,40 @@ $casket-color: #FFE300;
         border-top-right-radius: 4px;
     }
 
+    .footer {
+        border-top: 1px solid var(--casket-sp-color);
+
+        color: var(--casket-color-d2);
+        background-color: var(--casket-bg-color);
+
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        display: flex;
+
+        padding: 0.2em 0.5em;
+
+        justify-content: space-between;
+
+        font-size: small;
+
+        .button {
+            display: inline-block;
+            cursor: pointer;
+
+            padding: 0 0.2em;
+            margin:  0 0.2em;
+
+            border-radius: 4px;
+            
+            transition: 0.2s ease-in-out background-color;
+
+            &:hover {
+                background-color: var(--casket-color-l1);
+            }
+        }
+    }
+
     .content {
         display: flex;
         height: 400px;
@@ -353,8 +374,10 @@ $casket-color: #FFE300;
         width: 100%;
         height: 100%;
 
+        z-index: 100;
+
         .content {
-            height: 100%;
+            flex-grow: 1;
         }
     }
 }

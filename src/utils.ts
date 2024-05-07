@@ -11,6 +11,9 @@ import remarkNoHtml from './plugins/remark-no-html';
 import remarkVideo from './plugins/remark-video';
 
 import rehypeHighlight from 'rehype-highlight';
+import remarkExtendedTable, { extendedTableHandlers } from 'remark-extended-table';
+import { LuoguMath } from './plugins/codemirror-luogu-math';
+import rehypeCopycode from './plugins/rehype-copycode';
 
 
 import { CasketView, Plugins } from './StarCasket.vue';
@@ -27,9 +30,9 @@ export function defaultPlugins(): Plugins {
         remarkRehypeOptions: {
             handlers: extendedTableHandlers
         },
-        // codemirror: {
-        //     markdown: [LuoguMath]
-        // }
+        codemirror: {
+            markdown: [LuoguMath]
+        }
     }
 }
 
@@ -42,8 +45,7 @@ import ToolPicture from './components/tool/ToolPicture.vue';
 import ToolTable, { Node } from './components/tool/ToolTable.vue';
 import ToolLink from './components/tool/ToolLink.vue';
 import ToolBlock from './components/tool/ToolBlock.vue';
-import remarkExtendedTable, { extendedTableHandlers } from 'remark-extended-table';
-import { LuoguMath } from './plugins/codemirror-luogu-math';
+import ToolHelp from './components/tool/ToolHelp.vue';
 
 export function defaultToolbarL(): Toolbar {
     return [
@@ -268,10 +270,10 @@ export function defaultToolbarL(): Toolbar {
                             const trans = state.update(state.changeByRange( range => {
                                 const text = (() => {
                                     if(type === 'link')
-                                        return `[${url}](${alt})`;
+                                        return `[${alt}](${url})`;
                                     else 
                                     if(type === 'bilibili')
-                                        return `:bilibili[${alt}]{${url}}`;
+                                        return `::bilibili[${alt}]{${url}}`;
                                     else 
                                         return ``;
                                 })();
@@ -299,7 +301,7 @@ export function defaultToolbarL(): Toolbar {
                         function insertPicture(url: string, alt: string){
                             const state = codemirror.state;
                             const trans = state.update(state.changeByRange( range => {
-                                const text = `![${url}](${alt})`;
+                                const text = `![${alt}](${url})`;
                                 return {
                                     changes: [
                                         { from: range.from, to: range.to},
@@ -407,10 +409,10 @@ export function defaultToolbarL(): Toolbar {
                     icon: defaultIcons['block'],
                     func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
                         
-                        function insertCode(type: string, code: string){
+                        function insertCode(type: string, title: string, code: string){
                             const state = codemirror.state;
                             const trans = state.update(state.changeByRange( range => {
-                                const text = `\n:::${type}\n${code}\n:::\n`;
+                                const text = `\n:::${type}${ title.trim().length >= 1 ? `[${title}]` : ''}\n${code}\n:::\n`;
                                 return {
                                     changes: [
                                         { from: range.from, to: range.to},
@@ -637,8 +639,9 @@ export function defaultToolbarR(): Toolbar {
                 {
                     name: '帮助',
                     icon: defaultIcons['help'],
-                    func: (codemirror: EditorView) => {
+                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
                         
+                        dialog(ToolHelp, () => {});
                     }
                 },
             ]

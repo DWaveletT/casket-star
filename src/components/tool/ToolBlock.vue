@@ -15,9 +15,17 @@
                     </option>
                 </select>
             </div>
+            
             <div class="item">
                 <div class="label">
-                    内容物
+                    标题
+                </div>
+                <input type="text" v-model="title" class="content input" />
+
+            </div>
+            <div class="item">
+                <div class="label">
+                    内容
                 </div>
 
                 <textarea class="content textarea" v-model="code" />
@@ -26,7 +34,7 @@
             <div class="submit-area">
                 <button class="button cancel"  @click="emits('close')" >取消</button>
                 <button class="button confirm" @click="() => {
-                    emits('confirm', type, code);
+                    emits('confirm', type, title, code);
                     emits('close');
                 }" >确认</button>
             </div>
@@ -41,11 +49,12 @@ import { ref } from 'vue';
 import MDialog from '../dialog/MDialog.vue';
 
 const emits = defineEmits<{
-    confirm: [string, string], close: []
+    confirm: [string, string, string], close: []
 }>();
 
 const type = ref('info');
-const code = ref('');
+const title = ref('');
+const code  = ref('');
 
 const list: {
     value: string,
@@ -83,6 +92,11 @@ const list: {
 }
 .select {
     height: 24px;
+}
+
+.input {
+    height: 24px;
+    padding: 0;
 }
 
 .textarea {
