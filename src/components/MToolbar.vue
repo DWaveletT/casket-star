@@ -24,7 +24,7 @@ import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
 import { Component } from 'vue';
-import { CasketView } from '~/StarCasket.vue';
+import { CasketView } from '../StarCasket.vue';
 
 const emits = defineEmits<{
     viewer: ["only-view" | "only-edit" | "both"],

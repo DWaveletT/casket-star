@@ -11,7 +11,7 @@ import { Codemirror } from 'vue-codemirror';
 import { EditorView } from '@codemirror/view';
 
 import { markdown } from '@codemirror/lang-markdown';
-import { Plugins } from '~/StarCasket.vue';
+import { Plugins } from '../StarCasket.vue';
 
 const props = defineProps<{
     plugins: Plugins

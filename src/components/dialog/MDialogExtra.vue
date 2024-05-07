@@ -5,9 +5,7 @@
                 <div class="header">
                     <slot name="header" />
 
-                    <div class="close-container" @click="emits('close')">
-                        <font-awesome-icon class="close" :icon="faXmark" />
-                    </div>
+                    <div class="close-container" @click="emits('close')" v-html="defaultIcons['xmark']" />
                 </div>
 
                 <div class="content">
@@ -24,11 +22,8 @@
 
 <script setup lang="ts">
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
 import { ref } from 'vue';
+import { defaultIcons } from '../../icons';
 
 const emits = defineEmits(['close']);
 
