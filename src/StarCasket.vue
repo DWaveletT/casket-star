@@ -67,7 +67,8 @@ import { defaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import { Root } from 'hast';
-import { visit } from 'unist-util-visit';
+
+import { debounce } from 'lodash-es';
 
 const value = ref<string>('');
 
@@ -98,7 +99,7 @@ const casket = ref<CasketView>({
     fullScreen: false
 });
 
-watch(casket.value, () => { setTimeout(InitSyncScroll, 100) });
+watch(casket.value, () => { updateScrollSync() });
 
 let dialogConfirm: Function | undefined = undefined;
 
@@ -148,6 +149,8 @@ function InitSyncScroll(){
         return;
     if(!tree || !real)
         return;
+
+    console.log(tree, real);
     
     top1 = [0], top2 = [0];
 
@@ -162,8 +165,9 @@ function InitSyncScroll(){
 
     let maxBottom = 0;
 
-    for(const [key, node] of Object.entries(real.children)){
-        const { top, bottom} = node.getBoundingClientRect();
+    for(const [key, node] of Object.entries(real.children))
+        if(!node.classList.contains('katex-display')){
+        const { top, bottom } = node.getBoundingClientRect();
         top2.push(top + delta);
         maxBottom = bottom + delta;
     }
@@ -173,10 +177,12 @@ function InitSyncScroll(){
 
 }
 
+const updateScrollSync = debounce(InitSyncScroll, 1000);
+
 function handleViewerUpdate(t: Root, r: HTMLDivElement){
     tree = t;
     real = r;
-    InitSyncScroll();
+    updateScrollSync();
 }
 
 function handleDialog(component: Component, confirm?: Function){
@@ -270,7 +276,7 @@ function handleSync(){
         scrollSync.value = false;
     } else {
         scrollSync.value = true;
-        InitSyncScroll();
+        updateScrollSync();
     }
 }
 
@@ -284,7 +290,7 @@ function handleBack(){
 }
 
 onMounted(() => {
-    addEventListener('resize', InitSyncScroll);
+    addEventListener('resize', updateScrollSync);
 })
 
 onBeforeMount(() => {
@@ -299,7 +305,7 @@ $casket-color: #FFE300;
 
 .casket {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 
     background-color: white;
 

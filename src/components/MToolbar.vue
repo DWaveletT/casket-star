@@ -148,7 +148,7 @@ function doToolClick(tool: Tool){
     background-color: #555;
     color: white;
 
-    transform: translateY(2em);
+    transform: translateY(1em);
 
     transition:
         0.2s ease-in-out opacity, 

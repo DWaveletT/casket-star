@@ -15,3 +15,5 @@ declare global {
         _feRouter: unknown;
     }
 }
+
+declare module 'lodash-es'

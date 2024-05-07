@@ -15,7 +15,6 @@ import remarkExtendedTable, { extendedTableHandlers } from 'remark-extended-tabl
 import { LuoguMath } from './plugins/codemirror-luogu-math';
 import rehypeCopycode from './plugins/rehype-copycode';
 
-
 import { CasketView, Plugins } from './StarCasket.vue';
 import { DialogFunction, Toolbar } from './components/MToolbar.vue';
 

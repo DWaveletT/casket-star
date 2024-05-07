@@ -1,5 +1,5 @@
 <template>
-    <div class="markdown" ref="real" />
+    <div class="markdown" v-html="html" ref="real" />
 </template>
 
 <script setup lang="ts">
@@ -23,6 +23,8 @@ const value = defineModel<string>({
 
 const real = ref<HTMLDivElement | null>(null);
 const tree = ref<Root | null>(null);
+
+const html = ref('');
 
 const emits = defineEmits<{
     update: [Root, HTMLDivElement]
@@ -67,9 +69,9 @@ async function render(markdown: string){
 function updateHTML(){
     try {
         render(value.value).then((m) => {
-            real.value!.innerHTML = m.toString();
+            html.value = m.toString();
 
-            setTimeout(() => emits('update', tree.value as Root, real.value as HTMLDivElement), 100);
+            setTimeout(() => emits('update', tree.value as Root, real.value as HTMLDivElement), 1000);
         });
     } catch(e){
         console.log(e);
