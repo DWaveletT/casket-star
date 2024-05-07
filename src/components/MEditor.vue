@@ -32,8 +32,8 @@ const extensions = [
             outline: 'none'
         },
         "&.cm-editor": {
-            height: '100%'
-        },
+            height: '100%',
+        }
     }),
     markdown({
         extensions: [

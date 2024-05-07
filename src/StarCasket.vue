@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Component, ref, shallowRef, onBeforeMount, onMounted } from 'vue';
+import { type Component, ref, shallowRef, onBeforeMount, onMounted, watch } from 'vue';
 
 import MEditor from './components/MEditor.vue';
 import MViewer from './components/MViewer.vue';
@@ -60,6 +60,7 @@ import { defaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import { Root } from 'hast';
+import { visit } from 'unist-util-visit';
 
 const value = ref<string>(`
 # 1
@@ -133,6 +134,8 @@ const casket = ref<CasketView>({
     fullScreen: false
 });
 
+watch(casket.value, () => { setTimeout(InitSyncScroll, 100) });
+
 let dialogConfirm: Function | undefined = undefined;
 
 const props = defineProps<{
@@ -163,6 +166,17 @@ const viewer = ref<HTMLDivElement | null>(null);
 let tree:           Root | null = null;
 let real: HTMLDivElement | null = null;
 
+function getMaxEditorTop(){
+    if(!editor.value)
+        return 0;
+    return editor.value.scrollHeight - editor.value.getBoundingClientRect().height;
+}
+function getMaxViewerTop(){
+    if(!viewer.value)
+        return 0;
+    return viewer.value.scrollHeight - viewer.value.getBoundingClientRect().height;
+}
+
 function InitSyncScroll(){
     if(!codemirror || !editor.value || !viewer.value)
         return;
@@ -171,21 +185,25 @@ function InitSyncScroll(){
     
     top1 = [0], top2 = [0];
 
-    maxEditorTop = editor.value.scrollHeight - editor.value.getBoundingClientRect().height;
-    maxViewerTop = viewer.value.scrollHeight - viewer.value.getBoundingClientRect().height;
-
     for(const node of tree.children){
 
-        if(node.position?.start.offset){
+        if(node.position?.start.offset !== undefined){
             top1.push(node.position.start.offset);
         }
     }
 
     const delta = viewer.value.scrollTop - viewer.value.getBoundingClientRect().top;
 
+    let maxBottom = 0;
+
     for(const [key, node] of Object.entries(real.children)){
-        top2.push(node.getBoundingClientRect().top + delta);
+        const { top, bottom} = node.getBoundingClientRect();
+        top2.push(top + delta);
+        maxBottom = bottom + delta;
     }
+    
+    top1.push(codemirror.state.doc.length);
+    top2.push(maxBottom);
 
 }
 
@@ -209,8 +227,6 @@ function getStarCasket(){
 }
 
 let currentOver = "editor";
-let maxEditorTop = 0;
-let maxViewerTop = 0;
 
 function handleEditorScroll(e: Event){
     if(currentOver !== "editor" || !codemirror)
@@ -219,8 +235,8 @@ function handleEditorScroll(e: Event){
     const topEditor = (e.target as HTMLDivElement).scrollTop;
     const pos = codemirror.lineBlockAtHeight(topEditor).from;
 
-    if(topEditor + 10 >= maxEditorTop){
-        viewer.value?.scrollTo({ top: maxViewerTop + 10});
+    if(topEditor + 1 >= getMaxEditorTop()){
+        viewer.value?.scrollTo({ top: getMaxViewerTop() + 10 });
         return;
     }
 
@@ -247,8 +263,8 @@ function handleViewerScroll(e: Event){
 
     const topViewer = (e.target as HTMLDivElement).scrollTop;
     
-    if(topViewer + 10 >= maxViewerTop){
-        editor.value?.scrollTo({ top: maxEditorTop + 10});
+    if(topViewer + 1 >= getMaxViewerTop()){
+        editor.value?.scrollTo({ top: getMaxEditorTop() + 10 });
         return;
     }
 
@@ -267,10 +283,14 @@ function handleViewerScroll(e: Event){
 
             const margin = rate * (topr - topl);
 
+            const height = topl + margin;
+            const line = codemirror.lineBlockAtHeight(height);
+            const delta = line.top - topl;
+
             codemirror.dispatch(
                 codemirror.state.update(
                     {
-                        effects: EditorView.scrollIntoView(top1[i], { y: 'start', yMargin: -margin })
+                        effects: EditorView.scrollIntoView(line.from, { y: 'start', yMargin: -margin + delta })
                     }
                 )
             );
@@ -323,10 +343,8 @@ $casket-color: #FFE300;
 
     .content {
         display: flex;
-
-        height: 300px;
+        height: 400px;
     }
-
 
     &.full-screen {
         position: fixed;
@@ -354,25 +372,16 @@ $casket-color: #FFE300;
 .casket-editor {
     padding: 0 0;
 
-
     box-sizing: border-box;
 
     font-size: large; 
 }
 
 .casket-viewer {
+    position: relative;
     padding: 0 0.5em;
 
     overflow-y: auto;
-
-    box-sizing: border-box;
-}
-
-.casket-sidebar {
-    display: block;
-    flex: 5em;
-
-    padding: 1em;
 
     box-sizing: border-box;
 }
