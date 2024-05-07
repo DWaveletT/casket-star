@@ -28,7 +28,7 @@ jobs:
         run: npm install --production
 
       - name: Build
-        run: npm run build-only
+        run: npm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
