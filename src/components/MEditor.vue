@@ -8,9 +8,7 @@
 import { defineModel } from 'vue';
 
 import { Codemirror } from 'vue-codemirror';
-import { EditorView, scrollPastEnd } from '@codemirror/view';
-
-import { githubLight } from '@ddietr/codemirror-themes/github-light';
+import { EditorView } from '@codemirror/view';
 
 import { markdown } from '@codemirror/lang-markdown';
 import { Plugins } from '~/StarCasket.vue';

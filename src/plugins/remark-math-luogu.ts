@@ -1,5 +1,6 @@
 import { mathFromMarkdown, mathToMarkdown, ToOptions } from 'mdast-util-math';
-import { math } from '@lfe/micromark-extension-math';
+// import { math } from '@lfe/micromark-extension-math';
+import { math } from 'micromark-extension-math';
 import { Processor } from 'unified';
 
 const emptyOptions: Readonly<ToOptions> = {};
