@@ -1,1 +1,1 @@
-export { default as StarCasket } from './StarCasket.vue';
+export { default as CasketStar } from './CasketStar.vue';

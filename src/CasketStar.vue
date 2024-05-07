@@ -5,7 +5,7 @@
                 :toolbarl="toolbarl"
                 :toolbarr="toolbarr"
                 :get-codemirror="getCodemirror"
-                :get-starcasket="getStarCasket"
+                :get-casketstar="getCasketStar"
                 @dialog="handleDialog"
             />
         </div>
@@ -194,7 +194,7 @@ function getCodemirror(){
     return codemirror;
 }
 
-function getStarCasket(){
+function getCasketStar(){
     return casket.value;
 }
 

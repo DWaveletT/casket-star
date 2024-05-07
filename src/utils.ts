@@ -15,7 +15,7 @@ import remarkExtendedTable, { extendedTableHandlers } from 'remark-extended-tabl
 import { LuoguMath } from './plugins/codemirror-luogu-math';
 import rehypeCopycode from './plugins/rehype-copycode';
 
-import { CasketView, Plugins } from './StarCasket.vue';
+import { CasketView, Plugins } from './CasketStar.vue';
 import { DialogFunction, Toolbar } from './components/MToolbar.vue';
 
 export function defaultPlugins(): Plugins {
@@ -271,7 +271,7 @@ export function defaultToolbarL(): Toolbar {
                 {
                     name: '插入链接',
                     icon: defaultIcons['link'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
                         
                         function insertLink(type: string, url: string, alt: string){
                             const state = codemirror.state;
@@ -304,7 +304,7 @@ export function defaultToolbarL(): Toolbar {
                 {
                     name: '插入图片',
                     icon: defaultIcons['picture'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
                         
                         function insertPicture(url: string, alt: string){
                             const state = codemirror.state;
@@ -329,7 +329,7 @@ export function defaultToolbarL(): Toolbar {
                 {
                     name: '插入代码',
                     icon: defaultIcons['code'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
                         
                         function insertCode(lang: string, code: string){
                             const state = codemirror.state;
@@ -354,7 +354,7 @@ export function defaultToolbarL(): Toolbar {
                 {
                     name: '插入表格',
                     icon: defaultIcons['table'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
                         
                         function insertTable(row: number, col: number, table: Node[][]){
                             const state = codemirror.state;
@@ -415,7 +415,7 @@ export function defaultToolbarL(): Toolbar {
                 {
                     name: '插入块体',
                     icon: defaultIcons['block'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
                         
                         function insertCode(type: string, title: string, code: string){
                             const state = codemirror.state;
@@ -611,32 +611,32 @@ export function defaultToolbarR(): Toolbar {
                 {
                     name: '仅编辑',
                     icon: defaultIcons['editor'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
-                        if(starcasket.showViewer){
-                            starcasket.showEditor = true;
-                            starcasket.showViewer = false;
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
+                        if(casketstar.showViewer){
+                            casketstar.showEditor = true;
+                            casketstar.showViewer = false;
                         } else {
-                            starcasket.showViewer = true;
+                            casketstar.showViewer = true;
                         }
                     }
                 },
                 {
                     name: '仅预览',
                     icon: defaultIcons['viewer'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
-                        if(starcasket.showEditor){
-                            starcasket.showViewer = true;
-                            starcasket.showEditor = false;
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
+                        if(casketstar.showEditor){
+                            casketstar.showViewer = true;
+                            casketstar.showEditor = false;
                         } else {
-                            starcasket.showEditor = true;
+                            casketstar.showEditor = true;
                         }
                     }
                 },
                 {
                     name: '全屏',
                     icon: defaultIcons['expand'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
-                        starcasket.fullScreen = !starcasket.fullScreen;
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
+                        casketstar.fullScreen = !casketstar.fullScreen;
                     }
                 },
             ]
@@ -647,7 +647,7 @@ export function defaultToolbarR(): Toolbar {
                 {
                     name: '帮助',
                     icon: defaultIcons['help'],
-                    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => {
+                    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => {
                         
                         dialog(ToolHelp, () => {});
                     }

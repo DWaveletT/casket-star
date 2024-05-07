@@ -1,16 +1,16 @@
 {
-  "name": "star-casket",
+  "name": "casket-star",
   "version": "0.0.2",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/star-casket.umd.cjs",
-  "module": "./dist/star-casket.js",
+  "main": "./dist/casket-star.umd.cjs",
+  "module": "./dist/casket-star.js",
   "exports": {
     ".": {
-      "import": "./dist/star-casket.js",
-      "require": "./dist/star-casket.umd.cjs",
+      "import": "./dist/casket-star.js",
+      "require": "./dist/casket-star.umd.cjs",
       "types": "./dist/index.d.ts"
     },
     "./style.css": "./dist/style.css"
@@ -21,7 +21,7 @@
     "build": "vite build && vue-tsc --emitDeclarationOnly",
     "preview": "vite preview",
     "test": "exit 0",
-    "publish": "npm "
+    "publish": "npm publish"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "^6.2.4",

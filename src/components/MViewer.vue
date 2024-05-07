@@ -9,7 +9,7 @@ import { Plugin, Processor, unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
-import { Plugins } from '../StarCasket.vue';
+import { Plugins } from '../CasketStar.vue';
 
 import { Root } from 'hast';
 

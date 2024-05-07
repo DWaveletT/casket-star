@@ -24,7 +24,7 @@ import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
 import { Component } from 'vue';
-import { CasketView } from '../StarCasket.vue';
+import { CasketView } from '../CasketStar.vue';
 
 const emits = defineEmits<{
     viewer: ["only-view" | "only-edit" | "both"],
@@ -36,7 +36,7 @@ export type DialogFunction = (component: Component, confirm?: Function) => void;
 interface Tool {
     name: string,
     icon: string,
-    func: (codemirror: EditorView, starcasket: CasketView, dialog: DialogFunction) => void
+    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => void
 };
 
 interface ToolGroup {
@@ -50,7 +50,7 @@ const props = defineProps<{
     toolbarl: Toolbar,
     toolbarr: Toolbar,
     getCodemirror: () => EditorView | undefined,
-    getStarcasket: () => CasketView | undefined,
+    getCasketstar: () => CasketView | undefined,
 }>();
 
 function doCallDialog(component: Component, confirm?: Function){
@@ -59,9 +59,9 @@ function doCallDialog(component: Component, confirm?: Function){
 
 function doToolClick(tool: Tool){
     const codemirror = props.getCodemirror();
-    const starcasket = props.getStarcasket();
-    if(codemirror && starcasket){
-        tool.func(codemirror, starcasket, doCallDialog);
+    const casketstar = props.getCasketstar();
+    if(codemirror && casketstar){
+        tool.func(codemirror, casketstar, doCallDialog);
     }
 }
 

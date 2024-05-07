@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: "StarCasket",
-      fileName: "star-casket",
+      name: "CasketStar",
+      fileName: "casket-star",
     },
     rollupOptions: {
       external: [
