@@ -19,12 +19,21 @@ import { CasketView, Plugins } from './StarCasket.vue';
 import { DialogFunction, Toolbar } from './components/MToolbar.vue';
 
 export function defaultPlugins(): Plugins {
+    const macros = {};
+
     return {
         remark: [
-            remarkNoHtml, remarkGfm, remarkDirective, remarkCallouts, remarkVideo, remarkMath, remarkExtendedTable
+            remarkNoHtml,
+            remarkGfm,
+            remarkDirective,
+            remarkCallouts,
+            remarkVideo,
+            remarkMath,
+            remarkExtendedTable
         ],
         rehype: [
-            rehypeKatex, rehypeHighlight
+            [rehypeKatex, { macros: macros }],
+            rehypeHighlight
         ],
         remarkRehypeOptions: {
             handlers: extendedTableHandlers

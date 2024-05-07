@@ -13,8 +13,12 @@ import { Plugins } from '~/StarCasket.vue';
 
 import { Root } from 'hast';
 
+import { throttle } from 'lodash-es';
+import { isArray } from 'lodash-es';
+
 const props = defineProps<{
-    plugins: Plugins
+    plugins: Plugins,
+    interval: number
 }>();
 
 const value = defineModel<string>({
@@ -40,15 +44,23 @@ function getProcessor(){
     processor.use(remarkParse);
 
     if(props.plugins.remark){
-        for(const plugin of props.plugins.remark)
-            processor.use(plugin);
+        for(const plugin of props.plugins.remark){
+            if(Array.isArray(plugin))
+                processor.use(plugin[0], plugin[1] as unknown as boolean);
+            else
+                processor.use(plugin);
+        }
     }
 
     processor.use(remarkRehype, props.plugins.remarkRehypeOptions);
 
     if(props.plugins.rehype){
-        for(const plugin of props.plugins.rehype)
-            processor.use(plugin);
+        for(const plugin of props.plugins.rehype){
+            if(Array.isArray(plugin))
+                processor.use(plugin[0], plugin[1] as unknown as boolean);
+            else
+                processor.use(plugin);
+        }
     }
 
     processor.use(rehypeExpose);
@@ -66,7 +78,7 @@ async function render(markdown: string){
     return processor.process(markdown);
 }
 
-function updateHTML(){
+const updateHTML = throttle(() => {
     try {
         render(value.value).then((m) => {
             html.value = m.toString();
@@ -76,7 +88,7 @@ function updateHTML(){
     } catch(e){
         console.log(e);
     }
-}
+}, props.interval);
 
 watch(value, () => {
     updateHTML();

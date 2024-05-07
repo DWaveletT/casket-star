@@ -5,15 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineModel } from 'vue';
+import { defineModel, ref, watch } from 'vue';
 
 import { Codemirror } from 'vue-codemirror';
 import { EditorView } from '@codemirror/view';
 
 import { markdown } from '@codemirror/lang-markdown';
 import { Plugins } from '~/StarCasket.vue';
-
-import { Ref } from 'vue';
 
 const props = defineProps<{
     plugins: Plugins

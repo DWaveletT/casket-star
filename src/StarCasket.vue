@@ -31,7 +31,7 @@
                 @scroll="handleViewerScroll"
                 @mouseover="currentOver = 'viewer'"
             >
-                <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" />
+                <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" :interval="interval" />
             </div>
         </div>
         <div class="footer">
@@ -70,15 +70,15 @@ import { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
 
-const value = ref<string>('');
+const interval = ref(0);
 
 let codemirror: EditorView | undefined = undefined;
 
 type Plugin = () => void;
 
 export interface Plugins {
-    remark?: Plugin[],
-    rehype?: Plugin[],
+    remark?: (Plugin | [Plugin, object])[],
+    rehype?: (Plugin | [Plugin, object])[],
     remarkRehypeOptions?: Options,
     codemirror?: {
         editor?: Extension[],
@@ -108,6 +108,8 @@ const props = defineProps<{
     toolbarl?: Toolbar,
     toolbarr?: Toolbar,
 }>();
+
+const value = defineModel<string>({ required: true });
 
 const plugins = props.plugins || defaultPlugins();
 
@@ -149,8 +151,6 @@ function InitSyncScroll(){
         return;
     if(!tree || !real)
         return;
-
-    console.log(tree, real);
     
     top1 = [0], top2 = [0];
 
@@ -255,17 +255,7 @@ function handleViewerScroll(e: Event){
 
             const margin = rate * (topr - topl);
 
-            const height = topl + margin;
-            const line = codemirror.lineBlockAtHeight(height);
-            const delta = line.top - topl;
-
-            codemirror.dispatch(
-                codemirror.state.update(
-                    {
-                        effects: EditorView.scrollIntoView(line.from, { y: 'start', yMargin: -margin + delta })
-                    }
-                )
-            );
+            editor.value?.scrollTo({ top: topl + margin });
             return;
         }
     }
