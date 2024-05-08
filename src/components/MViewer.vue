@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, defineModel } from 'vue';
+import { ref, watch, onMounted, defineModel, nextTick } from 'vue';
 
 import { Plugin, unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -82,7 +82,7 @@ const updateHTML = throttle(() => {
         render(value.value).then((m) => {
             html.value = m.toString();
 
-            setTimeout(() => emits('update', tree.value as Root, real.value as HTMLDivElement), 1000);
+            nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement) });
         });
     } catch(e){
         console.log(e);

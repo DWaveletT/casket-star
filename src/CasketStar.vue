@@ -176,7 +176,7 @@ function InitSyncScroll(){
 
 }
 
-const updateScrollSync = debounce(InitSyncScroll, 1000);
+const updateScrollSync = debounce(InitSyncScroll, 200);
 
 function handleViewerUpdate(t: Root, r: HTMLDivElement){
     tree = t;
