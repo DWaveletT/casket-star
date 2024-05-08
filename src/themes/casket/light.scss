@@ -1,0 +1,449 @@
+$casket-color: #FFE300;
+
+.casket {
+    display: flex;
+    flex-direction: column;
+
+    background-color: white;
+
+    box-sizing: border-box;
+
+    --casket-color: #{$casket-color};
+    --casket-color-l1: #{lighten($casket-color, 20%)};
+    --casket-color-l2: #{lighten($casket-color, 40%)};
+    --casket-color-d1: #{darken($casket-color, 10%)};
+    --casket-color-d2: #{darken($casket-color, 20%)};
+
+    --casket-tl-color: #333333;
+    --casket-bd-color: #9E9E9E;
+    --casket-sp-color: var(--casket-color-d1);
+    --casket-bg-color: var(--casket-color-l2);
+
+    border: 2px solid var(--casket-color-d1);
+    border-radius: 4px;
+
+    .cs {
+        &-header {
+            border-bottom: 1px solid var(--casket-sp-color);
+
+            background-color: var(--casket-bg-color);
+
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        &-footer {
+            border-top: 1px solid var(--casket-sp-color);
+
+            color: var(--casket-color-d2);
+            background-color: var(--casket-bg-color);
+
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+
+            display: flex;
+
+            padding: 0.2em 0.5em;
+
+            justify-content: space-between;
+
+            font-size: small;
+
+            &-button {
+                display: inline-block;
+                cursor: pointer;
+
+                padding: 0 0.2em;
+                margin:  0 0.2em;
+
+                border-radius: 4px;
+                
+                transition: 0.2s ease-in-out background-color;
+
+                &:hover {
+                    background-color: var(--casket-color-l1);
+                }
+            }
+        }
+
+        &-content {
+            display: flex;
+            height: 400px;
+        }
+
+        &-full-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            z-index: 100;
+
+            &.cs-content {
+                flex-grow: 1;
+            }
+        }
+
+        &-midline {
+            border-right: 1px solid var(--casket-sp-color);
+        }
+
+        &-zone-half {
+            width: 50%;
+        }
+        &-zone-full {
+            width: 100%;
+        }
+
+        &-editor {
+            padding: 0 0;
+
+            box-sizing: border-box;
+
+            font-size: large; 
+        }
+
+        &-viewer {
+            position: relative;
+            padding: 0 0.5em;
+
+            overflow-y: auto;
+
+            box-sizing: border-box;
+        }
+
+        
+        &-toolbar {
+            display: flex;
+
+            padding: 0.2em 0.5em;
+
+            justify-content: space-between;
+
+            &-group {
+                display: inline-flex;
+                align-items: center;
+                height: auto;
+    
+                &:not(:last-child) {
+                    padding-right: 0.2em;
+                    border-right: 2px solid var(--casket-sp-color);
+                    margin-right: 0.2em;
+                }
+            }
+
+            &-tool {
+                height: 24px;
+                width: 24px;
+                display: inline-flex;
+    
+                justify-content: center;
+                align-items: center;
+    
+                background-color: transparent;
+                border-radius: 4px;
+    
+                transition: 0.2s ease-in-out background-color;
+    
+                position: relative;
+
+                
+                &-button {
+                    width: 18px;
+                    height: 18px;
+                    color: var(--casket-tl-color);
+
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+    
+                &:hover {
+                    background-color: rgb(from var(--casket-tl-color) r g b 0.3);
+    
+                    > .cs-tooltip {
+                        opacity: 1; 
+                        transform: none;
+                    }
+                }
+                
+    
+                &:not(:last-child) {
+                    margin-right: 0.2em; 
+                }
+    
+                overflow: visible;
+            }
+        }
+
+        &-tooltip {
+            display: block;
+            padding: 0.5em;
+
+            z-index: 4;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            font-size: small; 
+
+            border-radius: 4px;
+
+            background-color: #555;
+            color: white;
+
+            transform: translateY(1em);
+
+            transition:
+                0.2s ease-in-out opacity, 
+                0.2s ease-in-out transform;
+
+            white-space: nowrap;
+
+            width: fit-content;
+            position: absolute;
+            bottom: -2.5em;
+        }
+
+        &-dialog-container {
+            position: fixed;
+        
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        
+            top: 0;
+            left: 0;
+        
+            width: 100%;
+            height: 100%;
+        
+            background-color: rgb(0 0 0 / 0.2);
+        }
+
+        @keyframes cs-dialog-slidein {
+            from {
+                transform: translateY(-2em);
+            }
+            to {
+                transform: none;
+            }
+        }
+
+        &-close-container {
+            width: 24px;
+            height: 24px;
+            float: right;
+    
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            cursor: pointer;
+        }
+
+        &-close-button {
+            color: #666666;
+
+            width: 16px;
+            height: 16px;
+
+            transition:
+                0.2s ease-in-out color,
+                0.2s ease-in-out transform;
+            
+            &:hover {
+                transform: scale(1.3);
+            }
+        }
+
+        &-dialog {
+        
+            background-color: white;
+            border-radius: 5px;
+        
+            padding: 1em;
+        
+            animation: cs-dialog-slidein 0.2s;
+
+            width: min(500px, 80%);
+            min-height: 200px;
+
+            &-big {
+                width: min(1080px, 80%);
+                height: 80%;
+
+                display: flex;
+            }
+            
+            &-sidebar {
+                width: 320px;
+                height: 100%;
+                padding-right: 1em;
+                margin-right: 1em;
+                border-right: 1px dashed rgb(0 0 0 / 0.3);
+
+                display: flex;
+                flex-direction: column;
+            }
+
+            &-view {
+                width: 760px;
+                overflow: auto;
+            }
+
+            &-header {
+                height: 1.6em;
+                border-bottom: 1px solid rgb(0 0 0 / 0.3);
+                padding-bottom: 0.2em;
+                margin-bottom: 1.5em;
+            
+                font-size: large;
+            
+            }
+            
+            &-item {
+                width: 100%;
+            
+                display: flex;
+            
+                &-label {
+                    display: inline-block;
+                    
+                    width: 5em;
+                    margin-right: 0.5em;
+                }
+            
+                &-content {
+                    flex-grow: 1;
+                }
+            
+                &:not(:last-child){
+                    margin-bottom: 1em;
+                }
+            }
+
+            select {
+                height: 24px;
+            }
+            
+            input {
+                height: 24px;
+                padding: 0;
+            }
+            
+            textarea {
+                resize: vertical;
+                font-family: monospace;
+            
+                overflow: auto;
+            
+                padding: 0.5em;
+                border-radius: 5px;
+            }
+            
+            &-submit-area {
+                display: flex;
+                justify-content: flex-end;
+            }
+            
+            &-button {
+                cursor: pointer;
+            
+                border-radius: 4px;
+            
+                padding: 0.4em 1em;
+            
+                background-color: #fafafa;
+            
+                transition: 0.2s ease-in-out background-color;
+            
+                &:not(:last-child){
+                    margin-right: 1em;
+                }
+            
+                &-info {
+                    border: 1px solid var(--casket-color);
+                    background-color: var(--casket-color-l2);
+                    color: var(--casket-color-d2);
+            
+                    &:hover {
+                        background-color: var(--casket-color-l1);
+                    }
+                }
+
+                &-selected {
+                    background-color: var(--casket-color-l1);
+                }
+            }
+
+            &-upload {
+                width: 100%;
+                height: 30vh;
+            
+                border: 2px dashed var(--casket-color-d1);
+                border-radius: 10px;
+                background-color: rgb(from var(--casket-color-l2) r g b / 0.2);
+            
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            
+                font-size: x-large;
+                color: var(--casket-color-d1);
+            
+                transition: 0.2s ease-in-out background-color;
+            
+                &:hover {
+                    background-color: rgb(from var(--casket-color-l2) r g b / 0.4);
+                }
+            }
+            
+            &-area {
+                flex-grow: 1;
+                display: flex;
+
+                flex-direction: column;
+
+                margin-bottom: 1em;
+            }
+
+            &-table-editor {
+                height: 100%;
+                width: 100%;
+            
+                border: 2px solid black;
+                border-collapse: collapse;
+                flex-direction: column;
+                table-layout: fixed;
+            
+                > tbody {
+                    > tr {
+            
+                        overflow: hidden;
+            
+                        > td {
+            
+                            border: 2px solid black;
+            
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+            
+                            user-select: none;
+            
+                            &:hover {
+                                background-color: rgb(from var(--casket-color) r g b / 0.4);
+                            }
+            
+                            &.selected {
+                                background-color: rgb(from var(--casket-color) r g b / 0.2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

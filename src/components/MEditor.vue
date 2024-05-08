@@ -1,6 +1,6 @@
 <template>
     <codemirror
-        class="editor" v-model="value" :extensions="extensions"
+        v-model="value" :extensions="extensions"
     />
 </template>
 
@@ -45,7 +45,3 @@ const extensions = [
 ];
 
 </script>
-
-<style scoped lang="scss">
-
-</style>

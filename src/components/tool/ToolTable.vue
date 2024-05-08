@@ -4,46 +4,44 @@
             插入表格
         </template>
 
-        <div class="form">
-            <div class="item">
-                <div class="label">
-                    行数
-                </div>
-                <input type="number" v-model="row" class="content input" min="1" max="100" />
+        <div class="cs-dialog-item">
+            <div class="cs-dialog-item-label">
+                行数
             </div>
-            <div class="item">
-                <div class="label">
-                    列数
-                </div>
-                <input type="number" v-model="col" class="content input" min="1" max="100" />
+            <input type="number" v-model="row" class="cs-dialog-item-content" min="1" max="100" />
+        </div>
+        <div class="cs-dialog-item">
+            <div class="cs-dialog-item-label">
+                列数
             </div>
-            
-            <div class="operate-area">
-                <button class="button confirm" @click="doMerge" >合并</button>
-                <button class="button confirm" @click="doSplit" >拆分</button>
-                <button class="button confirm" @click="doEdit"  >修改</button>
-            </div>
+            <input type="number" v-model="col" class="cs-dialog-item-content" min="1" max="100" />
+        </div>
+        
+        <div class="cs-dialog-item">
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doMerge" >合并</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doSplit" >拆分</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doEdit"  >修改</button>
+        </div>
 
-            <div class="editor">
+        <div class="cs-dialog-area">
 
-                <h3>编辑区</h3>
+            <h3>编辑区</h3>
 
-                <textarea class="content textarea" v-model="text" />
-            </div>
+            <textarea v-model="text" />
+        </div>
 
-            <div class="submit-area">
-                <button class="button cancel"  @click="emits('close')" >取消</button>
-                <button class="button confirm" @click="() => {
-                    emits('confirm', row, col, table);
-                    emits('close');
-                }" >确认</button>
-            </div>
+        <div class="submit-area">
+            <button class="cs-dialog-button cs-dialog-button-info" @click="emits('close')" >取消</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
+                emits('confirm', row, col, table);
+                emits('close');
+            }" >确认</button>
         </div>
 
         <template #view>
-            <table class="table">
+            <table class="cs-dialog-table-editor">
                 <tbody>
-                    <tr class="row" v-for="[x, line] of Object.entries(table)">
+                    <tr v-for="[x, line] of Object.entries(table)">
                         <template
                             v-for="[y, value] of Object.entries(line)"
                         >
@@ -53,7 +51,6 @@
                                 :data-y="y"
                                 :colspan="value.col"
                                 :rowspan="value.row"
-                                class="data" 
                                 :class="{ selected: selected(Number.parseInt(x), Number.parseInt(y)) } "
                                 @mousedown = "handleMouseDown"
                                 @mouseenter="handleMouseEnter"
@@ -265,145 +262,3 @@ watch(row, resizeTable);
 watch(col, resizeTable);
 
 </script>
-
-<style scoped lang="scss">
-
-.table {
-    height: 100%;
-    width: 100%;
-
-    border: 2px solid black;
-
-    border-collapse: collapse;
-
-    flex-direction: column;
-
-    table-layout: fixed;
-
-    > tbody {
-        > .row {
-
-            overflow: hidden;
-
-            > .data {
-
-                border: 2px solid black;
-
-                overflow: hidden;
-                text-overflow: ellipsis;
-
-                user-select: none;
-
-                &:hover {
-                    background-color: rgb(from var(--casket-color) r g b / 0.4);
-                }
-
-                &.selected {
-                    background-color: rgb(from var(--casket-color) r g b / 0.2);
-                }
-            }
-        }
-    }
-}
-
-.form {
-    display: flex;
-    height: 100%;
-
-    flex-direction: column;
-}
-
-.item {
-    width: 100%;
-
-    display: flex;
-
-    > .label {
-        display: inline-block;
-        
-        width: 5em;
-        margin-right: 0.5em;
-    }
-
-    > .content {
-        flex-grow: 1;
-    }
-
-    &:not(:last-child){
-        margin-bottom: 1em;
-    }
-}
-
-.input {
-    height: 24px;
-    padding: 0;
-}
-
-.editor {
-    flex-grow: 1;
-    display: flex;
-
-    flex-direction: column;
-
-    margin-bottom: 1em;
-}
-
-.operate-area {
-    margin-bottom: 1em;
-}
-
-.submit-area {
-    display: flex;
-    justify-content: flex-end;
-
-    margin-bottom: 1em;
-}
-
-.button {
-    cursor: pointer;
-
-    border-radius: 4px;
-
-    padding: 0.4em 1em;
-
-    background-color: #fafafa;
-
-    transition: 0.2s ease-in-out background-color;
-
-    &:not(:last-child){
-        margin-right: 1em;
-    }
-
-    &.confirm {
-        border: 1px solid var(--casket-color);
-        background-color: var(--casket-color-l2);
-        color: var(--casket-color-d2);
-
-        &:hover {
-            background-color: var(--casket-color-l1);
-        }
-    }
-
-    &.cancel {
-        border: 1px solid var(--casket-color);
-        background-color: var(--casket-color-l2);
-        color: var(--casket-color-d2);
-
-        &:hover {
-            background-color: var(--casket-color-l1);
-        }
-    }
-}
-
-.textarea {
-    flex-grow: 1;
-
-    resize: none;
-    font-family: monospace;
-
-    overflow: auto;
-
-    padding: 0.5em;
-    border-radius: 5px;
-}
-</style>

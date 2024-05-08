@@ -1,18 +1,18 @@
 <template>
-    <div class="toolbar">
-        <div class="left-tools">
-            <span class="tool-group" v-for="group in props.toolbarl" >
-                <span class="tool" v-for="tool in group.tool" @click="doToolClick(tool)" >
-                    <span class="button" :innerHTML="tool.icon" />
-                    <span class="tooltip">{{ tool.name }}</span>
+    <div class="cs-toolbar">
+        <div>
+            <span class="cs-toolbar-group" v-for="group in props.toolbarl" >
+                <span class="cs-toolbar-tool" v-for="tool in group.tool" @click="doToolClick(tool)" >
+                    <span class="cs-toolbar-tool-button" :innerHTML="tool.icon" />
+                    <span class="cs-tooltip">{{ tool.name }}</span>
                 </span>
             </span>
         </div>
-        <div class="right-tools">
-            <span class="tool-group" v-for="group in props.toolbarr" >
-                <span class="tool" v-for="tool in group.tool" @click="doToolClick(tool)" >
-                    <span class="button" :innerHTML="tool.icon" />
-                    <span class="tooltip">{{ tool.name }}</span>
+        <div>
+            <span class="cs-toolbar-group" v-for="group in props.toolbarr" >
+                <span class="cs-toolbar-tool" v-for="tool in group.tool" @click="doToolClick(tool)" >
+                    <span class="cs-toolbar-tool-button" :innerHTML="tool.icon" />
+                    <span class="cs-tooltip">{{ tool.name }}</span>
                 </span>
             </span>
         </div>
@@ -66,98 +66,3 @@ function doToolClick(tool: Tool){
 }
 
 </script>
-
-<style scoped lang="scss">
-.toolbar {
-    display: flex;
-
-    padding: 0.2em 0.5em;
-
-    justify-content: space-between;
-}
-
-.tool-group {
-    display: inline-flex;
-    align-items: center;
-    height: auto;
-
-    &:not(:last-child) {
-        padding-right: 0.2em;
-        border-right: 2px solid var(--casket-sp-color);
-        margin-right: 0.2em;
-    }
-}
-
-
-.button {
-    width: 18px;
-    height: 18px;
-    color: var(--casket-tl-color);
-
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.tool {
-    height: 24px;
-    width: 24px;
-    display: inline-flex;
-
-    justify-content: center;
-    align-items: center;
-
-    background-color: transparent;
-    border-radius: 4px;
-
-    transition: 0.2s ease-in-out background-color;
-
-    position: relative;
-
-    &:hover {
-        background-color: rgb(from var(--casket-tl-color) r g b / 0.3);
-
-        > .tooltip {
-            opacity: 1; 
-            transform: none;
-        }
-    }
-    
-
-    &:not(:last-child) {
-        margin-right: 0.2em; 
-    }
-
-    overflow: visible;
-}
-
-.tooltip {
-    display: block;
-    padding: 0.5em;
-
-    z-index: 4;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    font-size: small; 
-
-    border-radius: 4px;
-
-    background-color: #555;
-    color: white;
-
-    transform: translateY(1em);
-
-    transition:
-        0.2s ease-in-out opacity, 
-        0.2s ease-in-out transform;
-
-    white-space: nowrap;
-
-    width: fit-content;
-    position: absolute;
-    bottom: -2.5em;
-}
-</style>

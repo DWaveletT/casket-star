@@ -4,36 +4,36 @@
             插入块体
         </template>
 
-        <div class="form">
-            <div class="item">
-                <div class="label">
+        <div>
+            <div class="cs-dialog-item">
+                <div class="cs-dialog-item-label">
                     选择类型
                 </div>
-                <select v-model="type" class="content select">
+                <select v-model="type" class="cs-dialog-item-content">
                     <option v-for="option in list" :key="option.value" :value="option.value">
                         {{ option.name }}
                     </option>
                 </select>
             </div>
             
-            <div class="item">
-                <div class="label">
+            <div class="cs-dialog-item">
+                <div class="cs-dialog-item-label">
                     标题
                 </div>
-                <input type="text" v-model="title" class="content input" />
+                <input type="text" v-model="title" class="cs-dialog-item-content" />
 
             </div>
-            <div class="item">
-                <div class="label">
+            <div class="cs-dialog-item">
+                <div class="cs-dialog-item-label">
                     内容
                 </div>
 
-                <textarea class="content textarea" v-model="code" />
+                <textarea class="cs-dialog-item-content" v-model="code" />
             </div>
 
-            <div class="submit-area">
-                <button class="button cancel"  @click="emits('close')" >取消</button>
-                <button class="button confirm" @click="() => {
+            <div class="cs-dialog-submit-area">
+                <button class="cs-dialog-button cs-dialog-button-info" @click="emits('close')" >取消</button>
+                <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
                     emits('confirm', type, title, code);
                     emits('close');
                 }" >确认</button>
@@ -67,88 +67,3 @@ const list: {
 ];
 
 </script>
-
-<style scoped lang="scss">
-
-.item {
-    width: 100%;
-
-    display: flex;
-
-    > .label {
-        display: inline-block;
-        
-        width: 5em;
-        margin-right: 0.5em;
-    }
-
-    > .content {
-        flex-grow: 1;
-    }
-
-    &:not(:last-child){
-        margin-bottom: 1em;
-    }
-}
-.select {
-    height: 24px;
-}
-
-.input {
-    height: 24px;
-    padding: 0;
-}
-
-.textarea {
-    resize: none;
-    font-family: monospace;
-
-    overflow: auto;
-
-    min-height: 50vh;
-
-    padding: 0.5em;
-    border-radius: 5px;
-}
-
-.submit-area {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.button {
-    cursor: pointer;
-
-    border-radius: 4px;
-
-    padding: 0.4em 1em;
-
-    background-color: #fafafa;
-
-    transition: 0.2s ease-in-out background-color;
-
-    &:not(:last-child){
-        margin-right: 1em;
-    }
-
-    &.confirm {
-        border: 1px solid var(--casket-color);
-        background-color: var(--casket-color-l2);
-        color: var(--casket-color-d2);
-
-        &:hover {
-            background-color: var(--casket-color-l1);
-        }
-    }
-
-    &.cancel {
-        border: 1px solid var(--casket-color);
-        background-color: var(--casket-color-l2);
-        color: var(--casket-color-d2);
-
-        &:hover {
-            background-color: var(--casket-color-l1);
-        }
-    }
-}
-</style>

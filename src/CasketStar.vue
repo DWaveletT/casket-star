@@ -1,6 +1,6 @@
-<template ref="casket">
+<template>
     <div class="casket" :class="{ 'full-screen': casket.fullScreen }">
-        <div class="header">
+        <div class="cs-header">
             <m-toolbar
                 :toolbarl="toolbarl"
                 :toolbarr="toolbarr"
@@ -9,13 +9,13 @@
                 @dialog="handleDialog"
             />
         </div>
-        <div class="content">
+        <div class="cs-content">
             <div
                 v-if="casket.showEditor"
-                class="casket-editor"
+                class="cs-editor"
                 :class="{
-                    'midline': casket.showViewer,
-                    'zone-half': casket.showViewer, 'zone-full': !casket.showViewer
+                    'cs-midline': casket.showViewer,
+                    'cs-zone-half': casket.showViewer, 'cs-zone-full': !casket.showViewer
                 }"
                 @mouseover="currentOver = 'editor'"
             >
@@ -23,9 +23,9 @@
             </div>
             <div
                 v-if="casket.showViewer"
-                class="casket-viewer"
+                class="cs-viewer"
                 :class="{
-                    'zone-half':  casket.showEditor, 'zone-full': !casket.showEditor
+                    'cs-zone-half':  casket.showEditor, 'cs-zone-full': !casket.showEditor
                 }"
                 ref="viewer"
                 @scroll="handleViewerScroll"
@@ -34,14 +34,14 @@
                 <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" :interval="interval" />
             </div>
         </div>
-        <div class="footer">
-            <div class="left">
+        <div class="cs-footer">
+            <div class="cs-footer-left">
                 字数统计：{{ getCodemirror()?.state.doc.length || 0 }} 字符
             </div>
 
-            <div class="right">
-                <span class="button" @click="handleSync">{{ scrollSync ? '禁用滚动' : '启用滚动' }}</span>
-                <span class="button" @click="handleBack">回到顶部</span>
+            <div class="cs-footer-right">
+                <span class="cs-footer-button" @click="handleSync">{{ scrollSync ? '禁用滚动' : '启用滚动' }}</span>
+                <span class="cs-footer-button" @click="handleBack">回到顶部</span>
             </div>
         </div>
         
@@ -288,120 +288,3 @@ onBeforeMount(() => {
 });
 
 </script>
-
-<style scoped lang="scss">
-
-$casket-color: #FFE300;
-
-.casket {
-    display: flex;
-    flex-direction: column;
-
-    background-color: white;
-
-    box-sizing: border-box;
-
-    --casket-color: #{$casket-color};
-    --casket-color-l1: #{lighten($casket-color, 20%)};
-    --casket-color-l2: #{lighten($casket-color, 40%)};
-    --casket-color-d1: #{darken($casket-color, 10%)};
-    --casket-color-d2: #{darken($casket-color, 20%)};
-
-    --casket-tl-color: #333333;
-    --casket-bd-color: #9E9E9E;
-    --casket-sp-color: var(--casket-color-d1);
-    --casket-bg-color: var(--casket-color-l2);
-
-    border: 2px solid var(--casket-color-d1);
-    border-radius: 4px;
-
-    .header {
-        border-bottom: 1px solid var(--casket-sp-color);
-
-        background-color: var(--casket-bg-color);
-
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-    }
-
-    .footer {
-        border-top: 1px solid var(--casket-sp-color);
-
-        color: var(--casket-color-d2);
-        background-color: var(--casket-bg-color);
-
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-
-        display: flex;
-
-        padding: 0.2em 0.5em;
-
-        justify-content: space-between;
-
-        font-size: small;
-
-        .button {
-            display: inline-block;
-            cursor: pointer;
-
-            padding: 0 0.2em;
-            margin:  0 0.2em;
-
-            border-radius: 4px;
-            
-            transition: 0.2s ease-in-out background-color;
-
-            &:hover {
-                background-color: var(--casket-color-l1);
-            }
-        }
-    }
-
-    .content {
-        display: flex;
-        height: 400px;
-    }
-
-    &.full-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-
-        z-index: 100;
-
-        .content {
-            flex-grow: 1;
-        }
-    }
-}
-.midline {
-    border-right: 1px solid var(--casket-sp-color);
-}
-
-.zone-half {
-    width: 50%;
-}
-.zone-full {
-    width: 100%;
-}
-
-.casket-editor {
-    padding: 0 0;
-
-    box-sizing: border-box;
-
-    font-size: large; 
-}
-
-.casket-viewer {
-    position: relative;
-    padding: 0 0.5em;
-
-    overflow-y: auto;
-
-    box-sizing: border-box;
-}
-</style>

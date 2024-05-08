@@ -4,7 +4,7 @@
             帮助手册我还没写
         </template>
 
-        <div class="help">
+        <div>
             <h2>Todo</h2>
 
             <ul>
@@ -30,28 +30,3 @@ const emits = defineEmits<{
 }>();
 
 </script>
-
-<style scoped lang="scss">
-
-.item {
-    width: 100%;
-
-    display: flex;
-
-    > .label {
-        display: inline-block;
-        
-        width: 5em;
-        margin-right: 0.5em;
-    }
-
-    > .content {
-        flex-grow: 1;
-    }
-
-    &:not(:last-child){
-        margin-bottom: 1em;
-    }
-}
-
-</style>
