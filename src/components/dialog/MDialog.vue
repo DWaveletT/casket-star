@@ -15,7 +15,7 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
-import { defaultIcons } from '../../icons';
+import { defaultIcons } from '~/icons';
 
 const emits = defineEmits(['close']);
 

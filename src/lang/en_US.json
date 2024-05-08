@@ -1,0 +1,21 @@
+{
+    "increase-level": "increase level",
+    "decrease-level": "decrease level",
+    "horizontal": "horizontal",
+    "bold": "bold",
+    "italic": "italic",
+    "strikethrough": "strikethrough",
+    "link": "link",
+    "picture": "picture",
+    "code": "code",
+    "table": "table",
+    "block": "block",
+    "quote": "quote",
+    "unordered-list": "unordered list",
+    "ordered-list": "ordered list",
+    "task-list": "task list",
+    "only-editor": "only editor",
+    "only-viewer": "only viewer",
+    "full-screen": "full screen",
+    "help": "help"
+}

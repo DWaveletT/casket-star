@@ -40,7 +40,7 @@
 
 import { ref, render } from 'vue';
 
-import MDialog from '../dialog/MDialog.vue';
+import MDialog from '~/components/dialog/MDialog.vue';
 
 const props = defineProps<{
     confirm: (url: string, alt: string) => void,

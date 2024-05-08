@@ -1,10 +1,24 @@
 {
   "name": "casket-star",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "files": [
     "dist"
   ],
+  "description": "A lightweight, customizable modern Markdown editor.",
+  "keywords": [
+    "markdown",
+    "remark",
+    "rehype",
+    "codemirror"
+  ],
+  "bugs": {
+    "url": "https://github.com/DWaveletT/casket-star/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DWaveletT/casket-star.git"
+  },
   "main": "./dist/casket-star.umd.cjs",
   "module": "./dist/casket-star.js",
   "exports": {

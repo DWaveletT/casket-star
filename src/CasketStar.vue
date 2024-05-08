@@ -2,8 +2,8 @@
     <div class="casket cs-main" :class="{ 'cs-full-screen': casket.fullScreen }">
         <div class="cs-header">
             <m-toolbar
-                :toolbarl="toolbarl"
-                :toolbarr="toolbarr"
+                :toolbarl="props.toolbarl"
+                :toolbarr="props.toolbarr"
                 :get-codemirror="getCodemirror"
                 :get-casketstar="getCasketStar"
                 :dialog="dialog"
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Component, ref, shallowRef, onBeforeMount, onMounted, watch } from 'vue';
+import { ref, onBeforeMount, onMounted, watch, provide } from 'vue';
 
 import MEditor from './components/MEditor.vue';
 import MViewer from './components/MViewer.vue';
@@ -62,12 +62,13 @@ import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
 import { Extension } from '@codemirror/state';
 
-import { getDefaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
+import { getDefaultPlugins, getDefaultToolbarL, getDefaultToolbarR } from './utils';
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
+import { getI18n } from './lang';
 
 const interval = ref(0);
 
@@ -96,18 +97,22 @@ const casket = ref<CasketView>({
 
 watch(casket.value, () => { updateScrollSync() });
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     plugins?: Plugins,
     toolbarl?: Toolbar,
     toolbarr?: Toolbar,
-}>();
+    lang?: string
+}>(), {
+    plugins: () => getDefaultPlugins(),
+    toolbarl: () => getDefaultToolbarL(),
+    toolbarr: () => getDefaultToolbarR(),
+    lang: 'en_US'
+});
 
 const value = defineModel<string>({ required: true });
+const i18n = getI18n(props.lang);
 
-const plugins = props.plugins || getDefaultPlugins();
-
-const toolbarl = props.toolbarl || defaultToolbarL();
-const toolbarr = props.toolbarr || defaultToolbarR();
+provide('i18n', i18n);
 
 function handleEditorReady(payload: {
     view: EditorView

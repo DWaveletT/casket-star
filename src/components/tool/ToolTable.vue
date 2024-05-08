@@ -70,7 +70,7 @@
 
 import { ref, watch, render } from 'vue';
 
-import MDialogExtra from '../dialog/MDialogExtra.vue';
+import MDialogExtra from '~/components/dialog/MDialogExtra.vue';
 
 const props = defineProps<{
     confirm: (row: number, col: number, table: Node[][]) => void,

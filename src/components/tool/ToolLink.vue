@@ -9,13 +9,13 @@
                 <div class="cs-dialog-item-label">
                     链接地址
                 </div>
-                <input type="text" v-model="url" class="cs-dialog-content" />
+                <input type="text" v-model="url" class="cs-dialog-item-content" />
             </div>
             <div class="cs-dialog-item">
                 <div class="cs-dialog-item-label">
                     链接介绍
                 </div>
-                <input type="text" v-model="alt" class="cs-dialog-content" />
+                <input type="text" v-model="alt" class="cs-dialog-item-content" />
             </div>
 
             <div class="submit-area">
@@ -33,7 +33,7 @@
 
 import { ref, render } from 'vue';
 
-import MDialog from '../dialog/MDialog.vue';
+import MDialog from '~/components/dialog/MDialog.vue';
 
 const props = defineProps<{
     confirm: (url: string, alt: string) => void,

@@ -38,7 +38,7 @@ import { Tool, ToolGroup } from './components/MToolbar.vue';
 import { createVNode, render } from 'vue';
 
 export const ToolIncrease: Tool = {
-    name: '增加一级',
+    name: 'increase-level',
     icon: defaultIcons['headingup'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -97,7 +97,7 @@ export const ToolIncrease: Tool = {
 }
 
 export const ToolDecrease: Tool = {
-    name: '减小一级',
+    name: 'decrease-level',
     icon: defaultIcons['headingdown'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -156,7 +156,7 @@ export const ToolDecrease: Tool = {
 };
 
 export const ToolHorizontal: Tool = {
-    name: '水平线',
+    name: 'horizontal',
     icon: defaultIcons['line'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -178,7 +178,7 @@ export const ToolHorizontal: Tool = {
     }
 };
 export const ToolBold = {
-    name: '粗体',
+    name: 'bold',
     icon: defaultIcons['bold'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -199,7 +199,7 @@ export const ToolBold = {
 };
 
 export const ToolItalic = {
-    name: '斜体',
+    name: 'italic',
     icon: defaultIcons['italic'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -220,7 +220,7 @@ export const ToolItalic = {
 };
 
 export const ToolStrikethrough = {
-    name: '删除线',
+    name: 'strikethrough',
     icon: defaultIcons['strikethrough'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -241,7 +241,7 @@ export const ToolStrikethrough = {
 };
 
 export const ToolLinkOrVideo: Tool = {
-    name: '插入链接',
+    name: 'link',
     icon: defaultIcons['link'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         function insertLink(url: string, alt: string){
@@ -273,7 +273,7 @@ export const ToolLinkOrVideo: Tool = {
 };
 
 export const ToolPicture: Tool = {
-    name: '插入图片',
+    name: 'picture',
     icon: defaultIcons['picture'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
@@ -306,7 +306,7 @@ export const ToolPicture: Tool = {
 };
 
 export const ToolCode = {
-    name: '插入代码',
+    name: 'code',
     icon: defaultIcons['code'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
@@ -339,7 +339,7 @@ export const ToolCode = {
 };
 
 export const ToolTable: Tool = {
-    name: '插入表格',
+    name: 'table',
     icon: defaultIcons['table'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
@@ -408,7 +408,7 @@ export const ToolTable: Tool = {
 };
 
 export const ToolBlock: Tool = {
-    name: '插入块体',
+    name: 'block',
     icon: defaultIcons['block'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
@@ -441,7 +441,7 @@ export const ToolBlock: Tool = {
 };
 
 export const ToolQuote: Tool = {
-    name: '引用块',
+    name: 'quote',
     icon: defaultIcons['quote'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -481,7 +481,7 @@ export const ToolQuote: Tool = {
 };
 
 export const ToolUList: Tool = {
-    name: '无序列表',
+    name: 'unordered-list',
     icon: defaultIcons['listul'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -521,7 +521,7 @@ export const ToolUList: Tool = {
 };
 
 export const ToolOList: Tool = {
-    name: '有序列表',
+    name: 'ordered-list',
     icon: defaultIcons['listol'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -561,7 +561,7 @@ export const ToolOList: Tool = {
 };
 
 export const ToolTaskList = {
-    name: '任务列表',
+    name: 'task-list',
     icon: defaultIcons['listtask'],
     func: (codemirror: EditorView) => {
         const state = codemirror.state;
@@ -601,7 +601,7 @@ export const ToolTaskList = {
 };
 
 export const ToolOnlyEdit: Tool = {
-    name: '仅编辑',
+    name: 'only-editer',
     icon: defaultIcons['editor'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         if(casketstar.showViewer){
@@ -614,7 +614,7 @@ export const ToolOnlyEdit: Tool = {
 };
 
 export const ToolOnlyView: Tool = {
-    name: '仅预览',
+    name: 'only-viewer',
     icon: defaultIcons['viewer'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         if(casketstar.showEditor){
@@ -627,7 +627,7 @@ export const ToolOnlyView: Tool = {
 };
 
 export const ToolFullScreen: Tool = {
-    name: '全屏',
+    name: 'full-screen',
     icon: defaultIcons['expand'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         casketstar.fullScreen = !casketstar.fullScreen;
@@ -635,7 +635,7 @@ export const ToolFullScreen: Tool = {
 };
 
 export const ToolHelp = {
-    name: '帮助',
+    name: 'help',
     icon: defaultIcons['help'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
@@ -649,44 +649,26 @@ export const ToolHelp = {
     }
 };
 
-export const ToolGroupTitle: ToolGroup = {
-    name: '标题',
-    tool: [ ToolIncrease, ToolDecrease, ToolHorizontal ]
-};
+export const ToolGroupTitle: ToolGroup = [ ToolIncrease, ToolDecrease, ToolHorizontal ];
 
-export const ToolGroupInline: ToolGroup = {
-    name: '行内',
-    tool: [ ToolBold, ToolItalic, ToolStrikethrough ]
-};
+export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough ];
 
-export const ToolGroupInterline: ToolGroup = {
-    name: '行间',
-    tool: [ ToolLinkOrVideo, ToolPicture, ToolCode, ToolTable, ToolBlock ]
-};
+export const ToolGroupInterline: ToolGroup = [ ToolLinkOrVideo, ToolPicture, ToolCode, ToolTable, ToolBlock ];
 
-export const ToolGroupBlock: ToolGroup = {
-    name: '修饰',
-    tool: [ ToolQuote, ToolUList, ToolOList, ToolTaskList ]
-};
+export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, ToolTaskList ];
 
-export const ToolGroupCasket: ToolGroup = {
-    name: '块体',
-    tool: [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ]
-};
+export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ]
 
-export const ToolGroupHelp: ToolGroup = {
-    name: '帮助',
-    tool: [ ToolHelp ]
-};
+export const ToolGroupHelp: ToolGroup = [ ToolHelp ];
 
 
-export function defaultToolbarL(): Toolbar {
+export function getDefaultToolbarL(): Toolbar {
     return [
         ToolGroupTitle, ToolGroupInline, ToolGroupInterline, ToolGroupBlock
     ]
 };
 
-export function defaultToolbarR(): Toolbar {
+export function getDefaultToolbarR(): Toolbar {
     return [
         ToolGroupCasket, ToolGroupHelp
     ]

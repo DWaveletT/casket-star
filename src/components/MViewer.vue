@@ -3,18 +3,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, defineModel, Ref } from 'vue';
+import { ref, watch, onMounted, defineModel } from 'vue';
 
-import { Plugin, Processor, unified } from 'unified';
+import { Plugin, unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
-import { Plugins } from '../CasketStar.vue';
+import { Plugins } from '~/CasketStar.vue';
 
 import { Root } from 'hast';
 
 import { throttle } from 'lodash-es';
-import { isArray } from 'lodash-es';
 
 const props = defineProps<{
     plugins: Plugins,

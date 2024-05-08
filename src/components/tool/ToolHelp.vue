@@ -21,9 +21,9 @@
 
 <script setup lang="ts">
 
-import { ref, render } from 'vue';
+import { render } from 'vue';
 
-import MDialog from '../dialog/MDialog.vue';
+import MDialog from '~/components/dialog/MDialog.vue';
 
 const props = defineProps<{
     confirm: (lang: string, code: string) => void,

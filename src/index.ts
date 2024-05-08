@@ -8,5 +8,6 @@ export type { Plugins, CasketView } from './CasketStar.vue';
 
 export * from './components/dialog';
 
+export * from './lang';
 export * from './icons';
 export * from './utils';

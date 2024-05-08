@@ -1,0 +1,21 @@
+{
+    "increase-level": "提升一级",
+    "decrease-level": "降低一级",
+    "horizontal": "水平线",
+    "bold": "粗体",
+    "italic": "斜体",
+    "strikethrough": "删除线",
+    "link": "链接",
+    "picture": "图片",
+    "code": "代码",
+    "table": "表格",
+    "block": "块体",
+    "quote": "引用",
+    "unordered-list": "无序列表",
+    "ordered-list": "有序列表",
+    "task-list": "人物列表",
+    "only-editor": "仅编辑",
+    "only-viewer": "仅预览",
+    "full-screen": "全屏",
+    "help": "帮助"
+}
