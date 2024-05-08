@@ -31,17 +31,7 @@ const extensions = [
             height: '100%',
         }
     }),
-    markdown({
-        extensions: [
-            {
-                remove: ['HTMLBlock', 'HTMLTag']
-            },
-            ...(props.plugins.codemirror?.markdown || [])
-        ],
-        completeHTMLTags: false,
-        
-    }),
-    ...(props.plugins.codemirror?.editor || [])
+    ...(props.plugins.codemirror || [])
 ];
 
 </script>

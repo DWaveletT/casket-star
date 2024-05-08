@@ -1,5 +1,5 @@
 <template>
-    <m-dialog @close="emits('close')">
+    <m-dialog @close="doClose">
         <template #header>
             插入图片
         </template>
@@ -26,10 +26,10 @@
             </div>
 
             <div class="cs-dialog-submit-area">
-                <button class="cs-dialog-button cs-dialog-button-info" @click="emits('close')" >取消</button>
+                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >取消</button>
                 <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
-                    emits('confirm', url, alt);
-                    emits('close');
+                    props.confirm(url, alt);
+                    doClose();
                 }" >确认</button>
             </div>
         </div>
@@ -38,13 +38,18 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, render } from 'vue';
 
 import MDialog from '../dialog/MDialog.vue';
 
-const emits = defineEmits<{
-    confirm: [string, string], close: []
+const props = defineProps<{
+    confirm: (url: string, alt: string) => void,
+    container: HTMLDivElement
 }>();
+
+function doClose(){
+    render(null, props.container);
+}
 
 const url = ref('');
 const alt = ref('');

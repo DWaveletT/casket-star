@@ -21,7 +21,7 @@
 		"outDir": "dist",
 		"declaration": true
 	},
-  "ts-node": {
+  	"ts-node": {
 		"compilerOptions": {
 			"module": "CommonJS"
 		}

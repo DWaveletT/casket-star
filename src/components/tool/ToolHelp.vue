@@ -1,5 +1,5 @@
 <template>
-    <m-dialog @close="emits('close')">
+    <m-dialog @close="doClose">
         <template #header>
             帮助手册我还没写
         </template>
@@ -21,12 +21,18 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, render } from 'vue';
 
 import MDialog from '../dialog/MDialog.vue';
 
-const emits = defineEmits<{
-    close: []
+const props = defineProps<{
+    confirm: (lang: string, code: string) => void,
+    container: HTMLDivElement
 }>();
+
+function doClose(){
+    render(null, props.container);
+}
+
 
 </script>

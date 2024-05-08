@@ -2,10 +2,23 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 
-import viteCompression from 'vite-plugin-compression'
+import viteCompression from 'vite-plugin-compression';
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    visualizer({ open: true }),
+    viteCompression({
+      verbose: true,
+      disable: false, 
+      deleteOriginFile: false,
+      filter: /.(js|css|cjs|mjs|json|html)$/,
+      threshold: 10240,
+      algorithm: "gzip",
+      ext: ".gz",
+    })
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),

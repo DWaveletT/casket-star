@@ -1,12 +1,12 @@
 <template>
-    <div class="casket" :class="{ 'full-screen': casket.fullScreen }">
+    <div class="casket cs-main" :class="{ 'cs-full-screen': casket.fullScreen }">
         <div class="cs-header">
             <m-toolbar
                 :toolbarl="toolbarl"
                 :toolbarr="toolbarr"
                 :get-codemirror="getCodemirror"
                 :get-casketstar="getCasketStar"
-                @dialog="handleDialog"
+                :dialog="dialog"
             />
         </div>
         <div class="cs-content">
@@ -45,9 +45,9 @@
             </div>
         </div>
         
-        <component v-if="dialog" :is="dialog"
-            @close="dialog = undefined" @confirm="dialogConfirm"
-        />
+        <teleport to="body">
+            <div class="casket" ref="dialog" />
+        </teleport>
     </div>
 
 </template>
@@ -60,10 +60,9 @@ import MViewer from './components/MViewer.vue';
 
 import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
-import { EditorState, Extension } from '@codemirror/state';
-import { type MarkdownExtension } from '@lezer/markdown';
+import { Extension } from '@codemirror/state';
 
-import { defaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
+import { getDefaultPlugins, defaultToolbarL, defaultToolbarR } from './utils';
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import { Root } from 'hast';
@@ -80,10 +79,7 @@ export interface Plugins {
     remark?: (Plugin | [Plugin, object])[],
     rehype?: (Plugin | [Plugin, object])[],
     remarkRehypeOptions?: Options,
-    codemirror?: {
-        editor?: Extension[],
-        markdown?: MarkdownExtension[]
-    }
+    codemirror?: Extension[]
 }
 
 export interface CasketView {
@@ -92,7 +88,6 @@ export interface CasketView {
     fullScreen: boolean,
 }
 
-const dialog = shallowRef<Component | undefined>();
 const casket = ref<CasketView>({
     showEditor: true,
     showViewer: true,
@@ -100,8 +95,6 @@ const casket = ref<CasketView>({
 });
 
 watch(casket.value, () => { updateScrollSync() });
-
-let dialogConfirm: Function | undefined = undefined;
 
 const props = defineProps<{
     plugins?: Plugins,
@@ -111,7 +104,7 @@ const props = defineProps<{
 
 const value = defineModel<string>({ required: true });
 
-const plugins = props.plugins || defaultPlugins();
+const plugins = props.plugins || getDefaultPlugins();
 
 const toolbarl = props.toolbarl || defaultToolbarL();
 const toolbarr = props.toolbarr || defaultToolbarR();
@@ -131,6 +124,7 @@ const scrollSync = ref<boolean>(true);
 
 const editor = ref<HTMLDivElement | null>(null);
 const viewer = ref<HTMLDivElement | null>(null);
+const dialog = ref<HTMLDivElement | null>(null);
 
 let tree:           Root | null = null;
 let real: HTMLDivElement | null = null;
@@ -183,11 +177,6 @@ function handleViewerUpdate(t: Root, r: HTMLDivElement){
     tree = t;
     real = r;
     updateScrollSync();
-}
-
-function handleDialog(component: Component, confirm?: Function){
-    dialog.value = component;
-    dialogConfirm = confirm;
 }
 
 function getCodemirror(){

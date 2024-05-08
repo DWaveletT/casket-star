@@ -1,5 +1,5 @@
 <template>
-    <m-dialog-extra @close="emits('close')">
+    <m-dialog-extra @close="doClose">
         <template #header>
             插入表格
         </template>
@@ -31,10 +31,10 @@
         </div>
 
         <div class="submit-area">
-            <button class="cs-dialog-button cs-dialog-button-info" @click="emits('close')" >取消</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >取消</button>
             <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
-                emits('confirm', row, col, table);
-                emits('close');
+                confirm(row, col, table);
+                doClose();
             }" >确认</button>
         </div>
 
@@ -68,13 +68,18 @@
 
 <script setup lang="ts">
 
-import { ref, watch } from 'vue';
+import { ref, watch, render } from 'vue';
 
 import MDialogExtra from '../dialog/MDialogExtra.vue';
 
-const emits = defineEmits<{
-    confirm: [number, number, Node[][]], close: []
+const props = defineProps<{
+    confirm: (row: number, col: number, table: Node[][]) => void,
+    container: HTMLDivElement
 }>();
+
+function doClose(){
+    render(null, props.container);
+}
 
 const row = ref(1);
 const col = ref(1);

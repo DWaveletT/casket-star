@@ -1,12 +1,6 @@
 $casket-color: #FFE300;
 
 .casket {
-    display: flex;
-    flex-direction: column;
-
-    background-color: white;
-
-    box-sizing: border-box;
 
     --casket-color: #{$casket-color};
     --casket-color-l1: #{lighten($casket-color, 20%)};
@@ -19,10 +13,21 @@ $casket-color: #FFE300;
     --casket-sp-color: var(--casket-color-d1);
     --casket-bg-color: var(--casket-color-l2);
 
-    border: 2px solid var(--casket-color-d1);
-    border-radius: 4px;
+    
+    &.cs-main {
+        display: flex;
+        flex-direction: column;
+
+        background-color: white;
+
+        box-sizing: border-box;
+
+        border: 2px solid var(--casket-color-d1);
+        border-radius: 4px;
+    }
 
     .cs {
+
         &-header {
             border-bottom: 1px solid var(--casket-sp-color);
 

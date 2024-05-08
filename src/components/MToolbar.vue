@@ -20,26 +20,22 @@
 </template>
 
 <script setup lang="ts">
-import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 
 import { Component } from 'vue';
 import { CasketView } from '../CasketStar.vue';
 
 const emits = defineEmits<{
-    viewer: ["only-view" | "only-edit" | "both"],
-    dialog: [Component, Function | undefined]
+    viewer: ["only-view" | "only-edit" | "both"]
 }>();
 
-export type DialogFunction = (component: Component, confirm?: Function) => void;
-
-interface Tool {
+export interface Tool {
     name: string,
     icon: string,
-    func: (codemirror: EditorView, casketstar: CasketView, dialog: DialogFunction) => void
+    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => void
 };
 
-interface ToolGroup {
+export interface ToolGroup {
     name: string,
     tool: Tool[]
 };
@@ -51,17 +47,14 @@ const props = defineProps<{
     toolbarr: Toolbar,
     getCodemirror: () => EditorView | undefined,
     getCasketstar: () => CasketView | undefined,
+    dialog: HTMLDivElement | null
 }>();
-
-function doCallDialog(component: Component, confirm?: Function){
-    emits('dialog', component, confirm);
-}
 
 function doToolClick(tool: Tool){
     const codemirror = props.getCodemirror();
     const casketstar = props.getCasketstar();
     if(codemirror && casketstar){
-        tool.func(codemirror, casketstar, doCallDialog);
+        tool.func(codemirror, casketstar, props.dialog as HTMLDivElement);
     }
 }
 
