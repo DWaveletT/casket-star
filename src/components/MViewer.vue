@@ -14,11 +14,15 @@ import { Plugins } from '~/CasketStar.vue';
 import { Root } from 'hast';
 
 import { throttle } from 'lodash-es';
+import { getDefaultPlugins } from '..';
 
-const props = defineProps<{
-    plugins: Plugins,
-    interval: number
-}>();
+const props = withDefaults(defineProps<{
+    plugins?: Plugins,
+    interval?: number
+}>(),{
+    plugins: getDefaultPlugins,
+    interval: 0
+});
 
 const value = defineModel<string>({
     required: true

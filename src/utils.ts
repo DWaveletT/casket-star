@@ -5,21 +5,40 @@ import remarkGfm from 'remark-gfm';
 import { CasketView, Plugins } from './CasketStar.vue';
 import { Toolbar } from './components/MToolbar.vue';
 
+import type { Processor } from "unified";
+
+export function remarkNoHtml(this: Processor) {
+    
+    const self = this
+    const data = self.data()
+  
+    // @ts-ignore
+    const micromarkExtensions = data.micromarkExtensions || (data.micromarkExtensions = [])
+
+    micromarkExtensions.push({ disable: { null: ['htmlText', 'htmlFlow']}});
+}
+
 export function getDefaultPlugins(): Plugins {
 
     return {
         remark: [
-            remarkGfm
+            remarkGfm,
+            remarkNoHtml
         ],
-        // rehype: [
-
-        // ],
-        // remarkRehypeOptions: {
+        rehype: [
             
-        // },
-        // codemirror: {
+        ],
+        remarkRehypeOptions: {
             
-        // }
+        },
+        codemirror: [
+            markdown({
+                extensions: [
+                    { remove: ['HTMLBlock', 'HTMLTag'] }
+                ],
+                completeHTMLTags: false
+            })
+        ]
     }
 }
 
@@ -29,13 +48,14 @@ import { defaultIcons } from './icons';
 
 import DCode from './components/tool/ToolCode.vue';
 import DPicture from './components/tool/ToolPicture.vue';
-import DTable, { Node } from './components/tool/ToolTable.vue';
+import DTable from './components/tool/ToolTable.vue';
 import DLink from './components/tool/ToolLink.vue';
 import DBlock from './components/tool/ToolBlock.vue';
 import DHelp from './components/tool/ToolHelp.vue';
 
 import { Tool, ToolGroup } from './components/MToolbar.vue';
 import { createVNode, render } from 'vue';
+import { markdown } from '@codemirror/lang-markdown';
 
 export const ToolIncrease: Tool = {
     name: 'increase-level',
@@ -240,7 +260,7 @@ export const ToolStrikethrough = {
     }
 };
 
-export const ToolLinkOrVideo: Tool = {
+export const ToolLink: Tool = {
     name: 'link',
     icon: defaultIcons['link'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
@@ -343,34 +363,14 @@ export const ToolTable: Tool = {
     icon: defaultIcons['table'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
-        function insertTable(row: number, col: number, table: Node[][]){
+        function insertTable(row: number, col: number, table: string[][]){
             const state = codemirror.state;
             const trans = state.update(state.changeByRange( range => {
                 let text = "\n\n";
 
                 for(let i = 0;i < row;i ++){
                     for(let j = 0;j < col;j ++){
-                        const node = table[i][j];
-                        if(!node.merged && !(node.row === 1 && node.col === 1)){
-                            const data = node.data;
-                            for(let a = i;a < i + node.row;a ++){
-                                for(let b = j;b < j + node.col;b ++){
-                                    if(a === i && b + 1 === j + node.col){
-                                        table[a][b].data = data;
-                                    } else 
-                                    if(a === i){
-                                        table[a][b].data = '>';
-                                    } else 
-                                        table[a][b].data = '^';
-                                }
-                            }
-                        }
-                    }
-                }
-
-                for(let i = 0;i < row;i ++){
-                    for(let j = 0;j < col;j ++){
-                        text += '|' + table[i][j].data
+                        text += '|' + table[i][j]
                     }
                     text += '|\n';
 
@@ -399,39 +399,6 @@ export const ToolTable: Tool = {
         const dialog = createVNode(
             DTable, {
                 confirm: insertTable,
-                container: container
-            }
-        );
-
-        render(dialog, container);
-    }
-};
-
-export const ToolBlock: Tool = {
-    name: 'block',
-    icon: defaultIcons['block'],
-    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
-        
-        function insertBlock(type: string, title: string, code: string){
-            const state = codemirror.state;
-            const trans = state.update(state.changeByRange( range => {
-                const text = `\n:::${type}${ title.trim().length >= 1 ? `[${title}]` : ''}\n${code}\n:::\n`;
-                return {
-                    changes: [
-                        { from: range.from, to: range.to},
-                        { from: range.from, insert: text},
-                    ],
-                    range: EditorSelection.range(range.from + text.length, range.from + text.length)
-                }
-            }));
-            
-            codemirror.update([trans]);
-            codemirror.focus();
-        }
-        
-        const dialog = createVNode(
-            DBlock, {
-                confirm: insertBlock,
                 container: container
             }
         );
@@ -601,7 +568,7 @@ export const ToolTaskList = {
 };
 
 export const ToolOnlyEdit: Tool = {
-    name: 'only-editer',
+    name: 'only-editor',
     icon: defaultIcons['editor'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         if(casketstar.showViewer){
@@ -653,11 +620,11 @@ export const ToolGroupTitle: ToolGroup = [ ToolIncrease, ToolDecrease, ToolHoriz
 
 export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough ];
 
-export const ToolGroupInterline: ToolGroup = [ ToolLinkOrVideo, ToolPicture, ToolCode, ToolTable, ToolBlock ];
+export const ToolGroupInterline: ToolGroup = [ ToolLink, ToolPicture, ToolCode, ToolTable ];
 
 export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, ToolTaskList ];
 
-export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ]
+export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ];
 
 export const ToolGroupHelp: ToolGroup = [ ToolHelp ];
 

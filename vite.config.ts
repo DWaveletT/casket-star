@@ -22,8 +22,8 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '~',                                   // 别名
-        replacement: resolve(__dirname, 'src'),      // 别名对应地址
+        find: '~',
+        replacement: resolve(__dirname, 'src'),
       }
     ]
   },

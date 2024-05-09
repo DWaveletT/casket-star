@@ -18,9 +18,7 @@
         </div>
         
         <div class="cs-dialog-item">
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doMerge" >合并</button>
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doSplit" >拆分</button>
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doEdit"  >修改</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doEdit">修改</button>
         </div>
 
         <div class="cs-dialog-area">
@@ -46,17 +44,14 @@
                             v-for="[y, value] of Object.entries(line)"
                         >
                             <td
-                                v-if="!value.merged"
                                 :data-x="x"
                                 :data-y="y"
-                                :colspan="value.col"
-                                :rowspan="value.row"
                                 :class="{ selected: selected(Number.parseInt(x), Number.parseInt(y)) } "
                                 @mousedown = "handleMouseDown"
                                 @mouseenter="handleMouseEnter"
                                 @mouseup   =   "handleMouseUp"
                             >
-                                {{ value.data }}&nbsp;
+                                {{ value }}&nbsp;
                             </td>
                         </template>
                     </tr>
@@ -73,7 +68,7 @@ import { ref, watch, render } from 'vue';
 import MDialogExtra from '~/components/dialog/MDialogExtra.vue';
 
 const props = defineProps<{
-    confirm: (row: number, col: number, table: Node[][]) => void,
+    confirm: (row: number, col: number, table: string[][]) => void,
     container: HTMLDivElement
 }>();
 
@@ -87,21 +82,11 @@ const col = ref(1);
 const select1 = ref<[number, number]>([NaN, NaN]);
 const select2 = ref<[number, number]>([NaN, NaN]);
 
-const selecta = ref<[number, number]>([NaN, NaN]);
-const selectb = ref<[number, number]>([NaN, NaN]);
-
 const text = ref('');
 
 const locked = ref(false);
 
-export interface Node {
-    row: number,
-    col: number,
-    data: string,
-    merged: boolean
-}
-
-const table = ref<Node[][]>([[{ row: 1, col: 1, data: '', merged: false }]]);
+const table = ref<string[][]>([['']]);
 
 function resizeTable(){
 
@@ -114,27 +99,13 @@ function resizeTable(){
     while(table.value.length > row.value) table.value.pop();
 
     for(let i of table.value){
-        while(i.length < col.value) i.push({ row: 1, col: 1, data: '', merged: false}); 
+        while(i.length < col.value) i.push(''); 
         while(i.length > col.value) i.pop(); 
     }
 }
 
 function selected(x: number, y: number): boolean {
-    return selecta.value[0] <= x && x <= selectb.value[0] && selecta.value[1] <= y && y <= selectb.value[1];
-}
-
-function updateArea(){
-    const node1 = table.value[select1.value[0]][select1.value[1]];
-    const node2 = table.value[select2.value[0]][select2.value[1]];
-
-    let [nx1, nx2] = [select1.value[0], select2.value[0]];
-    let [ny1, ny2] = [select1.value[1], select2.value[1]];
-
-    selecta.value[0] = Math.min(nx1, nx2);
-    selecta.value[1] = Math.min(ny1, ny2);
-
-    selectb.value[0] = Math.max(nx1 + node1.row - 1, nx2 + node2.row - 1);
-    selectb.value[1] = Math.max(ny1 + node1.col - 1, ny2 + node2.col - 1);
+    return select1.value[0] <= x && x <= select2.value[0] && select1.value[1] <= y && y <= select2.value[1];
 }
 
 function handleMouseDown(e: MouseEvent){
@@ -145,8 +116,6 @@ function handleMouseDown(e: MouseEvent){
         const y = Number.parseInt((e.target as HTMLDivElement).dataset.y || '-1');
         
         select1.value = select2.value = [x, y];
-
-        updateArea();
     }
 }
 
@@ -156,8 +125,6 @@ function handleMouseEnter(e: MouseEvent){
         const y = Number.parseInt((e.target as HTMLDivElement).dataset.y || '-1');
         
         select2.value = [x, y];
-
-        updateArea();
     }
 }
 
@@ -165,90 +132,9 @@ function handleMouseUp(e: MouseEvent){
     locked.value = true;
 }
 
-function checkValid(){
-    let [x1, y1] = selecta.value, [x2, y2] = selectb.value;
-    
-    for(let i = x1;i <= x2;i ++){
-        for(let j = y1;j <= y2;j ++){
-            const node = table.value[i][j];
-            if(node.merged){
-                if(node.row < x1 || node.col < y1)
-                    return false;
-            } else {
-                if(node.row + i - 1 > x2 || node.col + j - 1 > y2)
-                    return false;
-            }
-        }
-    }
-    return true;
-}
-
-function doMerge(){
-
-    if(!checkValid()){
-        return;
-    }
-
-    let [x1, y1] = selecta.value, [x2, y2] = selectb.value;
-
-    if(!(0 <= x1 && x1 < row.value && 0 <= x2 && x2 < row.value))
-        return;
-    if(!(0 <= y1 && y1 < col.value && 0 <= y2 && y2 < col.value))
-        return;
-
-    const data = table.value[x1][y1].data;
-
-    for(let i = x1;i <= x2;i ++){
-        for(let j = y1;j <= y2;j ++){
-            table.value[i][j] = {
-                row: x1, col: y1, merged: true, data: ''
-            };
-        }
-    }
-
-    table.value[x1][y1] = {
-        row: x2 - x1 + 1, col: y2 - y1 + 1, data: data, merged: false
-    };
-}
-
-function doSplit(){
-
-    if(!checkValid()){
-        return;
-    }
-
-    let [x1, y1] = selecta.value, [x2, y2] = selectb.value;
-
-    if(!(0 <= x1 && x1 < row.value && 0 <= x2 && x2 < row.value))
-        return;
-    if(!(0 <= y1 && y1 < col.value && 0 <= y2 && y2 < col.value))
-        return;
-
-    for(let i = x1;i <= x2;i ++){
-        for(let j = y1;j <= y2;j ++){
-            for(let a = 0;a < table.value[i][j].row;++ a){
-                for(let b = 0;b < table.value[i][j].col;++ b) if(a !== 0 || b !== 0){
-                    table.value[i + a][j + b] = {
-                        row: 1,
-                        col: 1,
-                        data: table.value[i][j].data,
-                        merged: false
-                    }
-                }
-            }
-            table.value[i][j].col = 1;
-            table.value[i][j].row = 1;
-        }
-    }
-}
-
 function doEdit(){
 
-    if(!checkValid()){
-        return;
-    }
-
-    let [x1, y1] = selecta.value, [x2, y2] = selectb.value;
+    let [x1, y1] = select1.value, [x2, y2] = select2.value;
 
     if(!(0 <= x1 && x1 < row.value && 0 <= x2 && x2 < row.value))
         return;
@@ -256,8 +142,8 @@ function doEdit(){
         return;
 
     for(let i = x1;i <= x2;i ++){
-        for(let j = y1;j <= y2;j ++) if(!table.value[i][j].merged){
-            table.value[i][j].data = text.value;
+        for(let j = y1;j <= y2;j ++){
+            table.value[i][j] = text.value;
         }
     }
     

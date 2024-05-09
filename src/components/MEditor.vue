@@ -11,10 +11,13 @@ import { Codemirror } from 'vue-codemirror';
 import { EditorView } from '@codemirror/view';
 
 import { Plugins } from '~/CasketStar.vue';
+import { getDefaultPlugins } from '~/utils';
 
-const props = defineProps<{
-    plugins: Plugins
-}>();
+const props = withDefaults(defineProps<{
+    plugins?: Plugins
+}>(), {
+    plugins: getDefaultPlugins
+});
 
 const value = defineModel<string>({
     required: true
