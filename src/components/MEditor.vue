@@ -31,7 +31,10 @@ const extensions = [
         },
         "&.cm-editor": {
             height: '100%',
-        }
+        },
+        "&.cm-scroller": {
+            'z-index': 'auto',
+        },
     }),
     ...(props.plugins.codemirror || [])
 ];
