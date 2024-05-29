@@ -18,6 +18,16 @@ export function remarkNoHtml(this: Processor) {
     micromarkExtensions.push({ disable: { null: ['htmlText', 'htmlFlow']}});
 }
 
+export function getEmptyPlugins(): Plugins {
+
+    return {
+        remark: [],
+        rehype: [],
+        remarkRehypeOptions: {},
+        codemirror: []
+    }
+}
+
 export function getDefaultPlugins(): Plugins {
 
     return {
@@ -50,12 +60,13 @@ import DCode from './components/tool/ToolCode.vue';
 import DPicture from './components/tool/ToolPicture.vue';
 import DTable from './components/tool/ToolTable.vue';
 import DLink from './components/tool/ToolLink.vue';
-import DBlock from './components/tool/ToolBlock.vue';
 import DHelp from './components/tool/ToolHelp.vue';
 
 import { Tool, ToolGroup } from './components/MToolbar.vue';
 import { createVNode, render } from 'vue';
 import { markdown } from '@codemirror/lang-markdown';
+
+export { markdown };
 
 export const ToolIncrease: Tool = {
     name: 'increase-level',
@@ -197,7 +208,8 @@ export const ToolHorizontal: Tool = {
         codemirror.focus();
     }
 };
-export const ToolBold = {
+
+export const ToolBold: Tool = {
     name: 'bold',
     icon: defaultIcons['bold'],
     func: (codemirror: EditorView) => {
@@ -218,7 +230,7 @@ export const ToolBold = {
     }
 };
 
-export const ToolItalic = {
+export const ToolItalic: Tool = {
     name: 'italic',
     icon: defaultIcons['italic'],
     func: (codemirror: EditorView) => {
@@ -239,7 +251,7 @@ export const ToolItalic = {
     }
 };
 
-export const ToolStrikethrough = {
+export const ToolStrikethrough: Tool = {
     name: 'strikethrough',
     icon: defaultIcons['strikethrough'],
     func: (codemirror: EditorView) => {
@@ -325,7 +337,7 @@ export const ToolPicture: Tool = {
     }
 };
 
-export const ToolCode = {
+export const ToolCode: Tool = {
     name: 'code',
     icon: defaultIcons['code'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
@@ -527,7 +539,7 @@ export const ToolOList: Tool = {
     }
 };
 
-export const ToolTaskList = {
+export const ToolTaskList: Tool = {
     name: 'task-list',
     icon: defaultIcons['listtask'],
     func: (codemirror: EditorView) => {
@@ -601,7 +613,7 @@ export const ToolFullScreen: Tool = {
     }
 };
 
-export const ToolHelp = {
+export const ToolHelp: Tool = {
     name: 'help',
     icon: defaultIcons['help'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
