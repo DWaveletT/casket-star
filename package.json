@@ -32,7 +32,6 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "publish": "build && npm publish",
     "build": "pnpm run build-casket && pnpm run build-themes",
     "build-casket": "vite build && vue-tsc --emitDeclarationOnly",
     "build-themes": "pnpm sass src/themes/:dist/themes/",
