@@ -18,16 +18,6 @@ export function remarkNoHtml(this: Processor) {
     micromarkExtensions.push({ disable: { null: ['htmlText', 'htmlFlow']}});
 }
 
-export function getEmptyPlugins(): Plugins {
-
-    return {
-        remark: [],
-        rehype: [],
-        remarkRehypeOptions: {},
-        codemirror: []
-    }
-}
-
 export function getDefaultPlugins(): Plugins {
 
     return {
@@ -43,6 +33,7 @@ export function getDefaultPlugins(): Plugins {
         },
         codemirror: [
             markdown({
+                base: markdownLanguage,
                 extensions: [
                     { remove: ['HTMLBlock', 'HTMLTag'] }
                 ],
@@ -64,9 +55,9 @@ import DHelp from './components/tool/ToolHelp.vue';
 
 import { Tool, ToolGroup } from './components/MToolbar.vue';
 import { createVNode, render } from 'vue';
-import { markdown } from '@codemirror/lang-markdown';
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 
-export { markdown };
+export { markdown, markdownLanguage, commonmarkLanguage } from '@codemirror/lang-markdown';
 
 export const ToolIncrease: Tool = {
     name: 'increase-level',

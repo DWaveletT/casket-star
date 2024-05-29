@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineModel } from 'vue';
+import { defineModel, computed } from 'vue';
 
 import { Codemirror } from 'vue-codemirror';
 import { EditorView } from '@codemirror/view';
@@ -23,20 +23,24 @@ const value = defineModel<string>({
     required: true
 });
 
-const extensions = [
-    EditorView.lineWrapping,
-    EditorView.theme({
-        "&.cm-focused": {
-            outline: 'none'
-        },
-        "&.cm-editor": {
-            height: '100%',
-        },
-        "&.cm-scroller": {
-            'z-index': 'auto',
-        },
-    }),
-    ...(props.plugins.codemirror || [])
-];
+const extensions = computed(() => {
+    const list = [
+        EditorView.lineWrapping,
+        EditorView.theme({
+            "&.cm-focused": {
+                outline: 'none'
+            },
+            "&.cm-editor": {
+                height: '100%',
+            },
+            "&.cm-scroller": {
+                'z-index': 'auto',
+            },
+        }),
+        props.plugins.codemirror || []
+    ];
+    console.log(list);
+    return list;
+});
 
 </script>
