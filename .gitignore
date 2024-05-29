@@ -6,14 +6,17 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+stats.html
 
+# Npm
 .npmrc
-
 node_modules
 dist
 dist-ssr
+
 *.local
 
+# Sass
 .sass-cache
 
 # Editor directories and files
