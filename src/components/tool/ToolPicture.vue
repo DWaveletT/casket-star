@@ -95,6 +95,14 @@ function handleDrop(e: DragEvent){
     if(!e.dataTransfer)
         return;
 
+    const result = props.upload(e.dataTransfer.files);
+
+    if(result){
+        alt.value = result[0].alt;
+        url.value = result[0].url;
+    }
+
+
     e.preventDefault();
 }
 
