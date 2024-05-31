@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 
+import pkg from './package.json';
+
 import viteCompression from 'vite-plugin-compression';
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -28,15 +30,17 @@ export default defineConfig({
     ]
   },
   build: {
+    minify: true,
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "CasketStar",
       fileName: "casket-star",
     },
     rollupOptions: {
-      external: [
-        "vue"
-      ],
+      external: (id: unknown) => [
+          'vue',
+          ...Object.keys(pkg.dependencies)
+      ].some(s => id === s),
       output: {
         globals: {
           vue: "Vue"
@@ -44,4 +48,7 @@ export default defineConfig({
       },
     },
   },
+  server: {
+      open: '/dev/'
+  }
 });

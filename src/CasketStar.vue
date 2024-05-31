@@ -1,4 +1,5 @@
 <template>
+    {{ dragging }}
     <div class="casket cs-main" :class="{ 'cs-full-screen': casket.fullScreen }">
         <div class="cs-header">
             <m-toolbar
@@ -19,7 +20,13 @@
                 }"
                 @mouseover="currentOver = 'editor'"
             >
-                <m-editor v-model="value" :plugins="plugins" @ready="handleEditorReady" />
+                <m-editor
+                    v-model="value" :plugins="plugins" @ready="handleEditorReady"
+                />
+
+                <div class="cs-upload" :class="{ dragging }">
+                    放下图片上传
+                </div>
             </div>
             <div
                 v-if="casket.showViewer"
@@ -31,7 +38,7 @@
                 @scroll="handleViewerScroll"
                 @mouseover="currentOver = 'viewer'"
             >
-                <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" :interval="interval" />
+                <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" :interval="casket.interval" />
             </div>
         </div>
         <div class="cs-footer">
@@ -60,7 +67,7 @@ import MViewer from './components/MViewer.vue';
 
 import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
-import { Extension } from '@codemirror/state';
+import { EditorSelection, Extension } from '@codemirror/state';
 
 import { getDefaultPlugins, getDefaultToolbarL, getDefaultToolbarR } from './utils';
 import { EditorView } from '@codemirror/view';
@@ -69,8 +76,6 @@ import { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
 import { getI18n } from './lang';
-
-const interval = ref(0);
 
 let codemirror: EditorView | undefined = undefined;
 
@@ -83,34 +88,55 @@ export interface Plugins {
     codemirror?: Extension[]
 }
 
-export interface CasketView {
-    showEditor: boolean,
-    showViewer: boolean,
-    fullScreen: boolean,
-}
-
-const casket = ref<CasketView>({
-    showEditor: true,
-    showViewer: true,
-    fullScreen: false
-});
-
-watch(casket.value, () => { updateScrollSync() });
+export type Uploader = (data: DataTransfer) => {
+    url: string,
+    alt: string
+}[] | undefined
 
 const props = withDefaults(defineProps<{
     plugins?: Plugins,
     toolbarl?: Toolbar,
     toolbarr?: Toolbar,
-    lang?: string
+    lang?: string,
+
+    upload?: Uploader
 }>(), {
     plugins: () => getDefaultPlugins(),
     toolbarl: () => getDefaultToolbarL(),
     toolbarr: () => getDefaultToolbarR(),
-    lang: 'en_US'
+    lang: 'en_US',
+
+    upload: () => undefined
 });
+
+export interface CasketView {
+    showEditor: boolean,
+    showViewer: boolean,
+    fullScreen: boolean,
+
+    interval: number,
+
+    data: Record<string, unknown>
+}
+
+const casket = ref<CasketView>({
+    showEditor: true,
+    showViewer: true,
+    fullScreen: false,
+
+    interval: 100,
+
+    data: {
+        upload: props.upload
+    }
+});
+
+watch(casket.value, () => { updateScrollSync() });
 
 const value = defineModel<string>({ required: true });
 const i18n = getI18n(props.lang);
+
+const dragging = ref(false);
 
 provide('i18n', i18n);
 
@@ -120,6 +146,11 @@ function handleEditorReady(payload: {
     codemirror = payload.view;
     editor.value = codemirror.scrollDOM as HTMLDivElement;
     editor.value.onscroll = handleEditorScroll;
+
+    editor.value.ondragover = handleDragOver;
+    editor.value.ondragenter = handleDragEnter;
+    editor.value.ondragleave = handleDragLeave;
+    editor.value.ondrop = handleDrop;
 }
 
 let top1: number[] = [];
@@ -202,7 +233,7 @@ function handleEditorScroll(e: Event){
     const pos = codemirror.lineBlockAtHeight(topEditor).from;
 
     if(topEditor + 1 >= getMaxEditorTop()){
-        viewer.value?.scrollTo({ top: getMaxViewerTop() + 10 });
+        viewer.value?.scrollTo({ top: getMaxViewerTop() });
         return;
     }
 
@@ -230,7 +261,7 @@ function handleViewerScroll(e: Event){
     const topViewer = (e.target as HTMLDivElement).scrollTop;
     
     if(topViewer + 1 >= getMaxViewerTop()){
-        editor.value?.scrollTo({ top: getMaxEditorTop() + 10 });
+        editor.value?.scrollTo({ top: getMaxEditorTop() });
         return;
     }
 
@@ -273,12 +304,107 @@ function handleBack(){
     }
 }
 
+function handleDragEnter(e: DragEvent){
+    if(!e.dataTransfer?.items)
+        return;
+
+    for(let i = 0;i < e.dataTransfer.items.length;i ++){
+        if(e.dataTransfer.items[i].kind === 'file'){
+            dragging.value = true;
+            return;
+        }
+    }
+}
+function handleDragLeave(e: DragEvent){
+    dragging.value = false;
+}
+
+function handleDragOver(e: DragEvent){
+    e.preventDefault();
+}
+
+function handleDrop(e: DragEvent){
+
+    dragging.value = false;
+
+    if(!e.dataTransfer)
+        return;
+
+    const info = (casket.value.data?.upload as Uploader)(e.dataTransfer);
+
+    if(info !== undefined && codemirror){
+        const state = codemirror.state;
+        let text = '';
+
+        for(let i = 0;i < info.length;i ++){
+            text += `![${ info[i].alt }](${ info[i].url })`;
+        }
+
+        
+        const trans = state.update(state.changeByRange( range => {
+            return {
+                changes: [
+                    { from: range.from, to: range.to},
+                    { from: range.from, insert: text}
+                ],
+                range: EditorSelection.range(range.from + text.length, range.from + text.length)
+            }
+        }));
+        
+        codemirror.update([trans]);
+        codemirror.focus();
+    }
+
+    e.preventDefault();
+}
+
 onMounted(() => {
     addEventListener('resize', updateScrollSync);
 })
 
 onBeforeMount(() => {
-    codemirror?.dispatch();
+    codemirror?.destroy();
 });
 
 </script>
+
+<style>
+.cs-upload {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+ 
+    opacity: 0; 
+    
+    transition: 0.2s ease-in-out opacity;
+
+    pointer-events: none;
+
+    padding: 0.2em; 
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border: 5px dashed var(--casket-color-l1);
+
+    color: var(--casket-color-d2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--casket-color-l2);
+    
+    font-size: xx-large;
+
+    &.dragging {
+        opacity: 0.5;
+    }
+}
+
+</style>

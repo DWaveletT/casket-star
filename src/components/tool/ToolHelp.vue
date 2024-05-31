@@ -1,17 +1,10 @@
 <template>
     <m-dialog @close="doClose">
         <template #header>
-            帮助手册我还没写
+            帮助
         </template>
-
+            
         <div>
-            <h2>Todo</h2>
-
-            <ul>
-                <li>快捷方式（比如按 Ctrl+B 自动将选中范围加粗）；</li>
-                <li>研究一下手机适配；</li>
-                <li>修可能存在的 bug。</li>
-            </ul>
         </div>
     </m-dialog>
 </template>

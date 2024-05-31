@@ -135,8 +135,6 @@ export const ToolDecrease: Tool = {
             for(let i = line1;i <= line2;i ++){
                 const line = state.doc.line(i);
                 const text = line.text;
-
-                console.log(line.text);
                 
                 let count1 = 0, count2 = 0, count3 = 0;
                 const len = text.length;

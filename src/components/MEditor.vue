@@ -39,7 +39,6 @@ const extensions = computed(() => {
         }),
         props.plugins.codemirror || []
     ];
-    console.log(list);
     return list;
 });
 

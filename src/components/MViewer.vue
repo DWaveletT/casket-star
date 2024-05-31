@@ -68,7 +68,7 @@ function getProcessor(){
 
     processor.use(rehypeExpose);
 
-    processor.use(rehypeStringify);
+    processor.use(rehypeStringify, { allowDangerousHtml: true });
 
     processor.freeze();
 
