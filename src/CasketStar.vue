@@ -1,5 +1,4 @@
 <template>
-    {{ dragging }}
     <div class="casket cs-main" :class="{ 'cs-full-screen': casket.fullScreen }">
         <div class="cs-header">
             <m-toolbar
@@ -88,7 +87,7 @@ export interface Plugins {
     codemirror?: Extension[]
 }
 
-export type Uploader = (data: DataTransfer) => {
+export type Uploader = (data: FileList) => {
     url: string,
     alt: string
 }[] | undefined
@@ -213,6 +212,8 @@ function handleViewerUpdate(t: Root, r: HTMLDivElement){
     tree = t;
     real = r;
     updateScrollSync();
+
+    handleEditorScroll();
 }
 
 function getCodemirror(){
@@ -225,15 +226,15 @@ function getCasketStar(){
 
 let currentOver = "editor";
 
-function handleEditorScroll(e: Event){
-    if(currentOver !== "editor" || !codemirror || !scrollSync.value)
+function handleEditorScroll(){
+    if(currentOver !== "editor" || !codemirror || !editor.value || !scrollSync.value)
         return;
 
-    const topEditor = (e.target as HTMLDivElement).scrollTop;
+    const topEditor = editor.value.scrollTop;
     const pos = codemirror.lineBlockAtHeight(topEditor).from;
 
     if(topEditor + 1 >= getMaxEditorTop()){
-        viewer.value?.scrollTo({ top: getMaxViewerTop() });
+        viewer.value?.scrollTo({ top: getMaxViewerTop() + 10 });
         return;
     }
 
@@ -254,14 +255,14 @@ function handleEditorScroll(e: Event){
     }
 }
 
-function handleViewerScroll(e: Event){
-    if(currentOver !== "viewer" || !codemirror || !scrollSync.value)
+function handleViewerScroll(){
+    if(currentOver !== "viewer" || !codemirror || !viewer.value || !scrollSync.value)
         return;
 
-    const topViewer = (e.target as HTMLDivElement).scrollTop;
+    const topViewer = viewer.value.scrollTop;
     
     if(topViewer + 1 >= getMaxViewerTop()){
-        editor.value?.scrollTo({ top: getMaxEditorTop() });
+        editor.value?.scrollTo({ top: getMaxEditorTop() + 10 });
         return;
     }
 
@@ -327,10 +328,10 @@ function handleDrop(e: DragEvent){
 
     dragging.value = false;
 
-    if(!e.dataTransfer)
+    if(!e.dataTransfer?.files)
         return;
 
-    const info = (casket.value.data?.upload as Uploader)(e.dataTransfer);
+    const info = (casket.value.data?.upload as Uploader)(e.dataTransfer.files);
 
     if(info !== undefined && codemirror){
         const state = codemirror.state;
@@ -340,7 +341,6 @@ function handleDrop(e: DragEvent){
             text += `![${ info[i].alt }](${ info[i].url })`;
         }
 
-        
         const trans = state.update(state.changeByRange( range => {
             return {
                 changes: [

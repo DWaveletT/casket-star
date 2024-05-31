@@ -13,27 +13,20 @@ import { ref } from 'vue';
 
 const value = ref('');
 
-const upload: Uploader = (data: DataTransfer) => {
+const upload: Uploader = (data: FileList) => {
 
     const info: {
         alt: string,
         url: string
     }[] = [];
     
-    for (var i = 0; i < data.files.length; i++) {
-        console.log(
-            "... file[" + i + "].name = " + data.files[i].name,
-        );
+    for(let i = 0;i < data.length;i ++){
+        console.log(`upload [${data[i].name}]`);
 
         info.push({
-            alt: data.files[i].name,
+            alt: data[i].name,
             url: 'fakeURL'
         });
-    }
-    for (var i = 0; i < data.items.length; i++) {
-        console.log('kind = ' + data.items[i].kind);
-        console.log('type = ' + data.items[i].type);
-        data.items[i].getAsString((r: string) => console.log('item[ ' + i + '] = ' + r));
     }
 
     return info;

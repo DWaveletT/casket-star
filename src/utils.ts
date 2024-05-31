@@ -2,7 +2,7 @@
 
 import remarkGfm from 'remark-gfm';
 
-import { CasketView, Plugins } from './CasketStar.vue';
+import { CasketView, Plugins, Uploader } from './CasketStar.vue';
 import { Toolbar } from './components/MToolbar.vue';
 
 import type { Processor } from "unified";
@@ -318,6 +318,7 @@ export const ToolPicture: Tool = {
         const dialog = createVNode(
             DPicture, {
                 confirm: insertPicture,
+                upload: casketstar.data.upload as Uploader,
                 container: container
             }
         );
@@ -609,7 +610,8 @@ export const ToolHelp: Tool = {
         
         const dialog = createVNode(
             DHelp, {
-                container: container
+                container: container,
+                confirm: () => {}
             }
         );
 
