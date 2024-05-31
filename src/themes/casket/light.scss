@@ -233,6 +233,44 @@ $casket-color: #FFE300;
             z-index: 100;
         }
 
+        &-upload {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        
+            position: absolute;
+            top: 0;
+            left: 0;
+         
+            opacity: 0; 
+            
+            transition: 0.2s ease-in-out opacity;
+        
+            pointer-events: none;
+        
+            padding: 0.2em; 
+        
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            border: 5px dashed var(--casket-color-l1);
+        
+            color: var(--casket-color-d2);
+        
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        
+            background-color: var(--casket-color-l2);
+            
+            font-size: xx-large;
+        
+            &.dragging {
+                opacity: 0.5;
+            }
+        }
+
         @keyframes cs-dialog-slidein {
             from {
                 transform: translateY(-2em);
