@@ -4,7 +4,9 @@
             <div class="cs-dialog-header">
                 <slot name="header" />
 
-                <div class="cs-close-container" @click="emits('close')" v-html="defaultIcons['xmark']" />
+                <div class="cs-close-container" @click="emits('close')">
+                    <font-awesome-icon :icon="defaultIcons['xmark']" class="cs-icon" />
+                </div>
             </div>
 
             <slot />
@@ -15,7 +17,7 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
-import { defaultIcons } from '~/icons';
+import { defaultIcons, FontAwesomeIcon } from '~/icons';
 
 const emits = defineEmits(['close']);
 
