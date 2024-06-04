@@ -62,6 +62,9 @@
     "vue-tsc": "^1.8.27"
   },
   "devDependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@rushstack/eslint-patch": "^1.10.2",
     "@types/hast": "^3.0.4",
     "@types/lodash-es": "^4.17.12",
