@@ -1,4 +1,4 @@
-import { FontAwesomeIcon, IconDefinition } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { 
     faXmark, faGear, faArrowsUpToLine, faArrowsDownToLine, 
     faBold, faItalic, faStrikethrough, faLink,
@@ -6,8 +6,10 @@ import {
     faCode, faMessage, faSquareRootVariable, faAlignLeft,
     faAlignRight, faMaximize, faImage, faInfo,
     faTable, faQuoteLeft, faQuestion,
- } from '@fortawesome/free-solid-svg-icons'
-import { faGithub } from '@fortawesome/free-brands-svg-icons'
+ } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 const defaultIcons: Record<string, IconDefinition> = {
     'xmark': faXmark,

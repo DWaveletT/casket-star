@@ -30,12 +30,13 @@ import { EditorView } from '@codemirror/view';
 import { CasketView } from '~/CasketStar.vue';
 import { FontAwesomeIcon } from '~/icons';
 import { inject } from 'vue';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 const i18n = inject('i18n') as CasketI18n;
 
 export interface Tool {
     name: string,
-    icon: string,
+    icon: IconDefinition,
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => void
 };
 
