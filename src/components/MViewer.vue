@@ -11,7 +11,7 @@ import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import { Plugins } from '~/CasketStar.vue';
 
-import { Root } from 'hast';
+import { type Root } from 'hast';
 
 import { throttle } from 'lodash-es';
 import { getDefaultPlugins } from '..';
