@@ -5,12 +5,14 @@ import vue from "@vitejs/plugin-vue";
 import pkg from './package.json';
 
 import viteCompression from 'vite-plugin-compression';
-import { visualizer } from "rollup-plugin-visualizer";
+import vitePluginDts from 'vite-plugin-dts';
+// import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   plugins: [
     vue(),
-    visualizer(),
+    vitePluginDts(),
+    // visualizer(),
     viteCompression({
       verbose: true,
       disable: false, 
@@ -27,7 +29,8 @@ export default defineConfig({
         find: '~',
         replacement: resolve(__dirname, 'src'),
       }
-    ]
+    ],
+    dedupe: ['vue']
   },
   build: {
     minify: true,
