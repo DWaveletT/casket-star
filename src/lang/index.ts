@@ -10,9 +10,9 @@ export function initI18n(data: CasketI18nData[] | CasketI18nData){
 
     const mergedData = (() => {
         if(!Array.isArray(data))
-            return Object.assign(enUS, data);
+            return Object.assign({}, enUS, data);
         else 
-            return Object.assign(enUS, ...data);
+            return Object.assign({}, enUS, ...data);
     })();
 
     i18n = (key: string) => mergedData[key] || key;

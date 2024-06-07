@@ -42,9 +42,9 @@
         </div>
         <div class="cs-footer">
             <div class="cs-footer-left">
-                {{ i18n('word-count') }}{{
+                {{ i18n('character-count') }}{{
                     getCodemirror()?.state.doc.length || 0
-                }}{{ i18n('word') }}
+                }}{{ i18n('character') }}
             </div>
 
             <div class="cs-footer-right">
