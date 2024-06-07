@@ -1,5 +1,5 @@
 <template>
-    <casket-star v-model="value" lang="zh_CN" :upload="upload" />
+    <casket-star v-model="value" :i18n="zhCN" :upload="upload" />
 </template>
 
 <script setup lang="ts">
@@ -8,6 +8,8 @@ import CasketStar, { Uploader } from '~/CasketStar.vue';
 
 import '~/themes/markdown/light.scss';
 import '~/themes/casket/light.scss';
+
+import { zhCN } from '~/lang';
 
 import { ref } from 'vue';
 

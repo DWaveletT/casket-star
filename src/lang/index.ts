@@ -1,18 +1,21 @@
-import zhCN from './zh_CN.json';
 import enUS from './en_US.json';
+import zhCN from './zh_CN.json';
 
+export type CasketI18nData = Record<string, string | undefined>;
 export type CasketI18n = (key: string) => string;
 
-export function I18nBuilder(data: Record<string, string | undefined>){
-    return (key: string) => data[key] || key; 
+export let i18n: CasketI18n = () => '';
+
+export function initI18n(data: CasketI18nData[] | CasketI18nData){
+
+    const mergedData = (() => {
+        if(!Array.isArray(data))
+            return Object.assign(enUS, data);
+        else 
+            return Object.assign(enUS, ...data);
+    })();
+
+    i18n = (key: string) => mergedData[key] || key;
 }
 
-export function getI18n(language: string): CasketI18n {
-    switch(language.toLowerCase()){
-        case 'zh_cn': return I18nBuilder(zhCN);
-        case 'en_us': return I18nBuilder(enUS);
-
-        default:
-            return I18nBuilder(enUS);
-    }
-}
+export { enUS, zhCN };

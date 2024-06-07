@@ -1,18 +1,18 @@
 <template>
     <m-dialog-extra @close="doClose">
         <template #header>
-            插入表格
+            {{ i18n('table-insert') }}
         </template>
 
         <div class="cs-dialog-item">
             <div class="cs-dialog-item-label">
-                行数
+                {{ i18n('table-rows') }}
             </div>
             <input type="number" v-model="row" class="cs-dialog-item-content" min="1" max="100" />
         </div>
         <div class="cs-dialog-item">
             <div class="cs-dialog-item-label">
-                列数
+                {{ i18n('table-cols') }}
             </div>
             <input type="number" v-model="col" class="cs-dialog-item-content" min="1" max="100" />
         </div>
@@ -23,17 +23,17 @@
 
         <div class="cs-dialog-area">
 
-            <h3>编辑区</h3>
+            <h3>{{ i18n('table-edit') }}</h3>
 
             <textarea v-model="text" />
         </div>
 
         <div class="submit-area">
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >取消</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >{{ i18n('cancel') }}</button>
             <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
                 confirm(row, col, table);
                 doClose();
-            }" >确认</button>
+            }" >{{ i18n('confirm') }}</button>
         </div>
 
         <template #view>
@@ -66,6 +66,7 @@
 import { ref, watch, render } from 'vue';
 
 import MDialogExtra from '~/components/dialog/MDialogExtra.vue';
+import { i18n } from '~/lang';
 
 const props = defineProps<{
     confirm: (row: number, col: number, table: string[][]) => void,

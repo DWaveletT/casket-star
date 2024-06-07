@@ -5,17 +5,43 @@
     "bold": "粗体",
     "italic": "斜体",
     "strikethrough": "删除线",
-    "link": "链接",
-    "picture": "图片",
-    "code": "代码",
-    "table": "表格",
-    "block": "块体",
+
     "quote": "引用",
     "unordered-list": "无序列表",
     "ordered-list": "有序列表",
     "task-list": "任务列表",
+
     "only-editor": "仅编辑",
     "only-viewer": "仅预览",
     "full-screen": "全屏",
-    "help": "帮助"
+    "help": "帮助",
+    "release-to-update": "放下图片上传",
+    "word": " 字符",
+    "word-count": "字数统计：",
+    "sync-disable": "禁用滚动",
+    "sync-enable": "启用滚动",
+    "back-to-top": "回到顶部",
+
+    "confirm": "确认",
+    "cancel": "取消",
+
+    "code": "代码",
+    "code-insert": "插入代码",
+    "code-select": "选择语言",
+
+    "link": "链接",
+    "link-insert": "插入链接",
+    "link-url": "链接地址",
+    "link-alt": "链接介绍",
+
+    "image": "图片",
+    "image-insert": "插入图片",
+    "image-url": "图片地址",
+    "image-alt": "图片介绍",
+
+    "table": "表格",
+    "table-insert": "插入表格",
+    "table-rows": "行数",
+    "table-cols": "列数",
+    "table-edit": "编辑表格"
 }

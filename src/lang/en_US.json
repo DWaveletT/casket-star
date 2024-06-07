@@ -1,21 +1,47 @@
 {
-    "increase-level": "increase level",
-    "decrease-level": "decrease level",
+    "increase-level": "increase headline",
+    "decrease-level": "decrease headline",
     "horizontal": "horizontal",
     "bold": "bold",
     "italic": "italic",
     "strikethrough": "strikethrough",
-    "link": "link",
-    "picture": "picture",
-    "code": "code",
-    "table": "table",
-    "block": "block",
+
     "quote": "quote",
     "unordered-list": "unordered list",
     "ordered-list": "ordered list",
     "task-list": "task list",
-    "only-editor": "only editor",
-    "only-viewer": "only viewer",
-    "full-screen": "full screen",
-    "help": "help"
+
+    "only-editor": "editor only",
+    "only-viewer": "viewer only",
+    "full-screen": "fullscreen",
+    "help": "help",
+    "release-to-update": "release to upload",
+    "word": "word",
+    "word-count": "word count",
+    "sync-disable": "disable sync",
+    "sync-enable": "enable sync",
+    "back-to-top": "back to top",
+
+    "confirm": "confirm",
+    "cancel": "cancel",
+
+    "code": "code",
+    "code-insert": "insert code",
+    "code-select": "select language",
+
+    "link": "link",
+    "link-insert": "insert link",
+    "link-url": "url",
+    "link-alt": "alt",
+
+    "image": "image",
+    "image-insert": "insert image",
+    "image-url": "url",
+    "image-alt": "alt",
+
+    "table": "table",
+    "table-insert": "insert table",
+    "table-rows": "rows",
+    "table-cols": "cols",
+    "table-edit": "edit"
 }

@@ -31,7 +31,7 @@ const defaultIcons: Record<string, IconDefinition> = {
     'viewer': faAlignRight,
     'expand': faMaximize,
     'info': faInfo,
-    'picture': faImage,
+    'image': faImage,
     'table': faTable,
     'quote': faQuoteLeft,
     'help': faQuestion,

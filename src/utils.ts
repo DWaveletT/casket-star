@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm';
 import { CasketView, Plugins, Uploader } from './CasketStar.vue';
 import { Toolbar } from './components/MToolbar.vue';
 
-import type { Processor } from "unified";
+import type { Plugin, Processor } from "unified";
 
 export function remarkNoHtml(this: Processor) {
     
@@ -24,10 +24,10 @@ export function getDefaultPlugins(): Plugins {
         remark: [
             remarkGfm,
             remarkNoHtml
-        ],
+        ] as unknown as Plugin,
         rehype: [
             
-        ],
+        ] as unknown as Plugin,
         remarkRehypeOptions: {
             
         },
@@ -48,7 +48,7 @@ import { ChangeSpec, EditorSelection } from '@codemirror/state';
 import { defaultIcons } from './icons';
 
 import DCode from './components/tool/ToolCode.vue';
-import DPicture from './components/tool/ToolPicture.vue';
+import DImage from './components/tool/ToolImage.vue';
 import DTable from './components/tool/ToolTable.vue';
 import DLink from './components/tool/ToolLink.vue';
 import DHelp from './components/tool/ToolHelp.vue';
@@ -293,12 +293,12 @@ export const ToolLink: Tool = {
     }
 };
 
-export const ToolPicture: Tool = {
-    name: 'picture',
-    icon: defaultIcons['picture'],
+export const ToolImage: Tool = {
+    name: 'image',
+    icon: defaultIcons['image'],
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
         
-        function insertPicture(url: string, alt: string){
+        function insertImage(url: string, alt: string){
             const state = codemirror.state;
             const trans = state.update(state.changeByRange( range => {
                 const text = `![${alt}](${url})`;
@@ -316,8 +316,8 @@ export const ToolPicture: Tool = {
         }
         
         const dialog = createVNode(
-            DPicture, {
-                confirm: insertPicture,
+            DImage, {
+                confirm: insertImage,
                 upload: casketstar.data.upload as Uploader,
                 container: container
             }
@@ -623,7 +623,7 @@ export const ToolGroupTitle: ToolGroup = [ ToolIncrease, ToolDecrease, ToolHoriz
 
 export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough ];
 
-export const ToolGroupInterline: ToolGroup = [ ToolLink, ToolPicture, ToolCode, ToolTable ];
+export const ToolGroupInterline: ToolGroup = [ ToolLink, ToolImage, ToolCode, ToolTable ];
 
 export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, ToolTaskList ];
 

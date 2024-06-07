@@ -24,15 +24,13 @@
 </template>
 
 <script setup lang="ts">
-import { CasketI18n } from '~/lang';
 
 import { EditorView } from '@codemirror/view';
 import { CasketView } from '~/CasketStar.vue';
 import { FontAwesomeIcon } from '~/icons';
-import { inject } from 'vue';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
-const i18n = inject('i18n') as CasketI18n;
+import { i18n } from '~/lang';
 
 export interface Tool {
     name: string,

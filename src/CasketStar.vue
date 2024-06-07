@@ -24,7 +24,7 @@
                 />
 
                 <div class="cs-upload" :class="{ dragging }">
-                    放下图片上传
+                    {{ i18n('release-to-update') }}
                 </div>
             </div>
             <div
@@ -42,12 +42,16 @@
         </div>
         <div class="cs-footer">
             <div class="cs-footer-left">
-                字数统计：{{ getCodemirror()?.state.doc.length || 0 }} 字符
+                {{ i18n('word-count') }}{{
+                    getCodemirror()?.state.doc.length || 0
+                }}{{ i18n('word') }}
             </div>
 
             <div class="cs-footer-right">
-                <span class="cs-footer-button" @click="handleSync">{{ scrollSync ? '禁用滚动' : '启用滚动' }}</span>
-                <span class="cs-footer-button" @click="handleBack">回到顶部</span>
+                <span class="cs-footer-button" @click="handleSync">{{
+                    scrollSync ? i18n('sync-disable') : i18n('sync-enable')
+                }}</span>
+                <span class="cs-footer-button" @click="handleBack">{{ i18n('back-to-top') }}</span>
             </div>
         </div>
         
@@ -74,17 +78,19 @@ import { Options } from 'remark-rehype';
 import { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
-import { getI18n } from './lang';
+import { CasketI18nData, initI18n, i18n } from './lang';
+
+import { type Plugin } from 'unified';
 
 let codemirror: EditorView | undefined = undefined;
 
-type Plugin = () => void;
 
 export interface Plugins {
-    remark?: (Plugin | [Plugin, object])[],
-    rehype?: (Plugin | [Plugin, object])[],
+    remark?: Plugin,
+    rehype?: Plugin,
     remarkRehypeOptions?: Options,
-    codemirror?: Extension[]
+    codemirror?: Extension[],
+    
 }
 
 export type Uploader = (data: FileList) => {
@@ -96,14 +102,14 @@ const props = withDefaults(defineProps<{
     plugins?: Plugins,
     toolbarl?: Toolbar,
     toolbarr?: Toolbar,
-    lang?: string,
+    i18n?: CasketI18nData[] | CasketI18nData,
 
     upload?: Uploader
 }>(), {
-    plugins: () => getDefaultPlugins(),
-    toolbarl: () => getDefaultToolbarL(),
-    toolbarr: () => getDefaultToolbarR(),
-    lang: 'en_US',
+    plugins: getDefaultPlugins,
+    toolbarl: getDefaultToolbarL,
+    toolbarr: getDefaultToolbarR,
+    i18n: () => [] as CasketI18nData[],
 
     upload: () => undefined
 });
@@ -133,11 +139,10 @@ const casket = ref<CasketView>({
 watch(casket.value, () => { updateScrollSync() });
 
 const value = defineModel<string>({ required: true });
-const i18n = getI18n(props.lang);
+
+initI18n(props.i18n);
 
 const dragging = ref(false);
-
-provide('i18n', i18n);
 
 function handleEditorReady(payload: {
     view: EditorView

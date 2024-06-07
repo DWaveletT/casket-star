@@ -1,7 +1,7 @@
 <template>
     <m-dialog @close="doClose">
         <template #header>
-            帮助
+            {{ i18n('help') }}
         </template>
             
         <div>
@@ -14,6 +14,7 @@
 import { render } from 'vue';
 
 import MDialog from '~/components/dialog/MDialog.vue';
+import { i18n } from '~/lang';
 
 const props = defineProps<{
     confirm: (lang: string, code: string) => void,

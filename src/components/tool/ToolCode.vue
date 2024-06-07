@@ -1,13 +1,13 @@
 <template>
     <m-dialog @close="doClose">
         <template #header>
-            插入代码
+            {{ i18n('code-insert') }}
         </template>
 
         <div>
             <div class="cs-dialog-item">
                 <div class="cs-dialog-item-label">
-                    选择语言
+                    {{ i18n('code-select') }}
                 </div>
                 <select v-model="lang" class="cs-dialog-item-content">
                     <option v-for="option in list" :key="option.value" :value="option.value">
@@ -17,18 +17,18 @@
             </div>
             <div class="cs-dialog-item">
                 <div class="cs-dialog-item-label" style="min-height: 50vh;">
-                    代码
+                    {{ i18n('code') }}
                 </div>
 
                 <textarea class="cs-dialog-item-content" v-model="code" />
             </div>
 
             <div class="cs-dialog-submit-area">
-                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >取消</button>
+                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >{{ i18n('cancel') }}</button>
                 <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
                     props.confirm(lang, code);
                     doClose();
-                }" >确认</button>
+                }" >{{ i18n('confirm') }}</button>
             </div>
         </div>
     </m-dialog>
@@ -39,6 +39,7 @@
 import { ref, render } from 'vue';
 
 import MDialog from '~/components/dialog/MDialog.vue';
+import { i18n } from '~/lang';
 
 const props = defineProps<{
     confirm: (lang: string, code: string) => void,

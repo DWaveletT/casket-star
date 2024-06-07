@@ -44,30 +44,25 @@ const rehypeExpose: Plugin<[], Root, Root> = function (){
 function getProcessor(){
     const processor = unified();
 
+    // Parse raw text to Mdast.
     processor.use(remarkParse);
 
-    if(props.plugins.remark){
-        for(const plugin of props.plugins.remark){
-            if(Array.isArray(plugin))
-                processor.use(plugin[0], plugin[1] as unknown as boolean);
-            else
-                processor.use(plugin);
-        }
-    }
+    // Use remark plugins transmitted to Casket.
+    if(props.plugins.remark)
+        processor.use(props.plugins.remark);
 
+    // Transform Mdast to Hast.
     processor.use(remarkRehype, props.plugins.remarkRehypeOptions);
 
-    if(props.plugins.rehype){
-        for(const plugin of props.plugins.rehype){
-            if(Array.isArray(plugin))
-                processor.use(plugin[0], plugin[1] as unknown as boolean);
-            else
-                processor.use(plugin);
-        }
-    }
+    // Use rehype plugins transmitted to Casket.
+    if(props.plugins.rehype)
+        processor.use(props.plugins.rehype);
 
+    // A builtin plugin to pass Mdast to Casket.
     processor.use(rehypeExpose);
 
+    // Allow HTML produced by rehype plugins.
+    // However, HTML written by the users are proibited if props.plugins.remarkRehypeOptions.allowDangerousHtml is not true.
     processor.use(rehypeStringify, { allowDangerousHtml: true });
 
     processor.freeze();
