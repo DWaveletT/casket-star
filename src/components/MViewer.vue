@@ -5,16 +5,16 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, defineModel, nextTick } from 'vue';
 
-import { Plugin, unified } from 'unified';
+import { type Plugin, unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
-import { Plugins } from '~/CasketStar.vue';
 
+import { type Plugins } from '~/CasketStar.vue';
 import { type Root } from 'hast';
 
 import { throttle } from 'lodash-es';
-import { getDefaultPlugins } from '..';
+import { getDefaultPlugins } from '~/utils';
 
 const props = withDefaults(defineProps<{
     plugins?: Plugins,

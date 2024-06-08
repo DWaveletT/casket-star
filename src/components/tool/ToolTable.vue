@@ -66,7 +66,7 @@
 import { ref, watch, render } from 'vue';
 
 import MDialogExtra from '~/components/dialog/MDialogExtra.vue';
-import { i18n } from '~/lang';
+import { i18n } from '~/utils';
 
 const props = defineProps<{
     confirm: (row: number, col: number, table: string[][]) => void,

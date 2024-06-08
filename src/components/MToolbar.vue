@@ -30,7 +30,7 @@ import { CasketView } from '~/CasketStar.vue';
 import { FontAwesomeIcon } from '~/icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
-import { i18n } from '~/lang';
+import { i18n } from '~/utils';
 
 export interface Tool {
     name: string,

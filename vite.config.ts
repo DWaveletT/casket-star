@@ -6,11 +6,20 @@ import pkg from './package.json';
 
 import viteCompression from 'vite-plugin-compression';
 import vitePluginDts from 'vite-plugin-dts';
+import rollupPluginCopy from 'rollup-plugin-copy';
+
 // import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   plugins: [
     vue(),
+    rollupPluginCopy({
+      targets: [
+        { src: 'src/lang/*.json', dest: 'dist/lang'}
+      ],
+      verbose: true,
+      hook: 'writeBundle'
+    }),
     vitePluginDts(),
     // visualizer(),
     viteCompression({

@@ -73,13 +73,18 @@ import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
 import { EditorSelection, Extension } from '@codemirror/state';
 
-import { getDefaultPlugins } from './utils';
+import {
+    getDefaultPlugins,
+    CasketI18nData,
+    initI18n,
+    i18n
+} from './utils';
+
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
-import { CasketI18nData, initI18n, i18n } from './lang';
 
 import { type Plugin } from 'unified';
 

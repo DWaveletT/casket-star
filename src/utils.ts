@@ -7,6 +7,25 @@ import { Toolbar } from './components/MToolbar.vue';
 
 import type { Plugin, Processor } from "unified";
 
+import enUS from '~/lang/en_US.json';
+
+export type CasketI18nData = Record<string, string | undefined>;
+export type CasketI18n = (key: string) => string;
+
+export let i18n: CasketI18n = () => '';
+
+export function initI18n(data: CasketI18nData[] | CasketI18nData){
+
+    const mergedData = (() => {
+        if(!Array.isArray(data))
+            return Object.assign({}, enUS, data);
+        else 
+            return Object.assign({}, enUS, ...data);
+    })();
+
+    i18n = (key: string) => mergedData[key] || key;
+}
+
 export function remarkNoHtml(this: Processor) {
     
     const self = this

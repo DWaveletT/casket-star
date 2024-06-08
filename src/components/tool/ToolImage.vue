@@ -50,7 +50,7 @@ import { ref, render } from 'vue';
 import { Uploader } from '~/CasketStar.vue';
 
 import MDialog from '~/components/dialog/MDialog.vue';
-import { i18n } from '~/lang';
+import { i18n } from '~/utils';
 
 const props = defineProps<{
     confirm: (url: string, alt: string) => void,

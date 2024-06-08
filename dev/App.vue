@@ -4,7 +4,6 @@
         :i18n="lang === 'zh_CN' ? zhCN : enUS"
         :upload="upload"
         :key="lastUpdate"
-        :disabled="true"
         height="300px"
         />
 

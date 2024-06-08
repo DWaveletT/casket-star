@@ -14,7 +14,7 @@
 import { render } from 'vue';
 
 import MDialog from '~/components/dialog/MDialog.vue';
-import { i18n } from '~/lang';
+import { i18n } from '~/utils';
 
 const props = defineProps<{
     confirm: (lang: string, code: string) => void,

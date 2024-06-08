@@ -27,7 +27,8 @@
       "require": "./dist/casket-star.umd.cjs",
       "types": "./dist/index.d.ts"
     },
-    "./themes/": "./dist/themes/"
+    "./themes/": "./dist/themes/",
+    "./lang/": "./dist/lang/"
   },
   "license": "MIT",
   "scripts": {
@@ -42,19 +43,12 @@
     "@codemirror/lang-markdown": "^6.2.5",
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.27.0",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "@vue/tsconfig": "^0.5.1",
-    "codemirror": "^6.0.1",
     "lodash-es": "^4.17.21",
     "rehype-stringify": "^10.0.0",
     "remark-gfm": "^4.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
-    "sass": "^1.77.4",
     "unified": "^11.0.4",
-    "vite": "^5.2.12",
-    "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-dts": "^3.9.1",
     "vue": "^3.4.27",
     "vue-codemirror": "^6.1.1",
     "vue-tsc": "^2.0.19"
@@ -69,9 +63,16 @@
     "@types/hast": "^3.0.4",
     "@types/lodash-es": "^4.17.12",
     "@types/mdast": "^4.0.4",
+    "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-typescript": "^13.0.0",
+    "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.26.0",
-    "typescript": "~5.4.5"
+    "rollup-plugin-copy": "^3.5.0",
+    "sass": "^1.77.4",
+    "typescript": "~5.4.5",
+    "vite": "^5.2.13",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-dts": "^3.9.1"
   }
 }
