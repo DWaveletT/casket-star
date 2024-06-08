@@ -1,6 +1,6 @@
 <template>
     <codemirror
-        v-model="value" :extensions="extensions"
+        v-model="value" :extensions="extensions" :disabled="props.disabled"
     />
 </template>
 
@@ -14,9 +14,11 @@ import { Plugins } from '~/CasketStar.vue';
 import { getDefaultPlugins } from '~/utils';
 
 const props = withDefaults(defineProps<{
-    plugins?: Plugins
+    plugins?: Plugins,
+    disabled?: boolean,
 }>(), {
-    plugins: getDefaultPlugins
+    plugins: getDefaultPlugins,
+    disable: false
 });
 
 const value = defineModel<string>({

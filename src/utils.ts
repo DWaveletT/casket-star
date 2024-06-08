@@ -39,7 +39,10 @@ export function getDefaultPlugins(): Plugins {
                 ],
                 completeHTMLTags: false
             })
-        ]
+        ],
+
+        toolbarL: getDefaultToolbarL(),
+        toolbarR: getDefaultToolbarR(),
     }
 }
 

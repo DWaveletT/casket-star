@@ -1,15 +1,16 @@
 <template>
     <div class="casket cs-main" :class="{ 'cs-full-screen': casket.fullScreen }">
-        <div class="cs-header">
+        <div class="cs-header" v-if="!props.hideHeader">
             <m-toolbar
-                :toolbarl="props.toolbarl"
-                :toolbarr="props.toolbarr"
+                :toolbarL="props.plugins.toolbarL"
+                :toolbarR="props.plugins.toolbarR"
                 :get-codemirror="getCodemirror"
                 :get-casketstar="getCasketStar"
                 :dialog="dialog"
+                :disabled="props.disabled"
             />
         </div>
-        <div class="cs-content">
+        <div class="cs-content" :style="{ height: props.height }">
             <div
                 v-if="casket.showEditor"
                 class="cs-editor"
@@ -20,10 +21,10 @@
                 @mouseover="currentOver = 'editor'"
             >
                 <m-editor
-                    v-model="value" :plugins="plugins" @ready="handleEditorReady"
+                    v-model="value" :plugins="plugins" @ready="handleEditorReady" :disabled="props.disabled"
                 />
 
-                <div class="cs-upload" :class="{ dragging }">
+                <div v-if="props.upload" class="cs-upload" :class="{ dragging }">
                     {{ i18n('release-to-update') }}
                 </div>
             </div>
@@ -40,7 +41,7 @@
                 <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" :interval="casket.interval" />
             </div>
         </div>
-        <div class="cs-footer">
+        <div class="cs-footer" v-if="!props.hideFooter">
             <div class="cs-footer-left">
                 {{ i18n('character-count') }}{{
                     getCodemirror()?.state.doc.length || 0
@@ -63,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount, onMounted, watch, provide } from 'vue';
+import { ref, onBeforeMount, onMounted, watch } from 'vue';
 
 import MEditor from './components/MEditor.vue';
 import MViewer from './components/MViewer.vue';
@@ -72,7 +73,7 @@ import MToolbar, { Toolbar } from './components/MToolbar.vue';
 
 import { EditorSelection, Extension } from '@codemirror/state';
 
-import { getDefaultPlugins, getDefaultToolbarL, getDefaultToolbarR } from './utils';
+import { getDefaultPlugins } from './utils';
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import { Root } from 'hast';
@@ -84,34 +85,51 @@ import { type Plugin } from 'unified';
 
 let codemirror: EditorView | undefined = undefined;
 
-
 export interface Plugins {
+    // Viewer
     remark?: Plugin,
     rehype?: Plugin,
     remarkRehypeOptions?: Options,
-    codemirror?: Extension[],
+
+    // Editor
+    codemirror?: Extension,
     
+    // Toolbar
+    toolbarL?: Toolbar,
+    toolbarR?: Toolbar,
 }
 
-export type Uploader = (data: FileList) => {
+export type Uploader = ((data: FileList) => {
     url: string,
     alt: string
-}[] | undefined
+}[]) | undefined
 
 const props = withDefaults(defineProps<{
     plugins?: Plugins,
-    toolbarl?: Toolbar,
-    toolbarr?: Toolbar,
+    
+    hideHeader?: boolean,
+    hideFooter?: boolean,
+
     i18n?: CasketI18nData[] | CasketI18nData,
 
-    upload?: Uploader
+    upload?: Uploader,
+
+    height?: string,
+
+    disabled?: boolean,
+
 }>(), {
     plugins: getDefaultPlugins,
-    toolbarl: getDefaultToolbarL,
-    toolbarr: getDefaultToolbarR,
+
     i18n: () => [] as CasketI18nData[],
 
-    upload: () => undefined
+    upload: undefined,
+
+    height: '400px',
+
+    hideHeader: false,
+    hideFooter: false,
+    disabled: false,
 });
 
 export interface CasketView {
@@ -149,7 +167,7 @@ function handleEditorReady(payload: {
 }){
     codemirror = payload.view;
     editor.value = codemirror.scrollDOM as HTMLDivElement;
-    editor.value.onscroll = handleEditorScroll;
+    editor.value.onscroll = () => handleEditorScroll();
 
     editor.value.ondragover = handleDragOver;
     editor.value.ondragenter = handleDragEnter;
@@ -231,8 +249,11 @@ function getCasketStar(){
 
 let currentOver = "editor";
 
-function handleEditorScroll(){
-    if(currentOver !== "editor" || !codemirror || !editor.value || !scrollSync.value)
+function handleEditorScroll(force?: boolean){
+    if(!codemirror || !editor.value)
+        return;
+
+    if(force !== true && (currentOver !== "editor" || !scrollSync.value))
         return;
 
     const topEditor = editor.value.scrollTop;
@@ -297,7 +318,8 @@ function handleSync(){
         scrollSync.value = false;
     } else {
         scrollSync.value = true;
-        updateScrollSync();
+        InitSyncScroll();
+        handleEditorScroll(true);
     }
 }
 
@@ -331,12 +353,15 @@ function handleDragOver(e: DragEvent){
 
 function handleDrop(e: DragEvent){
 
+    if(!props.upload)
+        return;
+
     dragging.value = false;
 
     if(!e.dataTransfer?.files)
         return;
 
-    const info = (casket.value.data?.upload as Uploader)(e.dataTransfer.files);
+    const info = props.upload(e.dataTransfer.files);
 
     if(info !== undefined && codemirror){
         const state = codemirror.state;

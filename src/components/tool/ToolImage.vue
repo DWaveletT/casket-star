@@ -19,7 +19,7 @@
 
             </div>
 
-            <div class="cs-dialog-item">
+            <div v-if="props.upload" class="cs-dialog-item">
                 <div class="cs-dialog-upload"
                     @click="selectImage"
                     @dragenter = "handleDragEnter"
@@ -30,7 +30,6 @@
                     {{ i18n('image-upload') }}
                 </div>
 
-                
                 <input type="file" ref="inputImage" style="display: none" @change="uploadImage" />
             </div>
 
@@ -91,6 +90,9 @@ function handleDragOver(e: DragEvent){
 
 function handleDrop(e: DragEvent){
 
+    if(!props.upload)
+        return;
+
     dragging.value = false;
 
     if(!e.dataTransfer)
@@ -112,6 +114,10 @@ function selectImage(){
 }
 
 function uploadImage(){
+
+    if(!props.upload)
+        return;
+
     if(inputImage.value?.files){
         const result = props.upload(inputImage.value.files);
 

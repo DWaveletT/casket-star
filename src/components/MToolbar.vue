@@ -1,7 +1,7 @@
 <template>
     <div class="cs-toolbar">
         <div>
-            <span class="cs-toolbar-group" v-for="group in props.toolbarl" >
+            <span v-if="props.toolbarL" class="cs-toolbar-group" v-for="group in props.toolbarL" >
                 <span class="cs-toolbar-tool" v-for="tool in group" @click="doToolClick(tool)" >
                     <span class="cs-toolbar-tool-button">
                         <font-awesome-icon :icon="tool.icon" class="cs-icon" />
@@ -11,7 +11,7 @@
             </span>
         </div>
         <div>
-            <span class="cs-toolbar-group" v-for="group in props.toolbarr" >
+            <span v-if="props.toolbarR" class="cs-toolbar-group" v-for="group in props.toolbarR" >
                 <span class="cs-toolbar-tool" v-for="tool in group" @click="doToolClick(tool)" >
                     <span class="cs-toolbar-tool-button">
                         <font-awesome-icon :icon="tool.icon" class="cs-icon" />
@@ -42,14 +42,19 @@ export type ToolGroup = Tool[];
 export type Toolbar = ToolGroup[];
 
 const props = defineProps<{
-    toolbarl: Toolbar,
-    toolbarr: Toolbar,
+    toolbarL?: Toolbar,
+    toolbarR?: Toolbar,
     getCodemirror: () => EditorView | undefined,
     getCasketstar: () => CasketView | undefined,
-    dialog: HTMLDivElement | null
+    dialog: HTMLDivElement | null,
+    disabled?: boolean
 }>();
 
 function doToolClick(tool: Tool){
+
+    if(props.disabled)
+        return;
+
     const codemirror = props.getCodemirror();
     const casketstar = props.getCasketstar();
     if(codemirror && casketstar){

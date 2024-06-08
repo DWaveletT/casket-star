@@ -1,5 +1,12 @@
 <template>
-    <casket-star v-model="value" :i18n="lang === 'zh_CN' ? zhCN : enUS" :upload="upload" :key="lastUpdate" />
+    <casket-star
+        v-model="value"
+        :i18n="lang === 'zh_CN' ? zhCN : enUS"
+        :upload="upload"
+        :key="lastUpdate"
+        :disabled="true"
+        height="300px"
+        />
 
     <select v-model="lang">
         <option value="zh_CN">简体中文</option>
@@ -27,7 +34,7 @@ const lastUpdate = ref(0);
 
 watch(lang, () => {
     lastUpdate.value = new Date().getMilliseconds();
-})
+});
 
 const upload: Uploader = (data: FileList) => {
 
@@ -47,6 +54,7 @@ const upload: Uploader = (data: FileList) => {
 
     return info;
 }
+
 </script>
 
 <style scoped lang="scss">
