@@ -115,7 +115,7 @@ const props = withDefaults(defineProps<{
     hideHeader?: boolean,
     hideFooter?: boolean,
 
-    i18n?: CasketI18nData[] | CasketI18nData,
+    lang?: CasketI18nData[] | CasketI18nData,
 
     upload?: Uploader,
 
@@ -126,7 +126,7 @@ const props = withDefaults(defineProps<{
 }>(), {
     plugins: getDefaultPlugins,
 
-    i18n: () => [] as CasketI18nData[],
+    lang: () => [] as CasketI18nData[],
 
     upload: undefined,
 
@@ -163,7 +163,7 @@ watch(casket.value, () => { updateScrollSync() });
 
 const value = defineModel<string>({ required: true });
 
-initI18n(props.i18n);
+initI18n(props.lang);
 
 const dragging = ref(false);
 
