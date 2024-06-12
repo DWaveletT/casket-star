@@ -5,9 +5,11 @@ import remarkGfm from 'remark-gfm';
 import { CasketView, Plugins, Uploader } from './CasketStar.vue';
 import { Toolbar } from './components/MToolbar.vue';
 
-import type { Plugin, Processor } from "unified";
+import type { Processor } from "unified";
 
 import enUS from '~/lang/en_US.json';
+import zhCN from '~/lang/zh_CN.json';
+export { enUS, zhCN };
 
 export type CasketI18nData = Record<string, string | undefined>;
 export type CasketI18n = (key: string) => string;
@@ -43,10 +45,10 @@ export function getDefaultPlugins(): Plugins {
         remark: [
             remarkGfm,
             remarkNoHtml
-        ] as unknown as Plugin,
+        ],
         rehype: [
             
-        ] as unknown as Plugin,
+        ],
         remarkRehypeOptions: {
             
         },
@@ -620,7 +622,7 @@ export const ToolOnlyView: Tool = {
 export const ToolFullScreen: Tool = {
     name: 'full-screen',
     icon: defaultIcons['expand'],
-    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
+    func: (codemirror: EditorView, casketstar: CasketView) => {
         casketstar.fullScreen = !casketstar.fullScreen;
     }
 };
@@ -658,10 +660,10 @@ export function getDefaultToolbarL(): Toolbar {
     return [
         ToolGroupTitle, ToolGroupInline, ToolGroupInterline, ToolGroupBlock
     ]
-};
+}
 
 export function getDefaultToolbarR(): Toolbar {
     return [
         ToolGroupCasket, ToolGroupHelp
     ]
-};
+}

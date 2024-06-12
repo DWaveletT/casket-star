@@ -92,12 +92,12 @@ let codemirror: EditorView | undefined = undefined;
 
 export interface Plugins {
     // Viewer
-    remark?: Plugin,
-    rehype?: Plugin,
+    remark?: Plugin[],
+    rehype?: Plugin[],
     remarkRehypeOptions?: Options,
 
     // Editor
-    codemirror?: Extension,
+    codemirror?: Extension[],
     
     // Toolbar
     toolbarL?: Toolbar,

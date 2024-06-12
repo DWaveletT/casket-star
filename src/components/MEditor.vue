@@ -47,7 +47,7 @@ const extensions = computed(() => {
 
         // Allow addtional plugins provided by the user.
         // Such as themes, key-binding, etc.
-        props.plugins.codemirror || []
+        ...props.plugins.codemirror || []
     ];
     return list;
 });

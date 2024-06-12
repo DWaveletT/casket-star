@@ -21,6 +21,7 @@
   },
   "main": "./dist/casket-star.umd.cjs",
   "module": "./dist/casket-star.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/casket-star.js",
@@ -59,7 +60,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@rushstack/eslint-patch": "^1.10.3",
-    "@tsconfig/node18": "^18.2.4",
     "@types/hast": "^3.0.4",
     "@types/lodash-es": "^4.17.12",
     "@types/mdast": "^4.0.4",

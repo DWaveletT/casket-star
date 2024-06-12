@@ -1,11 +1,11 @@
 <template>
     <casket-star
+        :key="lastUpdate"
         v-model="value"
         :i18n="lang === 'zh_CN' ? zhCN : enUS"
         :upload="upload"
-        :key="lastUpdate"
         height="300px"
-        />
+    />
 
     <select v-model="lang">
         <option value="zh_CN">简体中文</option>
@@ -22,7 +22,7 @@ import CasketStar, { Uploader } from '~/CasketStar.vue';
 import '~/themes/markdown/light.scss';
 import '~/themes/casket/light.scss';
 
-import { zhCN, enUS } from '~/lang';
+import { zhCN, enUS } from '~/utils';
 
 import { ref, watch } from 'vue';
 
@@ -44,10 +44,10 @@ const upload: Uploader = (data: FileList) => {
     
     for(let i = 0;i < data.length;i ++){
         console.log(`upload [${data[i].name}]`);
-
+        
         info.push({
             alt: data[i].name,
-            url: 'fakeURL'
+            url: `upload://${data[i].name}`
         });
     }
 
