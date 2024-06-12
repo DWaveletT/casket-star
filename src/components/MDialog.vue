@@ -1,7 +1,13 @@
 <template>
-    <div class="cs-dialog-container">
-        <div class="cs-dialog cs-dialog-big" ref="dialog">
-            <div class="cs-dialog-sidebar">
+    <div class="cs-dialog-container" @click="handleCloseOutside">
+        <div
+            ref="dialog"
+            :class="[
+                'cs-dialog',
+                { 'cs-dialog-big': props.extra }
+            ]"
+        >
+            <div :class="`${props.extra ? 'cs-dialog-sidebar' : ''}`">
                 <div class="cs-dialog-header">
                     <slot name="header" />
 
@@ -12,8 +18,8 @@
 
                 <slot />
             </div>
-            
-            <div class="cs-dialog-view">
+
+            <div v-if="props.extra" class="cs-dialog-view">
                 <slot name="view" />
             </div>
         </div>
@@ -27,9 +33,16 @@ import { defaultIcons, FontAwesomeIcon } from '~/icons';
 
 const emits = defineEmits(['close']);
 
+const props = withDefaults(defineProps<{
+    extra?: boolean
+}>(),{
+    extra: false
+});
+
 const dialog = ref<HTMLDivElement | undefined>(undefined);
 
 function handleCloseOutside(e: Event){
+    if (props.extra) return;
     if(dialog.value && !dialog.value.contains(e.target as Node | null)){
         emits('close');
     }

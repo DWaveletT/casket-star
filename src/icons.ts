@@ -6,7 +6,7 @@ import {
     faCode, faMessage, faSquareRootVariable, faAlignLeft,
     faAlignRight, faMaximize, faImage, faInfo,
     faTable, faQuoteLeft, faQuestion,
- } from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -36,6 +36,6 @@ const defaultIcons: Record<string, IconDefinition> = {
     'quote': faQuoteLeft,
     'help': faQuestion,
     'github': faGithub,
-}
+};
 
 export { FontAwesomeIcon, defaultIcons };

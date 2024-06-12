@@ -4,8 +4,7 @@
             {{ i18n('help') }}
         </template>
             
-        <div>
-        </div>
+        <div />
     </m-dialog>
 </template>
 
@@ -13,7 +12,7 @@
 
 import { render } from 'vue';
 
-import MDialog from '~/components/dialog/MDialog.vue';
+import MDialog from '~/components/MDialog.vue';
 import { i18n } from '~/utils';
 
 const props = defineProps<{
@@ -24,6 +23,5 @@ const props = defineProps<{
 function doClose(){
     render(null, props.container);
 }
-
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="markdown" v-html="html" ref="real" />
+    <div ref="real" class="markdown" v-html="html" />
 </template>
 
 <script setup lang="ts">
@@ -38,8 +38,8 @@ const emits = defineEmits<{
 }>();
 
 const rehypeExpose: Plugin<[], Root, Root> = function (){
-    return (t) => { tree.value = t; }
-}
+    return (t) => { tree.value = t; };
+};
 
 function getProcessor(){
     const processor = unified();
@@ -81,7 +81,7 @@ const updateHTML = throttle(() => {
         render(value.value).then((m) => {
             html.value = m.toString();
 
-            nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement) });
+            nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement); });
         });
     } catch(e){
         console.log(e);
@@ -94,6 +94,6 @@ watch(value, () => {
 
 onMounted(() => {
     updateHTML();
-})
+});
 
 </script>

@@ -2,7 +2,7 @@
     <casket-star
         :key="lastUpdate"
         v-model="value"
-        :i18n="lang === 'zh_CN' ? zhCN : enUS"
+        :lang="i18n"
         :upload="upload"
         height="300px"
     />
@@ -16,18 +16,16 @@
 </template>
 
 <script setup lang="ts">
-
-import CasketStar, { Uploader } from '~/CasketStar.vue';
+import { CasketStar, Uploader, zhCN, enUS } from 'casket-star';
 
 import '~/themes/markdown/light.scss';
 import '~/themes/casket/light.scss';
 
-import { zhCN, enUS } from '~/utils';
-
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const value = ref('');
 const lang = ref('zh_CN');
+const i18n = computed(() => lang.value === 'zh_CN' ? zhCN : enUS);
 
 const lastUpdate = ref(0);
 
@@ -41,18 +39,18 @@ const upload: Uploader = (data: FileList) => {
         alt: string,
         url: string
     }[] = [];
-    
-    for(let i = 0;i < data.length;i ++){
+
+    for(let i = 0; i < data.length; i ++){
         console.log(`upload [${data[i].name}]`);
         
         info.push({
             alt: data[i].name,
-            url: `upload://${data[i].name}`
+            url: 'fakeURL'
         });
     }
 
     return info;
-}
+};
 
 </script>
 
