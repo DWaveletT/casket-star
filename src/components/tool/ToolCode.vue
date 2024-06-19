@@ -20,15 +20,19 @@
                     {{ i18n('code') }}
                 </div>
 
-                <textarea class="cs-dialog-item-content" v-model="code" />
+                <textarea v-model="code" class="cs-dialog-item-content" />
             </div>
 
             <div class="cs-dialog-submit-area">
-                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >{{ i18n('cancel') }}</button>
-                <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
-                    props.confirm(lang, code);
-                    doClose();
-                }" >{{ i18n('confirm') }}</button>
+                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
+                <button
+                    class="cs-dialog-button cs-dialog-button-info" @click="() => {
+                        props.confirm(lang, code);
+                        doClose();
+                    }"
+                >
+                    {{ i18n('confirm') }}
+                </button>
             </div>
         </div>
     </m-dialog>
@@ -38,7 +42,7 @@
 
 import { ref, render } from 'vue';
 
-import MDialog from '~/components/dialog/MDialog.vue';
+import MDialog from '~/components/MDialog.vue';
 import { i18n } from '~/utils';
 
 const props = defineProps<{

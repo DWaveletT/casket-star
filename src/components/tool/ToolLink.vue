@@ -9,21 +9,25 @@
                 <div class="cs-dialog-item-label">
                     {{ i18n('link-url') }}
                 </div>
-                <input type="text" v-model="url" class="cs-dialog-item-content" />
+                <input v-model="url" type="text" class="cs-dialog-item-content" />
             </div>
             <div class="cs-dialog-item">
                 <div class="cs-dialog-item-label">
                     {{ i18n('link-alt') }}
                 </div>
-                <input type="text" v-model="alt" class="cs-dialog-item-content" />
+                <input v-model="alt" type="text" class="cs-dialog-item-content" />
             </div>
 
             <div class="submit-area">
-                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >{{ i18n('cancel') }}</button>
-                <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
-                    props.confirm(url, alt);
-                    doClose();
-                }" >{{ i18n('confirm') }}</button>
+                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
+                <button
+                    class="cs-dialog-button cs-dialog-button-info" @click="() => {
+                        props.confirm(url, alt);
+                        doClose();
+                    }"
+                >
+                    {{ i18n('confirm') }}
+                </button>
             </div>
         </div>
     </m-dialog>
@@ -33,7 +37,7 @@
 
 import { ref, render } from 'vue';
 
-import MDialog from '~/components/dialog/MDialog.vue';
+import MDialog from '~/components/MDialog.vue';
 import { i18n } from '~/utils';
 
 const props = defineProps<{

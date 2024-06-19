@@ -26,7 +26,7 @@ const value = defineModel<string>({
 });
 
 const extensions = computed(() => {
-    const list = [
+    return [
         // Enable automatic line wrapping
         EditorView.lineWrapping,
         EditorView.theme({
@@ -47,9 +47,8 @@ const extensions = computed(() => {
 
         // Allow addtional plugins provided by the user.
         // Such as themes, key-binding, etc.
-        props.plugins.codemirror || []
+        ...(props.plugins.codemirror || [])
     ];
-    return list;
 });
 
 </script>

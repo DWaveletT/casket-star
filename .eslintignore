@@ -1,0 +1,5 @@
+dist
+**/env.d.ts
+vite.config.ts
+node_modules
+static

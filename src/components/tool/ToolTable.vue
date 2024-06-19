@@ -1,5 +1,5 @@
 <template>
-    <m-dialog-extra @close="doClose">
+    <m-dialog extra @close="doClose">
         <template #header>
             {{ i18n('table-insert') }}
         </template>
@@ -8,13 +8,13 @@
             <div class="cs-dialog-item-label">
                 {{ i18n('table-rows') }}
             </div>
-            <input type="number" v-model="row" class="cs-dialog-item-content" min="1" max="100" />
+            <input v-model="row" type="number" class="cs-dialog-item-content" min="1" max="100" />
         </div>
         <div class="cs-dialog-item">
             <div class="cs-dialog-item-label">
                 {{ i18n('table-cols') }}
             </div>
-            <input type="number" v-model="col" class="cs-dialog-item-content" min="1" max="100" />
+            <input v-model="col" type="number" class="cs-dialog-item-content" min="1" max="100" />
         </div>
         
         <div class="cs-dialog-item">
@@ -22,34 +22,38 @@
         </div>
 
         <div class="cs-dialog-area">
-
             <h3>{{ i18n('table-edit') }}</h3>
 
             <textarea v-model="text" />
         </div>
 
         <div class="submit-area">
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose" >{{ i18n('cancel') }}</button>
-            <button class="cs-dialog-button cs-dialog-button-info" @click="() => {
-                confirm(row, col, table);
-                doClose();
-            }" >{{ i18n('confirm') }}</button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
+            <button
+                class="cs-dialog-button cs-dialog-button-info" @click="() => {
+                    confirm(row, col, table);
+                    doClose();
+                }"
+            >
+                {{ i18n('confirm') }}
+            </button>
         </div>
 
         <template #view>
             <table class="cs-dialog-table-editor">
                 <tbody>
-                    <tr v-for="[x, line] of Object.entries(table)">
+                    <tr v-for="[x, line] of Object.entries(table)" :key="x">
                         <template
                             v-for="[y, value] of Object.entries(line)"
+                            :key="y"
                         >
                             <td
                                 :data-x="x"
                                 :data-y="y"
                                 :class="{ selected: selected(Number.parseInt(x), Number.parseInt(y)) } "
-                                @mousedown = "handleMouseDown"
+                                @mousedown="handleMouseDown"
                                 @mouseenter="handleMouseEnter"
-                                @mouseup   =   "handleMouseUp"
+                                @mouseup="handleMouseUp"
                             >
                                 {{ value }}&nbsp;
                             </td>
@@ -58,14 +62,14 @@
                 </tbody>
             </table>
         </template>
-    </m-dialog-extra>
+    </m-dialog>
 </template>
 
 <script setup lang="ts">
 
 import { ref, watch, render } from 'vue';
 
-import MDialogExtra from '~/components/dialog/MDialogExtra.vue';
+import MDialog from '~/components/MDialog.vue';
 import { i18n } from '~/utils';
 
 const props = defineProps<{
@@ -129,7 +133,7 @@ function handleMouseEnter(e: MouseEvent){
     }
 }
 
-function handleMouseUp(e: MouseEvent){
+function handleMouseUp(){
     locked.value = true;
 }
 
@@ -142,8 +146,8 @@ function doEdit(){
     if(!(0 <= y1 && y1 < col.value && 0 <= y2 && y2 < col.value))
         return;
 
-    for(let i = x1;i <= x2;i ++){
-        for(let j = y1;j <= y2;j ++){
+    for(let i = x1; i <= x2; i ++){
+        for(let j = y1; j <= y2; j ++){
             table.value[i][j] = text.value;
         }
     }

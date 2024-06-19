@@ -1,13 +1,14 @@
 
-
 import remarkGfm from 'remark-gfm';
 
 import { CasketView, Plugins, Uploader } from './CasketStar.vue';
 import { Toolbar } from './components/MToolbar.vue';
 
-import type { Plugin, Processor } from "unified";
+import type { Processor } from "unified";
 
 import enUS from '~/lang/en_US.json';
+import zhCN from '~/lang/zh_CN.json';
+export { enUS, zhCN };
 
 export type CasketI18nData = Record<string, string | undefined>;
 export type CasketI18n = (key: string) => string;
@@ -27,12 +28,10 @@ export function initI18n(data: CasketI18nData[] | CasketI18nData){
 }
 
 export function remarkNoHtml(this: Processor) {
-    
-    const self = this
-    const data = self.data()
+
+    const data = this.data();
   
-    // @ts-ignore
-    const micromarkExtensions = data.micromarkExtensions || (data.micromarkExtensions = [])
+    const micromarkExtensions = data.micromarkExtensions || (data.micromarkExtensions = []);
 
     micromarkExtensions.push({ disable: { null: ['htmlText', 'htmlFlow']}});
 }
@@ -43,10 +42,10 @@ export function getDefaultPlugins(): Plugins {
         remark: [
             remarkGfm,
             remarkNoHtml
-        ] as unknown as Plugin,
+        ],
         rehype: [
             
-        ] as unknown as Plugin,
+        ],
         remarkRehypeOptions: {
             
         },
@@ -62,7 +61,7 @@ export function getDefaultPlugins(): Plugins {
 
         toolbarL: getDefaultToolbarL(),
         toolbarR: getDefaultToolbarR(),
-    }
+    };
 }
 
 import { EditorView } from '@codemirror/view';
@@ -95,7 +94,7 @@ export const ToolIncrease: Tool = {
 
             let newl = 0, newr = state.doc.line(line1).from;
 
-            for(let i = line1;i <= line2;i ++){
+            for(let i = line1; i <= line2; i ++){
                 const line = state.doc.line(i);
                 const text = line.text;
 
@@ -104,13 +103,13 @@ export const ToolIncrease: Tool = {
                 let count1 = 0, count2 = 0, count3 = 0;
                 const len = text.length;
                 while(count1 < len && text[count1] === ' ')
-                        count1 ++;
+                    count1 ++;
                 count2 = count1;
                 while(count2 < len && text[count2] === '#')
-                        count2 ++;
+                    count2 ++;
                 count3 = count2;
                 while(count3 < len && text[count3] === ' ')
-                        count3 ++;
+                    count3 ++;
                 
                 const levelOld = count2 - count1;
                 const levelNew = Math.min(levelOld + 1, 6);
@@ -132,13 +131,13 @@ export const ToolIncrease: Tool = {
             return {
                 changes: changes,
                 range: EditorSelection.range(newl, newr)
-            }
+            };
         }));
         
         codemirror.update([trans]);
         codemirror.focus();
     }
-}
+};
 
 export const ToolDecrease: Tool = {
     name: 'decrease-level',
@@ -154,20 +153,20 @@ export const ToolDecrease: Tool = {
 
             let newl = 0, newr = state.doc.line(line1).from;
 
-            for(let i = line1;i <= line2;i ++){
+            for(let i = line1; i <= line2; i ++){
                 const line = state.doc.line(i);
                 const text = line.text;
                 
                 let count1 = 0, count2 = 0, count3 = 0;
                 const len = text.length;
                 while(count1 < len && text[count1] === ' ')
-                        count1 ++;
+                    count1 ++;
                 count2 = count1;
                 while(count2 < len && text[count2] === '#')
-                        count2 ++;
+                    count2 ++;
                 count3 = count2;
                 while(count3 < len && text[count3] === ' ')
-                        count3 ++;
+                    count3 ++;
                 
                 const levelOld = count2 - count1;
                 const levelNew = Math.max(levelOld - 1, 0);
@@ -189,7 +188,7 @@ export const ToolDecrease: Tool = {
             return {
                 changes: changes,
                 range: EditorSelection.range(newl, newr)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -212,7 +211,7 @@ export const ToolHorizontal: Tool = {
                     { from: range.from, insert: text}
                 ],
                 range: EditorSelection.range(range.from + text.length, range.from + text.length)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -233,7 +232,7 @@ export const ToolBold: Tool = {
                     { from:   range.to, insert: '**'},
                 ],
                 range: EditorSelection.range(range.from + 2, range.to + 2)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -254,7 +253,7 @@ export const ToolItalic: Tool = {
                     { from:   range.to, insert: '_ '},
                 ],
                 range: EditorSelection.range(range.from + 2, range.to + 2)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -275,7 +274,7 @@ export const ToolStrikethrough: Tool = {
                     { from:   range.to, insert: '~~'},
                 ],
                 range: EditorSelection.range(range.from + 2, range.to + 2)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -297,7 +296,7 @@ export const ToolLink: Tool = {
                         { from: range.from, insert: text},
                     ],
                     range: EditorSelection.range(range.from + text.length, range.from + text.length)
-                }
+                };
             }));
             
             codemirror.update([trans]);
@@ -330,7 +329,7 @@ export const ToolImage: Tool = {
                         { from: range.from, insert: text},
                     ],
                     range: EditorSelection.range(range.from + text.length, range.from + text.length)
-                }
+                };
             }));
             
             codemirror.update([trans]);
@@ -364,7 +363,7 @@ export const ToolCode: Tool = {
                         { from: range.from, insert: text},
                     ],
                     range: EditorSelection.range(range.from + text.length, range.from + text.length)
-                }
+                };
             }));
             
             codemirror.update([trans]);
@@ -392,14 +391,14 @@ export const ToolTable: Tool = {
             const trans = state.update(state.changeByRange( range => {
                 let text = "\n\n";
 
-                for(let i = 0;i < row;i ++){
-                    for(let j = 0;j < col;j ++){
-                        text += '|' + table[i][j]
+                for(let i = 0; i < row; i ++){
+                    for(let j = 0; j < col; j ++){
+                        text += '|' + table[i][j];
                     }
                     text += '|\n';
 
                     if(i === 0){
-                        for(let j = 0;j < col;j ++)
+                        for(let j = 0; j < col; j ++)
                             text += '|:-:';
                         text += '|\n';
                     }
@@ -413,7 +412,7 @@ export const ToolTable: Tool = {
                         { from: range.from, insert: text},
                     ],
                     range: EditorSelection.range(range.from + text.length, range.from + text.length)
-                }
+                };
             }));
             
             codemirror.update([trans]);
@@ -445,7 +444,7 @@ export const ToolQuote: Tool = {
 
             let newl = 0, newr = state.doc.line(line1).from;
 
-            for(let i = line1;i <= line2;i ++){
+            for(let i = line1; i <= line2; i ++){
                 const line = state.doc.line(i);
                 const head = '> ';
                 
@@ -463,7 +462,7 @@ export const ToolQuote: Tool = {
             return {
                 changes: changes,
                 range: EditorSelection.range(newl, newr)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -485,7 +484,7 @@ export const ToolUList: Tool = {
 
             let newl = 0, newr = state.doc.line(line1).from;
 
-            for(let i = line1;i <= line2;i ++){
+            for(let i = line1; i <= line2; i ++){
                 const line = state.doc.line(i);
                 const head = '- ';
                 
@@ -503,7 +502,7 @@ export const ToolUList: Tool = {
             return {
                 changes: changes,
                 range: EditorSelection.range(newl, newr)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -525,7 +524,7 @@ export const ToolOList: Tool = {
 
             let newl = 0, newr = state.doc.line(line1).from;
 
-            for(let i = line1;i <= line2;i ++){
+            for(let i = line1; i <= line2; i ++){
                 const line = state.doc.line(i);
                 const head = '1. ';
                 
@@ -543,7 +542,7 @@ export const ToolOList: Tool = {
             return {
                 changes: changes,
                 range: EditorSelection.range(newl, newr)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -565,7 +564,7 @@ export const ToolTaskList: Tool = {
 
             let newl = 0, newr = state.doc.line(line1).from;
 
-            for(let i = line1;i <= line2;i ++){
+            for(let i = line1; i <= line2; i ++){
                 const line = state.doc.line(i);
                 const head = '- [ ] ';
                 
@@ -583,7 +582,7 @@ export const ToolTaskList: Tool = {
             return {
                 changes: changes,
                 range: EditorSelection.range(newl, newr)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -594,7 +593,7 @@ export const ToolTaskList: Tool = {
 export const ToolOnlyEdit: Tool = {
     name: 'only-editor',
     icon: defaultIcons['editor'],
-    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
+    func: (codemirror: EditorView, casketstar: CasketView) => {
         if(casketstar.showViewer){
             casketstar.showEditor = true;
             casketstar.showViewer = false;
@@ -607,7 +606,7 @@ export const ToolOnlyEdit: Tool = {
 export const ToolOnlyView: Tool = {
     name: 'only-viewer',
     icon: defaultIcons['viewer'],
-    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
+    func: (codemirror: EditorView, casketstar: CasketView) => {
         if(casketstar.showEditor){
             casketstar.showViewer = true;
             casketstar.showEditor = false;
@@ -620,7 +619,7 @@ export const ToolOnlyView: Tool = {
 export const ToolFullScreen: Tool = {
     name: 'full-screen',
     icon: defaultIcons['expand'],
-    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
+    func: (codemirror: EditorView, casketstar: CasketView) => {
         casketstar.fullScreen = !casketstar.fullScreen;
     }
 };
@@ -653,15 +652,14 @@ export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFull
 
 export const ToolGroupHelp: ToolGroup = [ ToolHelp ];
 
-
 export function getDefaultToolbarL(): Toolbar {
     return [
         ToolGroupTitle, ToolGroupInline, ToolGroupInterline, ToolGroupBlock
-    ]
-};
+    ];
+}
 
 export function getDefaultToolbarR(): Toolbar {
     return [
         ToolGroupCasket, ToolGroupHelp
-    ]
-};
+    ];
+}

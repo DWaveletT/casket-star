@@ -1,9 +1,9 @@
 <template>
     <div class="casket cs-main" :class="{ 'cs-full-screen': casket.fullScreen }">
-        <div class="cs-header" v-if="!props.hideHeader">
+        <div v-if="!props.hideHeader" class="cs-header">
             <m-toolbar
-                :toolbarL="props.plugins.toolbarL"
-                :toolbarR="props.plugins.toolbarR"
+                :toolbar-l="props.plugins.toolbarL"
+                :toolbar-r="props.plugins.toolbarR"
                 :get-codemirror="getCodemirror"
                 :get-casketstar="getCasketStar"
                 :dialog="dialog"
@@ -21,7 +21,7 @@
                 @mouseover="currentOver = 'editor'"
             >
                 <m-editor
-                    v-model="value" :plugins="plugins" @ready="handleEditorReady" :disabled="props.disabled"
+                    v-model="value" :plugins="plugins" :disabled="props.disabled" @ready="handleEditorReady"
                 />
 
                 <div v-if="props.upload" class="cs-upload" :class="{ dragging }">
@@ -30,18 +30,18 @@
             </div>
             <div
                 v-if="casket.showViewer"
+                ref="viewer"
                 class="cs-viewer"
                 :class="{
-                    'cs-zone-half':  casket.showEditor, 'cs-zone-full': !casket.showEditor
+                    'cs-zone-half': casket.showEditor, 'cs-zone-full': !casket.showEditor
                 }"
-                ref="viewer"
                 @scroll="handleViewerScroll"
                 @mouseover="currentOver = 'viewer'"
             >
-                <m-viewer v-model="value" :plugins="plugins" @update="handleViewerUpdate" :interval="casket.interval" />
+                <m-viewer v-model="value" :plugins="plugins" :interval="casket.interval" @update="handleViewerUpdate" />
             </div>
         </div>
-        <div class="cs-footer" v-if="!props.hideFooter">
+        <div v-if="!props.hideFooter" class="cs-footer">
             <div class="cs-footer-left">
                 {{ i18n('character-count') }}{{
                     getCodemirror()?.state.doc.length || 0
@@ -57,10 +57,9 @@
         </div>
         
         <teleport to="body">
-            <div class="casket" ref="dialog" />
+            <div ref="dialog" class="casket" />
         </teleport>
     </div>
-
 </template>
 
 <script setup lang="ts">
@@ -82,7 +81,7 @@ import {
 
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
-import { Root } from 'hast';
+import type { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
 
@@ -92,12 +91,12 @@ let codemirror: EditorView | undefined = undefined;
 
 export interface Plugins {
     // Viewer
-    remark?: Plugin,
-    rehype?: Plugin,
+    remark?: Plugin[],
+    rehype?: Plugin[],
     remarkRehypeOptions?: Options,
 
     // Editor
-    codemirror?: Extension,
+    codemirror?: Extension[],
     
     // Toolbar
     toolbarL?: Toolbar,
@@ -159,7 +158,7 @@ const casket = ref<CasketView>({
     }
 });
 
-watch(casket.value, () => { updateScrollSync() });
+watch(casket.value, () => { updateScrollSync(); });
 
 const value = defineModel<string>({ required: true });
 
@@ -222,12 +221,12 @@ function InitSyncScroll(){
 
     let maxBottom = 0;
 
-    for(const [key, node] of Object.entries(real.children))
+    for(const [_key, node] of Object.entries(real.children))
         if(!node.classList.contains('katex-display')){
-        const { top, bottom } = node.getBoundingClientRect();
-        top2.push(top + delta);
-        maxBottom = bottom + delta;
-    }
+            const { top, bottom } = node.getBoundingClientRect();
+            top2.push(top + delta);
+            maxBottom = bottom + delta;
+        }
     
     top1.push(codemirror.state.doc.length);
     top2.push(maxBottom);
@@ -269,7 +268,7 @@ function handleEditorScroll(force?: boolean){
         return;
     }
 
-    for(let i = 0;i + 1 < top1.length;i ++){
+    for(let i = 0; i + 1 < top1.length; i ++){
         const l = top1[i];
         const r = top1[i + 1];
 
@@ -297,7 +296,7 @@ function handleViewerScroll(){
         return;
     }
 
-    for(let i = 0;i + 1 < top1.length;i ++){
+    for(let i = 0; i + 1 < top1.length; i ++){
         const l = top2[i];
         const r = top2[i + 1];
 
@@ -341,14 +340,14 @@ function handleDragEnter(e: DragEvent){
     if(!e.dataTransfer?.items)
         return;
 
-    for(let i = 0;i < e.dataTransfer.items.length;i ++){
+    for(let i = 0; i < e.dataTransfer.items.length; i ++){
         if(e.dataTransfer.items[i].kind === 'file'){
             dragging.value = true;
             return;
         }
     }
 }
-function handleDragLeave(e: DragEvent){
+function handleDragLeave(){
     dragging.value = false;
 }
 
@@ -372,7 +371,7 @@ function handleDrop(e: DragEvent){
         const state = codemirror.state;
         let text = '';
 
-        for(let i = 0;i < info.length;i ++){
+        for(let i = 0; i < info.length; i ++){
             text += `![${ info[i].alt }](${ info[i].url })`;
         }
 
@@ -383,7 +382,7 @@ function handleDrop(e: DragEvent){
                     { from: range.from, insert: text}
                 ],
                 range: EditorSelection.range(range.from + text.length, range.from + text.length)
-            }
+            };
         }));
         
         codemirror.update([trans]);
@@ -395,7 +394,7 @@ function handleDrop(e: DragEvent){
 
 onMounted(() => {
     addEventListener('resize', updateScrollSync);
-})
+});
 
 onBeforeMount(() => {
     codemirror?.destroy();

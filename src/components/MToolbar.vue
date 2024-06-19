@@ -1,8 +1,8 @@
 <template>
     <div class="cs-toolbar">
-        <div>
-            <span v-if="props.toolbarL" class="cs-toolbar-group" v-for="group in props.toolbarL" >
-                <span class="cs-toolbar-tool" v-for="tool in group" @click="doToolClick(tool)" >
+        <div v-if="props.toolbarL">
+            <span v-for="group, i in props.toolbarL" :key="i" class="cs-toolbar-group">
+                <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" @click="doToolClick(tool)">
                     <span class="cs-toolbar-tool-button">
                         <font-awesome-icon :icon="tool.icon" class="cs-icon" />
                     </span>
@@ -10,9 +10,9 @@
                 </span>
             </span>
         </div>
-        <div>
-            <span v-if="props.toolbarR" class="cs-toolbar-group" v-for="group in props.toolbarR" >
-                <span class="cs-toolbar-tool" v-for="tool in group" @click="doToolClick(tool)" >
+        <div v-if="props.toolbarR">
+            <span v-for="group, i in props.toolbarR" :key="i" class="cs-toolbar-group">
+                <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" @click="doToolClick(tool)">
                     <span class="cs-toolbar-tool-button">
                         <font-awesome-icon :icon="tool.icon" class="cs-icon" />
                     </span>
@@ -36,7 +36,7 @@ export interface Tool {
     name: string,
     icon: IconDefinition,
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => void
-};
+}
 
 export type ToolGroup = Tool[];
 export type Toolbar = ToolGroup[];
