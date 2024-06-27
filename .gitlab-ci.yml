@@ -26,7 +26,7 @@ build:
     artifacts:
         paths:
             - BUILD_VERSION
-            - packages/*/dist/*
+            - dist/*
         name: '${CI_PROJECT_NAME}_${CI_PIPELINE_IID}-${CI_JOB_NAME}'
 
 publish:
@@ -60,5 +60,5 @@ publish:
     artifacts:
         paths:
             - BUILD_VERSION
-            - packages/*/dist/*
+            - dist/*
         name: '${CI_PROJECT_NAME}_${CI_PIPELINE_IID}-${CI_JOB_NAME}'
