@@ -1,6 +1,6 @@
 stages:
     - build
-    - deploy
+    - publish
 
 build:
     stage: build
@@ -29,7 +29,7 @@ build:
             - packages/*/dist/*
         name: '${CI_PROJECT_NAME}_${CI_PIPELINE_IID}-${CI_JOB_NAME}'
 
-deploy:
+publish:
     stage: publish
     image: node:20
     when: on_success
