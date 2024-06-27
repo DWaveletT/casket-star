@@ -1,6 +1,6 @@
 {
-  "name": "casket-star",
-  "version": "0.0.16",
+  "name": "@lfe/casket-star",
+  "version": "0.0.17",
   "type": "module",
   "files": [
     "dist"
@@ -35,9 +35,9 @@
   "scripts": {
     "dev": "vite",
     "lint": "eslint ./src --ext .js,.ts,.vue",
-    "build": "pnpm run build-casket && pnpm run build-themes",
+    "build": "yarn run build-casket && yarn run build-themes",
     "build-casket": "vite build && vue-tsc --emitDeclarationOnly",
-    "build-themes": "pnpm sass src/themes/:dist/themes/",
+    "build-themes": "yarn sass src/themes/:dist/themes/",
     "preview": "vite preview",
     "test": "exit 0"
   },
@@ -57,6 +57,7 @@
     "vue-tsc": "^2.0.19"
   },
   "devDependencies": {
+    "@awesome.me/kit-336dcd0b68": "^1.0.12",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",

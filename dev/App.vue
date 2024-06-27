@@ -16,10 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { CasketStar, Uploader, zhCN, enUS } from 'casket-star';
+import { CasketStar, Uploader, zhCN, enUS } from '@lfe/casket-star';
 
 import '~/themes/markdown/light.scss';
-import '~/themes/casket/light.scss';
+import '~/themes/luogu/light.scss';
 
 import { computed, ref, watch } from 'vue';
 

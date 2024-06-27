@@ -1,4 +1,4 @@
-$casket-color: #FFE300 !default;
+$casket-color: #fff;
 
 .casket {
 
@@ -6,7 +6,7 @@ $casket-color: #FFE300 !default;
     --casket-color-l1: #{lighten($casket-color, 20%)};
     --casket-color-l2: #{lighten($casket-color, 40%)};
     --casket-color-d1: #{darken($casket-color, 10%)};
-    --casket-color-d2: #{darken($casket-color, 20%)};
+    --casket-color-d2: #{darken($casket-color, 60%)};
 
     --casket-tl-color: #333333;
     --casket-bd-color: #9E9E9E;
@@ -412,7 +412,7 @@ $casket-color: #FFE300 !default;
                 }
             
                 &-info {
-                    border: 1px solid var(--casket-color);
+                    border: 1px solid var(--casket-bd-color);
                     background-color: var(--casket-color-l2);
                     color: var(--casket-color-d2);
             

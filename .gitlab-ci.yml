@@ -1,0 +1,64 @@
+stages:
+    - build
+    - deploy
+
+build:
+    stage: build
+    image: node:20
+    variables:
+        YARN_ENABLE_IMMUTABLE_INSTALLS: "false"
+    before_script:
+        - export BUILD_VERSION="$(date -d"$CI_PIPELINE_CREATED_AT" +%Y%m%d)-$CI_PIPELINE_IID"
+        - echo "This build number is $BUILD_VERSION" && echo -n "$BUILD_VERSION" > ./BUILD_VERSION
+        - |
+          echo "npmRegistries:
+            'https://git.saikou.luogu.org.cn/api/v4/packages/npm/':
+              npmAuthToken: ${CI_JOB_TOKEN}
+          " > ~/.yarnrc.yml
+        - yarn config set cacheFolder ./.yarn/cache && yarn config set enableGlobalCache false
+    script:
+        - yarn # install dependencies
+        - yarn lint
+        - yarn build
+    cache:
+        key: { files: ['yarn.lock'] }
+        paths: ['.yarn/cache']
+    artifacts:
+        paths:
+            - BUILD_VERSION
+            - packages/*/dist/*
+        name: '${CI_PROJECT_NAME}_${CI_PIPELINE_IID}-${CI_JOB_NAME}'
+
+deploy:
+    stage: publish
+    image: node:20
+    when: on_success
+    dependencies: [build]
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+          when: manual
+        - when: never
+    variables:
+        YARN_ENABLE_IMMUTABLE_INSTALLS: "false"
+    before_script:
+        - export BUILD_VERSION="$(date -d"$CI_PIPELINE_CREATED_AT" +%Y%m%d)-$CI_PIPELINE_IID"
+        - echo "This build number is $BUILD_VERSION" && echo -n "$BUILD_VERSION" > ./BUILD_VERSION
+        - |
+          echo "npmRegistries:
+            'https://git.saikou.luogu.org.cn/api/v4/packages/npm/':
+              npmAuthToken: ${CI_JOB_TOKEN}
+          " > ~/.yarnrc.yml
+        - yarn config set cacheFolder ./.yarn/cache && yarn config set enableGlobalCache false
+    script:
+        - yarn # install dependencies
+        - yarn lint
+        - yarn build
+        - yarn npm publish
+    cache:
+        key: { files: ['yarn.lock'] }
+        paths: ['.yarn/cache']
+    artifacts:
+        paths:
+            - BUILD_VERSION
+            - packages/*/dist/*
+        name: '${CI_PROJECT_NAME}_${CI_PIPELINE_IID}-${CI_JOB_NAME}'

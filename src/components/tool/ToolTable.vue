@@ -27,8 +27,7 @@
             <textarea v-model="text" />
         </div>
 
-        <div class="submit-area">
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
+        <div class="cs-dialog-submit-area">
             <button
                 class="cs-dialog-button cs-dialog-button-info" @click="() => {
                     confirm(row, col, table);
@@ -37,6 +36,7 @@
             >
                 {{ i18n('confirm') }}
             </button>
+            <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
         </div>
 
         <template #view>

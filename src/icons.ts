@@ -3,12 +3,11 @@ import {
     faXmark, faGear, faArrowsUpToLine, faArrowsDownToLine, 
     faBold, faItalic, faStrikethrough, faLink,
     faMinus, faListUl, faListOl, faListCheck,
-    faCode, faMessage, faSquareRootVariable, faAlignLeft,
-    faAlignRight, faMaximize, faImage, faInfo,
-    faTable, faQuoteLeft, faQuestion,
+    faCode, faMessage, faSquareRootVariable, faMaximize,
+    faImage, faInfo, faTable, faQuoteLeft, faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-
+import { faLeftExpand, faRightExpand } from '@awesome.me/kit-336dcd0b68/icons/kit/custom';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 const defaultIcons: Record<string, IconDefinition> = {
@@ -27,8 +26,8 @@ const defaultIcons: Record<string, IconDefinition> = {
     'code': faCode,
     'block': faMessage,
     'math': faSquareRootVariable,
-    'editor': faAlignLeft,
-    'viewer': faAlignRight,
+    'editor': faLeftExpand,
+    'viewer': faRightExpand,
     'expand': faMaximize,
     'info': faInfo,
     'image': faImage,
