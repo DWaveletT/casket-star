@@ -44,8 +44,9 @@ publish:
         - export BUILD_VERSION="$(date -d"$CI_PIPELINE_CREATED_AT" +%Y%m%d)-$CI_PIPELINE_IID"
         - echo "This build number is $BUILD_VERSION" && echo -n "$BUILD_VERSION" > ./BUILD_VERSION
         - |
-          echo "npmRegistries:
-            'https://git.saikou.luogu.org.cn/api/v4/packages/npm/':
+          echo "npmScopes:
+            lfe:
+              npmPublishRegistry: 'https://git.saikou.luogu.org.cn/api/v4/projects/95/packages/npm/'
               npmAuthToken: ${CI_JOB_TOKEN}
           " > ~/.yarnrc.yml
         - yarn config set cacheFolder ./.yarn/cache && yarn config set enableGlobalCache false
