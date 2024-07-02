@@ -57,9 +57,8 @@
     "vue-tsc": "^2.0.19"
   },
   "devDependencies": {
-    "@awesome.me/kit-336dcd0b68": "^1.0.32",
+    "@awesome.me/kit-336dcd0b68": "^1.0.41",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
-    "@fortawesome/pro-regular-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@types/hast": "^3.0.4",
     "@types/lodash-es": "^4.17.12",

@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { 
     faXmark, faGear, faBold, faItalic,
-    faStrikethrough, faLink, faMinus, faListUl,
+    faStrikethrough, faLink, faHorizontalRule, faListUl,
     faListOl, faListCheck, faCode, faMessage,
-    faSquareRootVariable, faArrowsMaximize, faImage, faInfo,
-    faTable, faQuoteLeft, faQuestion,
-} from '@fortawesome/pro-regular-svg-icons';
+    faSquareRootVariable, faArrowsMaximize, faImage, faCircleInfo,
+    faTable, faCircleQuestion,
+} from '@awesome.me/kit-336dcd0b68/icons/classic/regular';
+import { faQuoteLeft } from '@awesome.me/kit-336dcd0b68/icons/classic/solid';
 import { faLeftExpandRegular, faRegularHeadingCircleArrowDown, faRegularHeadingCircleArrowUp, faRightExpandRegular } from '@awesome.me/kit-336dcd0b68/icons/kit/custom';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
@@ -18,7 +19,7 @@ const defaultIcons: Record<string, IconDefinition> = {
     'italic': faItalic,
     'strikethrough': faStrikethrough,
     'link': faLink,
-    'line': faMinus,
+    'line': faHorizontalRule,
     'listul': faListUl,
     'listol': faListOl,
     'listtask': faListCheck,
@@ -28,11 +29,11 @@ const defaultIcons: Record<string, IconDefinition> = {
     'editor': faLeftExpandRegular,
     'viewer': faRightExpandRegular,
     'expand': faArrowsMaximize,
-    'info': faInfo,
+    'info': faCircleInfo,
     'image': faImage,
     'table': faTable,
     'quote': faQuoteLeft,
-    'help': faQuestion,
+    'help': faCircleQuestion,
 };
 
 export { FontAwesomeIcon, defaultIcons };
