@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineModel, computed } from 'vue';
+import { computed } from 'vue';
 
 import { Codemirror } from 'vue-codemirror';
 import { EditorView } from '@codemirror/view';
