@@ -17,14 +17,10 @@
             <input v-model="col" type="number" class="cs-dialog-item-content" min="1" max="100" />
         </div>
         
-        <div class="cs-dialog-item">
-            <button class="cs-dialog-button cs-dialog-button-info" @click="doEdit">修改</button>
-        </div>
-
         <div class="cs-dialog-area">
-            <h3>{{ i18n('table-edit') }}</h3>
-
-            <textarea v-model="text" />
+            <h3>{{ i18n('table-edit') }}{{ getEdit(select1, select2) }}</h3>
+            <p v-if="Number.isNaN(select1[0])">{{ i18n('table-edit-tips') }}</p>
+            <textarea v-else v-model="text" />
         </div>
 
         <div class="cs-dialog-submit-area">
@@ -121,6 +117,7 @@ function handleMouseDown(e: MouseEvent){
         const y = Number.parseInt((e.target as HTMLDivElement).dataset.y || '-1');
         
         select1.value = select2.value = [x, y];
+        text.value = table.value[x][y];
     }
 }
 
@@ -130,6 +127,8 @@ function handleMouseEnter(e: MouseEvent){
         const y = Number.parseInt((e.target as HTMLDivElement).dataset.y || '-1');
         
         select2.value = [x, y];
+        console.log(x, y, table.value[x][y], 'select2 enter');
+        text.value = table.value[x][y];
     }
 }
 
@@ -137,8 +136,8 @@ function handleMouseUp(){
     locked.value = true;
 }
 
-function doEdit(){
-
+const doEdit = () => {
+    if (!locked.value) return;
     let [x1, y1] = select1.value, [x2, y2] = select2.value;
 
     if(!(0 <= x1 && x1 < row.value && 0 <= x2 && x2 < row.value))
@@ -151,10 +150,16 @@ function doEdit(){
             table.value[i][j] = text.value;
         }
     }
-    
+}
+
+const getEdit = (select1: [number, number], select2: [number, number]) => {
+    if(Number.isNaN(select1[0])) return '';
+    if(select1[0] === select2[0] && select1[1] === select2[1]) return `: (${select1[0]}, ${select1[1]})`;
+    return `: (${select1[0]}, ${select1[1]}) - (${select2[0]}, ${select2[1]})`;
 }
 
 watch(row, resizeTable);
 watch(col, resizeTable);
+watch(text, doEdit);
 
 </script>

@@ -165,9 +165,13 @@ $casket-color: #fff;
                     justify-content: center;
                     align-items: center;
                 }
+
+                &.active {
+                    background-color: rgb(from var(--casket-tl-color) r g b / 0.2);
+                }
     
                 &:hover {
-                    background-color: rgb(from var(--casket-tl-color) r g b 0.3);
+                    background-color: rgb(from var(--casket-tl-color) r g b / 0.2);
     
                     > .cs-tooltip {
                         opacity: 1; 
@@ -211,7 +215,7 @@ $casket-color: #fff;
 
             width: fit-content;
             position: absolute;
-            bottom: 2em;
+            bottom: -2.5em;
         }
 
         &-dialog-container {
@@ -315,12 +319,12 @@ $casket-color: #fff;
         
             animation: cs-dialog-slidein 0.2s;
 
-            width: min(500px, 80%);
+            width: min(500px, 70%);
             min-height: 200px;
 
             &-big {
-                width: min(1080px, 80%);
-                height: 80%;
+                width: min(1080px, 70%);
+                height: 70%;
 
                 display: flex;
             }
@@ -481,11 +485,11 @@ $casket-color: #fff;
                             user-select: none;
             
                             &:hover {
-                                background-color: rgb(from var(--casket-color) r g b / 0.4);
+                                background-color: rgb(from var(--casket-bd-color) r g b / 0.4);
                             }
             
                             &.selected {
-                                background-color: rgb(from var(--casket-color) r g b / 0.2);
+                                background-color: rgb(from var(--casket-bd-color) r g b / 0.2);
                             }
                         }
                     }

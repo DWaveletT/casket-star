@@ -1,4 +1,5 @@
 <template>
+    <h4>CasketStar</h4>
     <casket-star
         :key="lastUpdate"
         v-model="value"
