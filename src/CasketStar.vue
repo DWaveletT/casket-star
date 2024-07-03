@@ -85,14 +85,14 @@ import type { Root } from 'hast';
 
 import { debounce } from 'lodash-es';
 
-import { type Plugin } from 'unified';
+import { type PluggableList } from 'unified';
 
 let codemirror: EditorView | undefined = undefined;
 
 export interface Plugins {
     // Viewer
-    remark?: Plugin[],
-    rehype?: Plugin[],
+    remark?: PluggableList,
+    rehype?: PluggableList,
     remarkRehypeOptions?: Options,
 
     // Editor
