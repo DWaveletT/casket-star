@@ -593,6 +593,7 @@ export const ToolTaskList: Tool = {
 export const ToolOnlyEdit: Tool = {
     name: 'only-editor',
     icon: defaultIcons['editor'],
+    active: (codemirror: EditorView, casketstar: CasketView) => !casketstar.showViewer,
     func: (codemirror: EditorView, casketstar: CasketView) => {
         if(casketstar.showViewer){
             casketstar.showEditor = true;
@@ -606,6 +607,7 @@ export const ToolOnlyEdit: Tool = {
 export const ToolOnlyView: Tool = {
     name: 'only-viewer',
     icon: defaultIcons['viewer'],
+    active: (codemirror: EditorView, casketstar: CasketView) => !casketstar.showEditor,
     func: (codemirror: EditorView, casketstar: CasketView) => {
         if(casketstar.showEditor){
             casketstar.showViewer = true;
@@ -619,6 +621,7 @@ export const ToolOnlyView: Tool = {
 export const ToolFullScreen: Tool = {
     name: 'full-screen',
     icon: defaultIcons['expand'],
+    active: (codemirror: EditorView, casketstar: CasketView) => casketstar.fullScreen,
     func: (codemirror: EditorView, casketstar: CasketView) => {
         casketstar.fullScreen = !casketstar.fullScreen;
     }
@@ -640,9 +643,30 @@ export const ToolHelp: Tool = {
     }
 };
 
+export const ToolMath: Tool = {
+    name: 'math',
+    icon: defaultIcons['math'],
+    func: (codemirror: EditorView) => {
+        const state = codemirror.state;
+
+        const trans = state.update(state.changeByRange( range => {
+            return {
+                changes: [
+                    { from: range.from, insert: ' $'},
+                    { from:   range.to, insert: '$ '},
+                ],
+                range: EditorSelection.range(range.from + 2, range.to + 2)
+            };
+        }));
+        
+        codemirror.update([trans]);
+        codemirror.focus();
+    }
+};
+
 export const ToolGroupTitle: ToolGroup = [ ToolIncrease, ToolDecrease, ToolHorizontal ];
 
-export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough ];
+export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough, ToolMath ];
 
 export const ToolGroupInterline: ToolGroup = [ ToolLink, ToolImage, ToolCode, ToolTable ];
 

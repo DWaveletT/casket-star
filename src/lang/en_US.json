@@ -5,6 +5,7 @@
     "bold": "bold",
     "italic": "italic",
     "strikethrough": "strikethrough",
+    "math": "Equation",
 
     "quote": "quote",
     "unordered-list": "unordered list",
@@ -43,5 +44,6 @@
     "table-insert": "insert table",
     "table-rows": "rows",
     "table-cols": "cols",
-    "table-edit": "edit"
+    "table-edit": "edit",
+    "table-edit-tips": "Choose the cell to edit the content"
 }
