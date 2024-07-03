@@ -24,7 +24,6 @@
             </div>
 
             <div class="cs-dialog-submit-area">
-                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
                 <button
                     class="cs-dialog-button cs-dialog-button-info" @click="() => {
                         props.confirm(lang, code);
@@ -33,6 +32,7 @@
                 >
                     {{ i18n('confirm') }}
                 </button>
+                <button class="cs-dialog-button cs-dialog-button-info" @click="doClose">{{ i18n('cancel') }}</button>
             </div>
         </div>
     </m-dialog>
