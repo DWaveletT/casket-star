@@ -51,7 +51,6 @@ export default defineConfig({
     rollupOptions: {
       external: (id: unknown) => [
           'vue',
-          ...Object.keys(pkg.dependencies)
       ].some(s => id === s),
       output: {
         globals: {
