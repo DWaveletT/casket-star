@@ -5,6 +5,7 @@
     "bold": "粗体",
     "italic": "斜体",
     "strikethrough": "删除线",
+    "math": "数学公式",
 
     "quote": "引用",
     "unordered-list": "无序列表",
@@ -43,5 +44,6 @@
     "table-insert": "插入表格",
     "table-rows": "行数",
     "table-cols": "列数",
-    "table-edit": "编辑表格"
+    "table-edit": "编辑表格",
+    "table-edit-tips": "选择单元格以编辑内容"
 }

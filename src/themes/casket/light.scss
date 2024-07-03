@@ -165,9 +165,13 @@ $casket-color: #FFE300;
                     justify-content: center;
                     align-items: center;
                 }
+
+                &.active {
+                    background-color: rgb(from var(--casket-tl-color) r g b / 0.3);
+                }
     
                 &:hover {
-                    background-color: rgb(from var(--casket-tl-color) r g b 0.3);
+                    background-color: rgb(from var(--casket-tl-color) r g b / 0.3);
     
                     > .cs-tooltip {
                         opacity: 1; 
@@ -315,12 +319,12 @@ $casket-color: #FFE300;
         
             animation: cs-dialog-slidein 0.2s;
 
-            width: min(500px, 80%);
+            width: min(500px, 70%);
             min-height: 200px;
 
             &-big {
-                width: min(1080px, 80%);
-                height: 80%;
+                width: min(1080px, 70%);
+                height: 70%;
 
                 display: flex;
             }

@@ -2,7 +2,7 @@
     <div class="cs-toolbar">
         <div v-if="props.toolbarL">
             <span v-for="group, i in props.toolbarL" :key="i" class="cs-toolbar-group">
-                <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" @click="doToolClick(tool)">
+                <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" :class="{ 'active': checkToolActive(tool) }" @click="doToolClick(tool)">
                     <span class="cs-toolbar-tool-button">
                         <font-awesome-icon :icon="tool.icon" class="cs-icon" />
                     </span>
@@ -12,7 +12,7 @@
         </div>
         <div v-if="props.toolbarR">
             <span v-for="group, i in props.toolbarR" :key="i" class="cs-toolbar-group">
-                <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" @click="doToolClick(tool)">
+                <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" :class="{ 'active': checkToolActive(tool) }" @click="doToolClick(tool)">
                     <span class="cs-toolbar-tool-button">
                         <font-awesome-icon :icon="tool.icon" class="cs-icon" />
                     </span>
@@ -35,6 +35,7 @@ import { i18n } from '~/utils';
 export interface Tool {
     name: string,
     icon: IconDefinition,
+    active?: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => boolean,
     func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => void
 }
 
@@ -61,5 +62,18 @@ function doToolClick(tool: Tool){
         tool.func(codemirror, casketstar, props.dialog as HTMLDivElement);
     }
 }
+
+const checkToolActive = (tool: Tool) => {
+
+    if(tool.active){
+        const codemirror = props.getCodemirror();
+        const casketstar = props.getCasketstar();
+        if(codemirror && casketstar){
+            return tool.active(codemirror, casketstar, props.dialog as HTMLDivElement);
+        }
+    }
+
+    return false;
+};
 
 </script>
