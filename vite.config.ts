@@ -49,10 +49,9 @@ export default defineConfig({
       fileName: "casket-star",
     },
     rollupOptions: {
-      external: (id: unknown) => [
-          'vue',
-          ...Object.keys(pkg.dependencies)
-      ].some(s => id === s),
+      external: [
+        'vue'
+      ],
       output: {
         globals: {
           vue: "Vue"
