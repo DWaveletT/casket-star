@@ -111,8 +111,10 @@ export const ToolIncrease: Tool = {
                 while(count3 < len && text[count3] === ' ')
                     count3 ++;
                 
+                const levels = [0, 6, 5, 4, 3, 2, 1];
                 const levelOld = count2 - count1;
-                const levelNew = Math.min(levelOld + 1, 6);
+                const nowLevel = levels.indexOf(levelOld) === -1 ? 0 : levels.indexOf(levelOld);
+                const levelNew = levels[nowLevel + 1 > 6 ? 6 : nowLevel + 1];
 
                 const head = levelNew === 0 ? '' : '#'.repeat(levelNew) + ' ';
                 
@@ -168,8 +170,10 @@ export const ToolDecrease: Tool = {
                 while(count3 < len && text[count3] === ' ')
                     count3 ++;
                 
+                const levels = [0, 6, 5, 4, 3, 2, 1];
                 const levelOld = count2 - count1;
-                const levelNew = Math.max(levelOld - 1, 0);
+                const nowLevel = levels.indexOf(levelOld) === -1 ? 0 : levels.indexOf(levelOld);
+                const levelNew = levels[nowLevel - 1 < 0 ? 0 : nowLevel - 1];
 
                 const head = levelNew === 0 ? '' : '#'.repeat(levelNew) + ' ';
                 
@@ -670,7 +674,7 @@ export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethro
 
 export const ToolGroupInterline: ToolGroup = [ ToolLink, ToolImage, ToolCode, ToolTable ];
 
-export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, ToolTaskList ];
+export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList ];
 
 export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ];
 

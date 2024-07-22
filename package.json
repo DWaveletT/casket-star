@@ -1,6 +1,6 @@
 {
   "name": "@lfe/casket-star",
-  "version": "0.0.22",
+  "version": "0.0.22-beta1",
   "type": "module",
   "files": [
     "dist"
