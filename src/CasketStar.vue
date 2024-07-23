@@ -158,6 +158,10 @@ const casket = ref<CasketView>({
     }
 });
 
+const emits = defineEmits<{
+    (e: 'updated', root: Root, element: HTMLDivElement|null): void
+}>();
+
 watch(casket.value, () => { updateScrollSync(); });
 
 const value = defineModel<string>({ required: true });
@@ -241,6 +245,7 @@ function handleViewerUpdate(t: Root, r: HTMLDivElement){
     updateScrollSync();
 
     handleEditorScroll();
+    emits('updated', t, r);
 }
 
 function getCodemirror(){
