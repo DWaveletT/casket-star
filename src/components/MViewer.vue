@@ -1,5 +1,5 @@
 <template>
-    <render-markdown />
+    <div ref="real" class="markdown" v-html="html" />
 </template>
 
 <script setup lang="ts">
@@ -87,12 +87,6 @@ const updateHTML = throttle(() => {
         console.log(e);
     }
 }, props.interval);
-
-const renderMarkdown = h('div', {
-    ref: real,
-    class: 'markdown',
-    innerHTML: html.value
-});
 
 watch(value, () => {
     updateHTML();
