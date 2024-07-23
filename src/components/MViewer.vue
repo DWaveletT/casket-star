@@ -90,6 +90,7 @@ const updateHTML = throttle(() => {
 
 const directives = async () => {
     try {
+        // @ts-expect-error vHljs is not included.
         const { vHljs } = await import('@lfe/utils');
         return vHljs;
     } catch(e){
