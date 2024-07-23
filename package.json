@@ -1,6 +1,6 @@
 {
   "name": "@lfe/casket-star",
-  "version": "0.0.22-beta2",
+  "version": "0.0.23",
   "type": "module",
   "files": [
     "dist"
@@ -74,8 +74,5 @@
     "vite": "^5.3.4",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-dts": "^3.9.1"
-  },
-  "peerDependencies": {
-    "@lfe/utils": "workspace:^"
   }
 }
