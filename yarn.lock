@@ -189,14 +189,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/view@npm:6.x, @codemirror/view@npm:^6.0.0, @codemirror/view@npm:^6.17.0, @codemirror/view@npm:^6.23.0, @codemirror/view@npm:^6.27.0, @codemirror/view@npm:^6.28.6":
-  version: 6.28.6
-  resolution: "@codemirror/view@npm:6.28.6"
+"@codemirror/view@npm:6.27.0, @codemirror/view@npm:6.x, @codemirror/view@npm:^6.0.0, @codemirror/view@npm:^6.17.0, @codemirror/view@npm:^6.23.0, @codemirror/view@npm:^6.27.0":
+  version: 6.27.0
+  resolution: "@codemirror/view@npm:6.27.0"
   dependencies:
     "@codemirror/state": "npm:^6.4.0"
     style-mod: "npm:^4.1.0"
     w3c-keyname: "npm:^2.2.4"
-  checksum: 10c0/aaf0cd3959d846bb70cb760832c6dd2b74531d7d45d79b7bc10360ab8b0543234db3c04f6e56cee2d99b33057fc229f977e0f0f0c52be4cbd855b779d86e5a68
+  checksum: 10c0/0c7fc829afe9ca4186a1b1211c67f2c7625c4cb1afbadd616d1823a2ee312caf8681524c976f2a16c66017ac3146d8165ef24cc9a8b1091844a8d770e53852b3
   languageName: node
   linkType: hard
 
@@ -557,7 +557,7 @@ __metadata:
     "@awesome.me/kit-336dcd0b68": "npm:^1.0.41"
     "@codemirror/lang-markdown": "npm:^6.2.5"
     "@codemirror/state": "npm:^6.4.1"
-    "@codemirror/view": "npm:^6.28.6"
+    "@codemirror/view": "npm:6.27.0"
     "@fortawesome/fontawesome-svg-core": "npm:^6.6.0"
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
     "@types/hast": "npm:^3.0.4"
