@@ -43,21 +43,21 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.2.5",
     "@codemirror/state": "^6.4.1",
-    "@codemirror/view": "^6.27.0",
+    "@codemirror/view": "^6.28.6",
     "codemirror": "^6.0.1",
     "lodash-es": "^4.17.21",
     "rehype-stringify": "^10.0.0",
     "remark-gfm": "^4.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
-    "unified": "^11.0.4",
-    "vue": "^3.4.27",
+    "unified": "11.0.4",
+    "vue": "^3.4.33",
     "vue-codemirror": "^6.1.1",
-    "vue-tsc": "^2.0.19"
+    "vue-tsc": "^2.0.28"
   },
   "devDependencies": {
     "@awesome.me/kit-336dcd0b68": "^1.0.41",
-    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@types/hast": "^3.0.4",
     "@types/lodash-es": "^4.17.12",
@@ -67,15 +67,12 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-vue": "^9.26.0",
+    "eslint-plugin-vue": "^9.27.0",
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.77.4",
     "typescript": "~5.4.5",
-    "vite": "^5.2.13",
+    "vite": "^5.3.4",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-dts": "^3.9.1"
-  },
-  "resolutions": {
-    "@codemirror/view": "6.27.0"
   }
 }
