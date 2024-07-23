@@ -1,6 +1,6 @@
 {
   "name": "@lfe/casket-star",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "type": "module",
   "files": [
     "dist"
@@ -43,7 +43,7 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.2.5",
     "@codemirror/state": "^6.4.1",
-    "@codemirror/view": "^6.28.6",
+    "@codemirror/view": "6.27.0",
     "codemirror": "^6.0.1",
     "lodash-es": "^4.17.21",
     "rehype-stringify": "^10.0.0",
