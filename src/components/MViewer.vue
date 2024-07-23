@@ -1,9 +1,9 @@
 <template>
-    <div ref="real" class="markdown" v-html="html" />
+    <render-markdown ref="real" class="markdown" />
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { ref, watch, onMounted, nextTick, withDirectives, h } from 'vue';
 
 import { type Plugin, unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -87,6 +87,24 @@ const updateHTML = throttle(() => {
         console.log(e);
     }
 }, props.interval);
+
+const directives = async () => {
+    try {
+        const { vHljs } = await import('@lfe/utils');
+        return vHljs;
+    } catch(e){
+        console.log(e);
+        return null;
+    }
+};
+
+const renderMarkdown = async () => withDirectives(h('div', {
+    ref: real,
+    class: 'markdown',
+    innerHTML: html.value
+}), [
+    [await directives()]
+]);
 
 watch(value, () => {
     updateHTML();

@@ -74,5 +74,8 @@
     "vite": "^5.3.4",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-dts": "^3.9.1"
+  },
+  "peerDependencies": {
+    "@lfe/utils": "workspace:^"
   }
 }

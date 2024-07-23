@@ -585,6 +585,8 @@ __metadata:
     vue: "npm:^3.4.33"
     vue-codemirror: "npm:^6.1.1"
     vue-tsc: "npm:^2.0.28"
+  peerDependencies:
+    "@lfe/utils": "workspace:^"
   languageName: unknown
   linkType: soft
 
