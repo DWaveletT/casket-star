@@ -1,6 +1,6 @@
 {
   "name": "@lfe/casket-star",
-  "version": "0.0.22-beta1",
+  "version": "0.0.23",
   "type": "module",
   "files": [
     "dist"
@@ -74,5 +74,8 @@
     "vite": "^5.2.13",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-dts": "^3.9.1"
+  },
+  "resolutions": {
+    "@codemirror/view": "6.27.0"
   }
 }

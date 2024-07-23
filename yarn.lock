@@ -180,14 +180,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/view@npm:6.x, @codemirror/view@npm:^6.0.0, @codemirror/view@npm:^6.17.0, @codemirror/view@npm:^6.23.0, @codemirror/view@npm:^6.27.0":
-  version: 6.28.0
-  resolution: "@codemirror/view@npm:6.28.0"
+"@codemirror/view@npm:6.27.0":
+  version: 6.27.0
+  resolution: "@codemirror/view@npm:6.27.0"
   dependencies:
     "@codemirror/state": "npm:^6.4.0"
     style-mod: "npm:^4.1.0"
     w3c-keyname: "npm:^2.2.4"
-  checksum: 10c0/8930d42c5732359549aa4bf4f0d24c559a203df387487779e5e4ee7dd9723ee7398170e3bfffd5d72fd86ef0bff3bd3ae525ef2f75ae4888aa5a88149c11e7d4
+  checksum: 10c0/0c7fc829afe9ca4186a1b1211c67f2c7625c4cb1afbadd616d1823a2ee312caf8681524c976f2a16c66017ac3146d8165ef24cc9a8b1091844a8d770e53852b3
   languageName: node
   linkType: hard
 
@@ -410,15 +410,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/pro-regular-svg-icons@npm:^6.5.2":
-  version: 6.5.2
-  resolution: "@fortawesome/pro-regular-svg-icons@npm:6.5.2::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fpro-regular-svg-icons%2F-%2F6.5.2%2Fpro-regular-svg-icons-6.5.2.tgz"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:6.5.2"
-  checksum: 10c0/b8905040db6b1e2839bfd9fb5be194314ae2f261a62a1020c24acc364c939d1b897aa37c6a16e52a7522be066b14e1b3829d9c19d624c22abac68d3029c01b13
-  languageName: node
-  linkType: hard
-
 "@fortawesome/vue-fontawesome@npm:^3.0.8":
   version: 3.0.8
   resolution: "@fortawesome/vue-fontawesome@npm:3.0.8::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fvue-fontawesome%2F-%2F3.0.8%2Fvue-fontawesome-3.0.8.tgz"
@@ -552,7 +543,6 @@ __metadata:
     "@codemirror/state": "npm:^6.4.1"
     "@codemirror/view": "npm:^6.27.0"
     "@fortawesome/fontawesome-svg-core": "npm:^6.5.2"
-    "@fortawesome/pro-regular-svg-icons": "npm:^6.5.2"
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
     "@types/hast": "npm:^3.0.4"
     "@types/lodash-es": "npm:^4.17.12"
