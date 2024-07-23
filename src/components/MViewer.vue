@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick, h } from 'vue';
+import { ref, watch, onMounted, nextTick } from 'vue';
 
 import { type Plugin, unified } from 'unified';
 import remarkParse from 'remark-parse';
