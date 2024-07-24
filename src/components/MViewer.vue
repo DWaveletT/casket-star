@@ -1,5 +1,5 @@
 <template>
-    <div ref="real" class="markdown" v-html="html" />
+    <div ref="real" class="marked" v-html="html" />
 </template>
 
 <script setup lang="ts">
