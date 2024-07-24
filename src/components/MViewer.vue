@@ -72,17 +72,11 @@ function getProcessor(){
 
 const processor = getProcessor();
 
-async function render(markdown: string){
-    return processor.process(markdown);
-}
-
 const updateHTML = throttle(() => {
     try {
-        render(value.value).then((m) => {
-            html.value = m.toString();
+        html.value = processor.processSync(value.value) as unknown as string;
 
-            nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement); });
-        });
+        nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement); });
     } catch(e){
         console.log(e);
     }
