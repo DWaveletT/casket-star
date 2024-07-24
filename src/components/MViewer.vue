@@ -13,7 +13,7 @@ import rehypeStringify from 'rehype-stringify';
 import { type Plugins } from '~/CasketStar.vue';
 import { type Root } from 'hast';
 
-import { throttle } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { getDefaultPlugins } from '~/utils';
 
 const props = withDefaults(defineProps<{
@@ -72,7 +72,7 @@ function getProcessor(){
 
 const processor = getProcessor();
 
-const updateHTML = throttle(() => {
+const updateHTML = debounce(() => {
     try {
         html.value = processor.processSync(value.value) as unknown as string;
 

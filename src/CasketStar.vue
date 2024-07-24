@@ -151,7 +151,7 @@ const casket = ref<CasketView>({
     showViewer: true,
     fullScreen: false,
 
-    interval: 100,
+    interval: 500,
 
     data: {
         upload: props.upload
