@@ -674,7 +674,7 @@ export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethro
 
 export const ToolGroupInterline: ToolGroup = [ ToolLink, ToolImage, ToolCode, ToolTable ];
 
-export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList ];
+export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, ToolTaskList ];
 
 export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ];
 

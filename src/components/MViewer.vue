@@ -1,5 +1,5 @@
 <template>
-    <div ref="real" class="marked" v-html="html" />
+    <div ref="real" class="lfe-marked" v-html="html" />
 </template>
 
 <script setup lang="ts">
