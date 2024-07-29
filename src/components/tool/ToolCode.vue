@@ -62,10 +62,10 @@ const list: {
     name: string
 }[] = [
     {value:        'cpp', name:        'C++'},
-    {value:     'pascal', name:     'Pascal'},
+    {value:     'python', name:     'Python'},
     {value:          'c', name:          'C'},
-    {value: 'javascript', name: 'Javascript'},
     {value:       'java', name:       'Java'},
+    {value: 'javascript', name: 'Javascript'},
     {value:   'markdown', name:   'Markdown'},
     {value:      'latex', name:      'LaTeX'}
 ];
