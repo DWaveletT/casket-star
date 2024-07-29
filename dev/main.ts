@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 
 import App from './App.vue';
 
-import * as components from '~';
+// import * as components from '~';
 
 const app = createApp(App);
 

@@ -237,14 +237,16 @@ function InitSyncScroll(){
 
 }
 
-const updateScrollSync = debounce(InitSyncScroll, 200);
+const updateScrollSync = debounce(() => {
+    InitSyncScroll();
+    handleEditorScroll();
+}, 200);
 
 function handleViewerUpdate(t: Root, r: HTMLDivElement){
     tree = t;
     real = r;
     updateScrollSync();
 
-    handleEditorScroll();
     emits('viewupdated', r, t);
 }
 
@@ -258,11 +260,11 @@ function getCasketStar(){
 
 let currentOver = "editor";
 
-function handleEditorScroll(force?: boolean){
+function handleEditorScroll(){
     if(!codemirror || !editor.value)
         return;
 
-    if(force !== true && (currentOver !== "editor" || !scrollSync.value))
+    if(currentOver !== "editor" || !scrollSync.value)
         return;
 
     const topEditor = editor.value.scrollTop;
@@ -327,8 +329,10 @@ function handleSync(){
         scrollSync.value = false;
     } else {
         scrollSync.value = true;
+
+        currentOver = "editor";
         InitSyncScroll();
-        handleEditorScroll(true);
+        handleEditorScroll();
     }
 }
 
