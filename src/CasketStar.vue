@@ -403,6 +403,9 @@ function handleDrop(e: DragEvent){
 
 onMounted(() => {
     addEventListener('resize', updateScrollSync);
+    if (window.innerWidth <= 576) {
+        casket.value.showViewer = false;
+    }
 });
 
 onBeforeMount(() => {
