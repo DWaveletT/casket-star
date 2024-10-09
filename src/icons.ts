@@ -34,6 +34,7 @@ const defaultIcons: Record<string, IconDefinition> = {
     'table': faTable,
     'quote': faQuoteLeft,
     'help': faCircleQuestion,
+    'autosave': faGear,     // Wait to be replaced by a Clock
 };
 
 export { FontAwesomeIcon, defaultIcons };

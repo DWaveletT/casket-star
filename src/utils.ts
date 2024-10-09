@@ -64,12 +64,33 @@ export function getDefaultPlugins(): Plugins {
     };
 }
 
+export interface AutoSaveItem {
+    time: number,
+    content: string
+}
+
+export function loadStorage(){
+    console.log('Load Storage');
+    return JSON.parse(localStorage.getItem('casket-auto-save') || '[]') as AutoSaveItem[];
+}
+
+export function saveStorage(item: AutoSaveItem, maxlen: number){
+    console.log('Save Storage');
+    const items = loadStorage();
+    if(items.length === maxlen){
+        items.shift();
+    }
+    items.push(item);
+    localStorage.setItem('casket-auto-save', JSON.stringify(items));
+}
+
 import { EditorView } from '@codemirror/view';
 import { ChangeSpec, EditorSelection } from '@codemirror/state';
 import { defaultIcons } from './icons';
 
 import DCode from './components/tool/ToolCode.vue';
 import DImage from './components/tool/ToolImage.vue';
+import DSave from './components/tool/AutoSave.vue';
 import DTable from './components/tool/ToolTable.vue';
 import DLink from './components/tool/ToolLink.vue';
 import DHelp from './components/tool/ToolHelp.vue';
@@ -668,6 +689,29 @@ export const ToolMath: Tool = {
     }
 };
 
+export const AutoSave: Tool = {
+    name: 'auto-save',
+    icon: defaultIcons['autosave'],
+    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
+        
+        function loadHistory(content: string){
+            const state = codemirror.state;
+            const trans = state.update({ changes: [{ from: 0, to: state.doc.length, insert: content }] });
+            codemirror.update([trans]);
+            codemirror.focus();
+        }
+        
+        const dialog = createVNode(
+            DSave, {
+                confirm: loadHistory,
+                container: container
+            }
+        );
+
+        render(dialog, container);
+    }
+};
+
 export const ToolGroupTitle: ToolGroup = [ ToolIncrease, ToolDecrease, ToolHorizontal ];
 
 export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough, ToolMath ];
@@ -678,7 +722,7 @@ export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, Tool
 
 export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ];
 
-export const ToolGroupHelp: ToolGroup = [ ToolHelp ];
+export const ToolGroupHelp: ToolGroup = [ ToolHelp, AutoSave ];
 
 export function getDefaultToolbarL(): Toolbar {
     return [

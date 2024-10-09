@@ -1,10 +1,31 @@
 <template>
     <h4>CasketStar</h4>
+
+    <p>好多字</p>
+
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+
     <casket-star
         :key="lastUpdate"
         v-model="value"
         :lang="i18n"
         :upload="upload"
+        :autosave="10"
         height="300px"
     />
 
@@ -14,10 +35,24 @@
     </select>
 
     {{ lang }}
+
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
+    
+    <p>好多字</p>
 </template>
 
 <script setup lang="ts">
-import { CasketStar, Uploader, zhCN, enUS } from '@lfe/casket-star';
+import { CasketStar, Uploader, zhCN, enUS } from '../src';  // Prevent HMR from failing
 
 import '~/themes/markdown/light.scss';
 import '~/themes/luogu/light.scss';

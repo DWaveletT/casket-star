@@ -45,5 +45,10 @@
     "table-rows": "rows",
     "table-cols": "cols",
     "table-edit": "edit",
-    "table-edit-tips": "Choose the cell to edit the content"
+    "table-edit-tips": "Choose the cell to edit the content",
+
+    "auto-save": "auto save",
+    "auto-save-time": "saved time",
+    "auto-save-load": "load content",
+    "auto-save-last": "last saved time"
 }

@@ -45,5 +45,10 @@
     "table-rows": "行数",
     "table-cols": "列数",
     "table-edit": "编辑表格",
-    "table-edit-tips": "选择单元格以编辑内容"
+    "table-edit-tips": "选择单元格以编辑内容",
+
+    "auto-save": "自动保存",
+    "auto-save-time": "保存时间",
+    "auto-save-load": "载入",
+    "auto-save-last": "上次保存时间"
 }

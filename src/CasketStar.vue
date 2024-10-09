@@ -22,6 +22,7 @@
             >
                 <m-editor
                     v-model="value" :plugins="plugins" :disabled="props.disabled" @ready="handleEditorReady"
+                    @update:model-value="updateAutoSave"
                 />
 
                 <div v-if="props.upload" class="cs-upload" :class="{ dragging }">
@@ -46,6 +47,7 @@
                 {{ i18n('character-count') }}{{
                     getCodemirror()?.state.doc.length || 0
                 }}{{ i18n('character') }}
+                <template v-if="lastsave">{{ ' | ' + i18n('auto-save-last') + ' ' + (new Date(lastsave).toLocaleTimeString()) }}</template>
             </div>
 
             <div class="cs-footer-right">
@@ -76,14 +78,15 @@ import {
     getDefaultPlugins,
     CasketI18nData,
     initI18n,
-    i18n
+    i18n,
+    saveStorage
 } from './utils';
 
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import type { Root } from 'hast';
 
-import { debounce } from 'lodash-es';
+import { debounce, throttle } from 'lodash-es';
 
 import { type PluggableList } from 'unified';
 
@@ -121,7 +124,7 @@ const props = withDefaults(defineProps<{
     height?: string,
 
     disabled?: boolean,
-
+    autosave?: number,
 }>(), {
     plugins: getDefaultPlugins,
 
@@ -134,6 +137,7 @@ const props = withDefaults(defineProps<{
     hideHeader: false,
     hideFooter: false,
     disabled: false,
+    autosave: 10,
 });
 
 export interface CasketView {
@@ -162,13 +166,16 @@ const emits = defineEmits<{
     (e: 'viewupdated', element: HTMLDivElement|null, root: Root): void
 }>();
 
-watch(casket.value, () => { updateScrollSync(); });
+watch(casket.value, () => {
+    updateScrollSync();
+});
 
 const value = defineModel<string>({ required: true });
 
 initI18n(props.lang);
 
 const dragging = ref(false);
+const lastsave = ref(0);
 
 function handleEditorReady(payload: {
     view: EditorView
@@ -237,6 +244,16 @@ function InitSyncScroll(){
 
 }
 
+const updateAutoSave = throttle(() => {
+    if(props.autosave > 0){
+        lastsave.value = new Date().getTime();
+        saveStorage({
+            time: lastsave.value,
+            content: value.value
+        }, props.autosave);
+    }
+}, 60000);
+
 const updateScrollSync = debounce(() => {
     InitSyncScroll();
     handleEditorScroll();
@@ -270,7 +287,7 @@ function handleEditorScroll(){
     const topEditor = editor.value.scrollTop;
     const pos = codemirror.lineBlockAtHeight(topEditor).from;
 
-    if(topEditor + 1 >= getMaxEditorTop()){
+    if(topEditor + 10 >= getMaxEditorTop()){
         viewer.value?.scrollTo({ top: getMaxViewerTop() + 10 });
         return;
     }
@@ -298,7 +315,7 @@ function handleViewerScroll(){
 
     const topViewer = viewer.value.scrollTop;
     
-    if(topViewer + 1 >= getMaxViewerTop()){
+    if(topViewer + 10 >= getMaxViewerTop()){
         editor.value?.scrollTo({ top: getMaxEditorTop() + 10 });
         return;
     }

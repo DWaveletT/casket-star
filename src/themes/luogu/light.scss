@@ -1,4 +1,4 @@
-$casket-color: #fff;
+$casket-color: #FFE300;
 
 .casket {
 
@@ -9,9 +9,9 @@ $casket-color: #fff;
     --casket-color-d2: #{darken($casket-color, 60%)};
 
     --casket-tl-color: #333333;
-    --casket-bd-color: #9E9E9E;
-    --casket-sp-color: var(--casket-color-d1);
-    --casket-bg-color: var(--casket-color-l2);
+    --casket-bd-color: #DDDDDD;
+    --casket-sp-color: #DDDDDD;
+    --casket-bg-color: #FFFFFF;
 
     
     &.cs-main {
@@ -22,15 +22,14 @@ $casket-color: #fff;
 
         box-sizing: border-box;
 
-        border: 2px solid var(--casket-color-d1);
+        border: 2px solid #DDDDDD;
         border-radius: 4px;
 
         &.cs-full-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            border: none;
+            height: 100vh !important;
 
             z-index: 50;
 
@@ -399,6 +398,27 @@ $casket-color: #fff;
                 display: flex;
                 justify-content: flex-end;
             }
+
+            &-timeline {
+                margin-bottom: 1em;
+
+                &-item {
+                    display: flex;
+                    align-items: center;
+
+                    height: 2em;
+
+                    &:hover {
+                        background-color: var(--casket-color-l2);
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            &-option {
+                transition: 0.2s ease-in-out background-color;
+
+            }
             
             &-button {
                 cursor: pointer;
@@ -416,7 +436,7 @@ $casket-color: #fff;
                 }
             
                 &-info {
-                    border: 1px solid var(--casket-bd-color);
+                    border: 1px solid var(--casket-color-l1);
                     background-color: var(--casket-color-l2);
                     color: var(--casket-color-d2);
             
@@ -427,6 +447,7 @@ $casket-color: #fff;
 
                 &-selected {
                     background-color: var(--casket-color-l1);
+                    border: 2px solid var(--casket-color-l1);
                 }
             }
 
@@ -469,6 +490,8 @@ $casket-color: #fff;
                 border-collapse: collapse;
                 flex-direction: column;
                 table-layout: fixed;
+
+                display: table;
             
                 > tbody {
                     > tr {
@@ -485,11 +508,11 @@ $casket-color: #fff;
                             user-select: none;
             
                             &:hover {
-                                background-color: rgb(from var(--casket-bd-color) r g b / 0.4);
+                                background-color: rgb(from var(--casket-color-l1) r g b / 0.4);
                             }
             
                             &.selected {
-                                background-color: rgb(from var(--casket-bd-color) r g b / 0.2);
+                                background-color: rgb(from var(--casket-color-l1) r g b / 0.2);
                             }
                         }
                     }
