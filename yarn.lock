@@ -5,12 +5,12 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@awesome.me/kit-336dcd0b68@npm:^1.0.41":
-  version: 1.0.41
-  resolution: "@awesome.me/kit-336dcd0b68@npm:1.0.41::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40awesome.me%2Fkit-336dcd0b68%2F-%2F1.0.41%2Fkit-336dcd0b68-1.0.41.tgz"
+"@awesome.me/kit-336dcd0b68@npm:^1.0.44":
+  version: 1.0.44
+  resolution: "@awesome.me/kit-336dcd0b68@npm:1.0.44::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40awesome.me%2Fkit-336dcd0b68%2F-%2F1.0.44%2Fkit-336dcd0b68-1.0.44.tgz"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:^6.5.2"
-  checksum: 10c0/e9b29e77686552bd708c354d36e6a7c263a4814c0eee83480a56a62707342321fd75c2ea9ca6ef4b246b9543fc5da933ad54444eee23115c263c7120875d6dd0
+    "@fortawesome/fontawesome-common-types": "npm:^6.6.0"
+  checksum: 10c0/437641f0249289eb63cc51b3de1ac7adf90ab52c83370272ab54f81f1e63e68aedee54c69ff69b3d1cd94bf8ec78171069beb77b95d88fbbd144f2a7668567d5
   languageName: node
   linkType: hard
 
@@ -403,17 +403,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-common-types@npm:6.6.0":
+"@fortawesome/fontawesome-common-types@npm:6.6.0, @fortawesome/fontawesome-common-types@npm:^6.6.0":
   version: 6.6.0
   resolution: "@fortawesome/fontawesome-common-types@npm:6.6.0::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Ffontawesome-common-types%2F-%2F6.6.0%2Ffontawesome-common-types-6.6.0.tgz"
   checksum: 10c0/f76e5959f6ce01355f599126a3a68facba578dc8ebb7ad40fbd22417b7056364a577c1887720ec9653d4efa5b704a01150f5064fc7de237d697fd80e3d9c83aa
-  languageName: node
-  linkType: hard
-
-"@fortawesome/fontawesome-common-types@npm:^6.5.2":
-  version: 6.5.2
-  resolution: "@fortawesome/fontawesome-common-types@npm:6.5.2::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Ffontawesome-common-types%2F-%2F6.5.2%2Ffontawesome-common-types-6.5.2.tgz"
-  checksum: 10c0/12104e93a0056ad1077f7350826f52aa26465bb1d6b4ce75dab0307072a3871301ec750c3a34d89d05e7338c9b446fa2793150cf58a5167217021943ef877d77
   languageName: node
   linkType: hard
 
@@ -554,7 +547,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lfe/casket-star@workspace:."
   dependencies:
-    "@awesome.me/kit-336dcd0b68": "npm:^1.0.41"
+    "@awesome.me/kit-336dcd0b68": "npm:^1.0.44"
     "@codemirror/lang-markdown": "npm:^6.2.5"
     "@codemirror/state": "npm:^6.4.1"
     "@codemirror/view": "npm:6.27.0"

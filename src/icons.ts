@@ -4,7 +4,7 @@ import {
     faStrikethrough, faLink, faHorizontalRule, faListUl,
     faListOl, faListCheck, faCode, faMessage,
     faSquareRootVariable, faArrowsMaximize, faImage, faCircleInfo,
-    faTable, faCircleQuestion,
+    faTable, faCircleQuestion, faClock
 } from '@awesome.me/kit-336dcd0b68/icons/classic/regular';
 import { faQuoteLeft } from '@awesome.me/kit-336dcd0b68/icons/classic/solid';
 import { faLeftExpandRegular, faRegularHeadingCircleArrowDown, faRegularHeadingCircleArrowUp, faRightExpandRegular } from '@awesome.me/kit-336dcd0b68/icons/kit/custom';
@@ -34,7 +34,7 @@ const defaultIcons: Record<string, IconDefinition> = {
     'table': faTable,
     'quote': faQuoteLeft,
     'help': faCircleQuestion,
-    'autosave': faGear,     // Wait to be replaced by a Clock
+    'autosave': faClock,
 };
 
 export { FontAwesomeIcon, defaultIcons };
