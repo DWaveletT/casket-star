@@ -121,11 +121,17 @@ $casket-color: #FFE300;
 
         
         &-toolbar {
-            display: flex;
 
+            > div {
+                display: inline-block;
+
+                &:last-child {
+                    float: right;
+                }
+            }
+            
+            height: 24px;
             padding: 0.2em 0.5em;
-
-            justify-content: space-between;
 
             &-group {
                 display: inline-flex;
@@ -142,28 +148,21 @@ $casket-color: #FFE300;
             &-tool {
                 height: 24px;
                 width: 24px;
-                display: inline-flex;
-    
-                justify-content: center;
-                align-items: center;
+
+                position: relative;
+
+                .cs-icon {
+                    height: 18px;
+                    width: 18px;
+                    position: absolute;
+                    inset: 0;
+                    margin: auto;
+                }
     
                 background-color: transparent;
                 border-radius: 4px;
-    
                 transition: 0.2s ease-in-out background-color;
-    
-                position: relative;
-
-                
-                &-button {
-                    width: 18px;
-                    height: 18px;
-                    color: var(--casket-tl-color);
-
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+                overflow: visible;
 
                 &.active {
                     background-color: rgb(from var(--casket-tl-color) r g b / 0.2);
@@ -174,16 +173,12 @@ $casket-color: #FFE300;
     
                     > .cs-tooltip {
                         opacity: 1; 
-                        transform: none;
+                        transform: translate(-50%, 0);
                     }
                 }
-                
-    
                 &:not(:last-child) {
                     margin-right: 0.2em; 
                 }
-    
-                overflow: visible;
             }
         }
 
@@ -192,19 +187,17 @@ $casket-color: #FFE300;
             padding: 0.5em;
 
             z-index: 4;
-
             opacity: 0;
 
+            position: absolute;
             pointer-events: none;
-
             font-size: small; 
-
             border-radius: 4px;
 
             background-color: #555;
             color: white;
 
-            transform: translateY(1em);
+            transform: translate(-50%, 1em);
 
             transition:
                 0.2s ease-in-out opacity, 
@@ -214,6 +207,7 @@ $casket-color: #FFE300;
 
             width: fit-content;
             position: absolute;
+            left: 50%;
             bottom: -2.5em;
         }
 
@@ -329,8 +323,7 @@ $casket-color: #FFE300;
             }
             
             &-sidebar {
-                width: 320px;
-                height: 100%;
+                flex: 2;
                 padding-right: 1em;
                 margin-right: 1em;
                 border-right: 1px dashed rgb(0 0 0 / 0.3);
@@ -340,7 +333,7 @@ $casket-color: #FFE300;
             }
 
             &-view {
-                width: 760px;
+                flex: 4;
                 overflow: auto;
             }
 
@@ -485,6 +478,8 @@ $casket-color: #FFE300;
             &-table-editor {
                 height: 100%;
                 width: 100%;
+
+                margin: 0;
             
                 border: 2px solid black;
                 border-collapse: collapse;
@@ -495,11 +490,8 @@ $casket-color: #FFE300;
             
                 > tbody {
                     > tr {
-            
                         overflow: hidden;
-            
                         > td {
-            
                             border: 2px solid black;
             
                             overflow: hidden;
@@ -519,9 +511,5 @@ $casket-color: #FFE300;
                 }
             }
         }
-    }
-    .cs-icon {
-        width: 16px;
-        height: 16px;
     }
 }

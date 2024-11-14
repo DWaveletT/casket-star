@@ -116,6 +116,9 @@ const props = withDefaults(defineProps<{
     
     hideHeader?: boolean,
     hideFooter?: boolean,
+    showViewer?: boolean,
+    showEditor?: boolean,
+    fullScreen?: boolean,
 
     lang?: CasketI18nData[] | CasketI18nData,
 
@@ -125,6 +128,7 @@ const props = withDefaults(defineProps<{
 
     disabled?: boolean,
     autosave?: number,
+    interval?: number,
 }>(), {
     plugins: getDefaultPlugins,
 
@@ -136,8 +140,12 @@ const props = withDefaults(defineProps<{
 
     hideHeader: false,
     hideFooter: false,
+    showViewer: true,
+    showEditor: true,
+    fullScreen: false,
     disabled: false,
     autosave: 10,
+    interval: 500,
 });
 
 export interface CasketView {
@@ -151,19 +159,19 @@ export interface CasketView {
 }
 
 const casket = ref<CasketView>({
-    showEditor: true,
-    showViewer: true,
-    fullScreen: false,
+    showEditor: props.showEditor,
+    showViewer: props.showViewer,
+    fullScreen: props.fullScreen,
 
-    interval: 500,
-
+    interval: props.interval,
     data: {
         upload: props.upload
     }
 });
 
 const emits = defineEmits<{
-    (e: 'viewupdated', element: HTMLDivElement|null, root: Root): void
+    (e: 'viewupdated', element: HTMLDivElement|null, root: Root): void,
+    (e: 'full-screen', value: boolean): void
 }>();
 
 watch(casket.value, () => {

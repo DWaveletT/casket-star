@@ -80,8 +80,10 @@ export function saveStorage(item: AutoSaveItem, maxlen: number){
     if(items.length === maxlen){
         items.shift();
     }
-    items.push(item);
-    localStorage.setItem('casket-auto-save', JSON.stringify(items));
+    if(items.length > 0 && items[items.length - 1].content !== item.content){
+        items.push(item);
+        localStorage.setItem('casket-auto-save', JSON.stringify(items));
+    }
 }
 
 import { EditorView } from '@codemirror/view';
