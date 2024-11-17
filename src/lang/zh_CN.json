@@ -39,11 +39,17 @@
     "image-insert": "插入图片",
     "image-url": "图片地址",
     "image-alt": "图片介绍",
+    "image-upload": "上传图片",
 
     "table": "表格",
     "table-insert": "插入表格",
     "table-rows": "行数",
     "table-cols": "列数",
     "table-edit": "编辑表格",
-    "table-edit-tips": "选择单元格以编辑内容"
+    "table-edit-tips": "选择单元格以编辑内容",
+
+    "auto-save": "自动保存",
+    "auto-save-time": "保存时间",
+    "auto-save-load": "载入",
+    "auto-save-last": "上次保存时间"
 }

@@ -32,16 +32,20 @@ const extensions = computed(() => {
         EditorView.theme({
             // Disable the native dashed border when codemirror is focused.
             "&.cm-focused": {
-                outline: 'none'
+                outline: 'none',
             },
             // Make the editor occupy the entire height.
             "&.cm-editor": {
                 height: '100%',
             },
-            // Solve the problem that codemirror cannot be scrolled when in full-screen.
-            // I'm confused why z-index is set to 0 by default.
-            "&.cm-scroller": {
-                'z-index': 'auto',
+            // 1. z-index: auto
+            //    Solve the problem that codemirror cannot be scrolled when in full-screen.
+            //    I'm confused why z-index is set to 0 by default.
+            // 2. overflow-anchor: none
+            //    To prevent Brower scrolling when deleting the text at the end.
+            ".cm-scroller": {
+                'z-index': '2',
+                'overflow-anchor': 'none',
             },
         }),
 

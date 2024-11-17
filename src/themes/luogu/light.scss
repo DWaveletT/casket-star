@@ -6,12 +6,12 @@ $casket-color: #FFE300;
     --casket-color-l1: #{lighten($casket-color, 20%)};
     --casket-color-l2: #{lighten($casket-color, 40%)};
     --casket-color-d1: #{darken($casket-color, 10%)};
-    --casket-color-d2: #{darken($casket-color, 20%)};
+    --casket-color-d2: #{darken($casket-color, 60%)};
 
     --casket-tl-color: #333333;
-    --casket-bd-color: #9E9E9E;
-    --casket-sp-color: var(--casket-color-d1);
-    --casket-bg-color: var(--casket-color-l2);
+    --casket-bd-color: #DDDDDD;
+    --casket-sp-color: #DDDDDD;
+    --casket-bg-color: #FFFFFF;
 
     
     &.cs-main {
@@ -22,7 +22,7 @@ $casket-color: #FFE300;
 
         box-sizing: border-box;
 
-        border: 2px solid var(--casket-color-d1);
+        border: 2px solid #DDDDDD;
         border-radius: 4px;
 
         &.cs-full-screen {
@@ -121,11 +121,17 @@ $casket-color: #FFE300;
 
         
         &-toolbar {
-            display: flex;
 
+            > div {
+                display: inline-block;
+
+                &:last-child {
+                    float: right;
+                }
+            }
+            
+            height: 24px;
             padding: 0.2em 0.5em;
-
-            justify-content: space-between;
 
             &-group {
                 display: inline-flex;
@@ -142,48 +148,37 @@ $casket-color: #FFE300;
             &-tool {
                 height: 24px;
                 width: 24px;
-                display: inline-flex;
-    
-                justify-content: center;
-                align-items: center;
+
+                position: relative;
+
+                .cs-icon {
+                    height: 18px;
+                    width: 18px;
+                    position: absolute;
+                    inset: 0;
+                    margin: auto;
+                }
     
                 background-color: transparent;
                 border-radius: 4px;
-    
                 transition: 0.2s ease-in-out background-color;
-    
-                position: relative;
-
-                
-                &-button {
-                    width: 18px;
-                    height: 18px;
-                    color: var(--casket-tl-color);
-
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+                overflow: visible;
 
                 &.active {
-                    background-color: rgb(from var(--casket-tl-color) r g b / 0.3);
+                    background-color: rgb(from var(--casket-tl-color) r g b / 0.2);
                 }
     
                 &:hover {
-                    background-color: rgb(from var(--casket-tl-color) r g b / 0.3);
+                    background-color: rgb(from var(--casket-tl-color) r g b / 0.2);
     
                     > .cs-tooltip {
                         opacity: 1; 
-                        transform: none;
+                        transform: translate(-50%, 0);
                     }
                 }
-                
-    
                 &:not(:last-child) {
                     margin-right: 0.2em; 
                 }
-    
-                overflow: visible;
             }
         }
 
@@ -192,19 +187,17 @@ $casket-color: #FFE300;
             padding: 0.5em;
 
             z-index: 4;
-
             opacity: 0;
 
+            position: absolute;
             pointer-events: none;
-
             font-size: small; 
-
             border-radius: 4px;
 
             background-color: #555;
             color: white;
 
-            transform: translateY(1em);
+            transform: translate(-50%, 1em);
 
             transition:
                 0.2s ease-in-out opacity, 
@@ -214,6 +207,7 @@ $casket-color: #FFE300;
 
             width: fit-content;
             position: absolute;
+            left: 50%;
             bottom: -2.5em;
         }
 
@@ -329,8 +323,7 @@ $casket-color: #FFE300;
             }
             
             &-sidebar {
-                width: 320px;
-                height: 100%;
+                flex: 2;
                 padding-right: 1em;
                 margin-right: 1em;
                 border-right: 1px dashed rgb(0 0 0 / 0.3);
@@ -340,7 +333,7 @@ $casket-color: #FFE300;
             }
 
             &-view {
-                width: 760px;
+                flex: 4;
                 overflow: auto;
             }
 
@@ -398,6 +391,27 @@ $casket-color: #FFE300;
                 display: flex;
                 justify-content: flex-end;
             }
+
+            &-timeline {
+                margin-bottom: 1em;
+
+                &-item {
+                    display: flex;
+                    align-items: center;
+
+                    height: 2em;
+
+                    &:hover {
+                        background-color: var(--casket-color-l2);
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            &-option {
+                transition: 0.2s ease-in-out background-color;
+
+            }
             
             &-button {
                 cursor: pointer;
@@ -415,7 +429,7 @@ $casket-color: #FFE300;
                 }
             
                 &-info {
-                    border: 1px solid var(--casket-color);
+                    border: 1px solid var(--casket-color-l1);
                     background-color: var(--casket-color-l2);
                     color: var(--casket-color-d2);
             
@@ -426,6 +440,7 @@ $casket-color: #FFE300;
 
                 &-selected {
                     background-color: var(--casket-color-l1);
+                    border: 2px solid var(--casket-color-l1);
                 }
             }
 
@@ -463,19 +478,20 @@ $casket-color: #FFE300;
             &-table-editor {
                 height: 100%;
                 width: 100%;
+
+                margin: 0;
             
                 border: 2px solid black;
                 border-collapse: collapse;
                 flex-direction: column;
                 table-layout: fixed;
+
+                display: table;
             
                 > tbody {
                     > tr {
-            
                         overflow: hidden;
-            
                         > td {
-            
                             border: 2px solid black;
             
                             overflow: hidden;
@@ -484,20 +500,16 @@ $casket-color: #FFE300;
                             user-select: none;
             
                             &:hover {
-                                background-color: rgb(from var(--casket-color) r g b / 0.4);
+                                background-color: rgb(from var(--casket-color-l1) r g b / 0.4);
                             }
             
                             &.selected {
-                                background-color: rgb(from var(--casket-color) r g b / 0.2);
+                                background-color: rgb(from var(--casket-color-l1) r g b / 0.2);
                             }
                         }
                     }
                 }
             }
         }
-    }
-    .cs-icon {
-        width: 16px;
-        height: 16px;
     }
 }

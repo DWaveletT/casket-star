@@ -1,26 +1,27 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 import { 
-    faXmark, faGear, faArrowsUpToLine, faArrowsDownToLine, 
-    faBold, faItalic, faStrikethrough, faLink,
-    faMinus, faListUl, faListOl, faListCheck,
-    faCode, faMessage, faSquareRootVariable, faAlignLeft,
-    faAlignRight, faMaximize, faImage, faInfo,
-    faTable, faQuoteLeft, faQuestion,
+    faXmark, faGear, faBold, faItalic,
+    faStrikethrough, faLink, faGripLines, faListUl,
+    faListOl, faListCheck, faCode, faMessage,
+    faSquareRootVariable, faMaximize, faImage, faCircleInfo,
+    faTable, faCircleQuestion, faClock,
+    faHeading, faAlignLeft, faAlignRight,
+    faQuoteLeft
 } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-
+// Different from the icons used by Luogu
 const defaultIcons: Record<string, IconDefinition> = {
     'xmark': faXmark,
     'config': faGear,
-    'headingup': faArrowsUpToLine,
-    'headingdown': faArrowsDownToLine,
+    'headingup': faHeading,
+    'headingdown': faHeading,
     'bold': faBold,
     'italic': faItalic,
     'strikethrough': faStrikethrough,
     'link': faLink,
-    'line': faMinus,
+    'line': faGripLines,
     'listul': faListUl,
     'listol': faListOl,
     'listtask': faListCheck,
@@ -30,12 +31,12 @@ const defaultIcons: Record<string, IconDefinition> = {
     'editor': faAlignLeft,
     'viewer': faAlignRight,
     'expand': faMaximize,
-    'info': faInfo,
+    'info': faCircleInfo,
     'image': faImage,
     'table': faTable,
     'quote': faQuoteLeft,
-    'help': faQuestion,
-    'github': faGithub,
+    'help': faCircleQuestion,
+    'autosave': faClock,
 };
 
-export { FontAwesomeIcon, defaultIcons };
+export { defaultIcons, FontAwesomeIcon };

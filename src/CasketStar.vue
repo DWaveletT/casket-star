@@ -22,6 +22,7 @@
             >
                 <m-editor
                     v-model="value" :plugins="plugins" :disabled="props.disabled" @ready="handleEditorReady"
+                    @update:model-value="updateAutoSave"
                 />
 
                 <div v-if="props.upload" class="cs-upload" :class="{ dragging }">
@@ -46,6 +47,7 @@
                 {{ i18n('character-count') }}{{
                     getCodemirror()?.state.doc.length || 0
                 }}{{ i18n('character') }}
+                <template v-if="lastsave">{{ ' | ' + i18n('auto-save-last') + ' ' + (new Date(lastsave).toLocaleTimeString()) }}</template>
             </div>
 
             <div class="cs-footer-right">
@@ -76,14 +78,15 @@ import {
     getDefaultPlugins,
     CasketI18nData,
     initI18n,
-    i18n
+    i18n,
+    saveStorage
 } from './utils';
 
 import { EditorView } from '@codemirror/view';
 import { Options } from 'remark-rehype';
 import type { Root } from 'hast';
 
-import { debounce } from 'lodash-es';
+import { debounce, throttle } from 'lodash-es';
 
 import { type PluggableList } from 'unified';
 
@@ -113,6 +116,9 @@ const props = withDefaults(defineProps<{
     
     hideHeader?: boolean,
     hideFooter?: boolean,
+    showViewer?: boolean,
+    showEditor?: boolean,
+    fullScreen?: boolean,
 
     lang?: CasketI18nData[] | CasketI18nData,
 
@@ -121,7 +127,8 @@ const props = withDefaults(defineProps<{
     height?: string,
 
     disabled?: boolean,
-
+    autosave?: number,
+    interval?: number,
 }>(), {
     plugins: getDefaultPlugins,
 
@@ -133,7 +140,12 @@ const props = withDefaults(defineProps<{
 
     hideHeader: false,
     hideFooter: false,
+    showViewer: true,
+    showEditor: true,
+    fullScreen: false,
     disabled: false,
+    autosave: 10,
+    interval: 500,
 });
 
 export interface CasketView {
@@ -147,24 +159,31 @@ export interface CasketView {
 }
 
 const casket = ref<CasketView>({
-    showEditor: true,
-    showViewer: true,
-    fullScreen: false,
+    showEditor: props.showEditor,
+    showViewer: props.showViewer,
+    fullScreen: props.fullScreen,
 
-    interval: 100,
-
+    interval: props.interval,
     data: {
         upload: props.upload
     }
 });
 
-watch(casket.value, () => { updateScrollSync(); });
+const emits = defineEmits<{
+    (e: 'viewupdated', element: HTMLDivElement|null, root: Root): void,
+    (e: 'full-screen', value: boolean): void
+}>();
+
+watch(casket.value, () => {
+    updateScrollSync();
+});
 
 const value = defineModel<string>({ required: true });
 
 initI18n(props.lang);
 
 const dragging = ref(false);
+const lastsave = ref(0);
 
 function handleEditorReady(payload: {
     view: EditorView
@@ -233,14 +252,27 @@ function InitSyncScroll(){
 
 }
 
-const updateScrollSync = debounce(InitSyncScroll, 200);
+const updateAutoSave = throttle(() => {
+    if(props.autosave > 0){
+        lastsave.value = new Date().getTime();
+        saveStorage({
+            time: lastsave.value,
+            content: value.value
+        }, props.autosave);
+    }
+}, 60000);
+
+const updateScrollSync = debounce(() => {
+    InitSyncScroll();
+    handleEditorScroll();
+}, 200);
 
 function handleViewerUpdate(t: Root, r: HTMLDivElement){
     tree = t;
     real = r;
     updateScrollSync();
 
-    handleEditorScroll();
+    emits('viewupdated', r, t);
 }
 
 function getCodemirror(){
@@ -253,17 +285,17 @@ function getCasketStar(){
 
 let currentOver = "editor";
 
-function handleEditorScroll(force?: boolean){
+function handleEditorScroll(){
     if(!codemirror || !editor.value)
         return;
 
-    if(force !== true && (currentOver !== "editor" || !scrollSync.value))
+    if(currentOver !== "editor" || !scrollSync.value)
         return;
 
     const topEditor = editor.value.scrollTop;
     const pos = codemirror.lineBlockAtHeight(topEditor).from;
 
-    if(topEditor + 1 >= getMaxEditorTop()){
+    if(topEditor + 10 >= getMaxEditorTop()){
         viewer.value?.scrollTo({ top: getMaxViewerTop() + 10 });
         return;
     }
@@ -291,7 +323,7 @@ function handleViewerScroll(){
 
     const topViewer = viewer.value.scrollTop;
     
-    if(topViewer + 1 >= getMaxViewerTop()){
+    if(topViewer + 10 >= getMaxViewerTop()){
         editor.value?.scrollTo({ top: getMaxEditorTop() + 10 });
         return;
     }
@@ -322,8 +354,10 @@ function handleSync(){
         scrollSync.value = false;
     } else {
         scrollSync.value = true;
+
+        currentOver = "editor";
         InitSyncScroll();
-        handleEditorScroll(true);
+        handleEditorScroll();
     }
 }
 
@@ -394,6 +428,9 @@ function handleDrop(e: DragEvent){
 
 onMounted(() => {
     addEventListener('resize', updateScrollSync);
+    if (window.innerWidth <= 576) {
+        casket.value.showViewer = false;
+    }
 });
 
 onBeforeMount(() => {

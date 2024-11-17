@@ -1,5 +1,5 @@
 <template>
-    <div ref="real" class="markdown" v-html="html" />
+    <div ref="real" class="lfe-marked" v-html="html" />
 </template>
 
 <script setup lang="ts">
@@ -13,7 +13,7 @@ import rehypeStringify from 'rehype-stringify';
 import { type Plugins } from '~/CasketStar.vue';
 import { type Root } from 'hast';
 
-import { throttle } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { getDefaultPlugins } from '~/utils';
 
 const props = withDefaults(defineProps<{
@@ -72,17 +72,11 @@ function getProcessor(){
 
 const processor = getProcessor();
 
-async function render(markdown: string){
-    return processor.process(markdown);
-}
-
-const updateHTML = throttle(() => {
+const updateHTML = debounce(() => {
     try {
-        render(value.value).then((m) => {
-            html.value = m.toString();
+        html.value = processor.processSync(value.value) as unknown as string;
 
-            nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement); });
-        });
+        nextTick().then(() => { emits('update', tree.value as Root, real.value as HTMLDivElement); });
     } catch(e){
         console.log(e);
     }

@@ -4,7 +4,9 @@
             {{ i18n('help') }}
         </template>
             
-        <div />
+        <div>
+            帮助手册：<a href="https://www.luogu.com.cn/article/70w8j2pj">https://www.luogu.com.cn/article/70w8j2pj</a>。
+        </div>
     </m-dialog>
 </template>
 

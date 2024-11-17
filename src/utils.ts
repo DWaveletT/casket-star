@@ -64,12 +64,35 @@ export function getDefaultPlugins(): Plugins {
     };
 }
 
+export interface AutoSaveItem {
+    time: number,
+    content: string
+}
+
+export function loadStorage(){
+    console.log('Load Storage');
+    return JSON.parse(localStorage.getItem('casket-auto-save') || '[]') as AutoSaveItem[];
+}
+
+export function saveStorage(item: AutoSaveItem, maxlen: number){
+    console.log('Save Storage');
+    const items = loadStorage();
+    if(items.length === maxlen){
+        items.shift();
+    }
+    if(items.length > 0 && items[items.length - 1].content !== item.content){
+        items.push(item);
+        localStorage.setItem('casket-auto-save', JSON.stringify(items));
+    }
+}
+
 import { EditorView } from '@codemirror/view';
 import { ChangeSpec, EditorSelection } from '@codemirror/state';
 import { defaultIcons } from './icons';
 
 import DCode from './components/tool/ToolCode.vue';
 import DImage from './components/tool/ToolImage.vue';
+import DSave from './components/tool/AutoSave.vue';
 import DTable from './components/tool/ToolTable.vue';
 import DLink from './components/tool/ToolLink.vue';
 import DHelp from './components/tool/ToolHelp.vue';
@@ -111,8 +134,10 @@ export const ToolIncrease: Tool = {
                 while(count3 < len && text[count3] === ' ')
                     count3 ++;
                 
+                const levels = [0, 6, 5, 4, 3, 2, 1];
                 const levelOld = count2 - count1;
-                const levelNew = Math.min(levelOld + 1, 6);
+                const nowLevel = levels.indexOf(levelOld) === -1 ? 0 : levels.indexOf(levelOld);
+                const levelNew = levels[nowLevel + 1 > 6 ? 6 : nowLevel + 1];
 
                 const head = levelNew === 0 ? '' : '#'.repeat(levelNew) + ' ';
                 
@@ -168,8 +193,10 @@ export const ToolDecrease: Tool = {
                 while(count3 < len && text[count3] === ' ')
                     count3 ++;
                 
+                const levels = [0, 6, 5, 4, 3, 2, 1];
                 const levelOld = count2 - count1;
-                const levelNew = Math.max(levelOld - 1, 0);
+                const nowLevel = levels.indexOf(levelOld) === -1 ? 0 : levels.indexOf(levelOld);
+                const levelNew = levels[nowLevel - 1 < 0 ? 0 : nowLevel - 1];
 
                 const head = levelNew === 0 ? '' : '#'.repeat(levelNew) + ' ';
                 
@@ -664,6 +691,29 @@ export const ToolMath: Tool = {
     }
 };
 
+export const AutoSave: Tool = {
+    name: 'auto-save',
+    icon: defaultIcons['autosave'],
+    func: (codemirror: EditorView, casketstar: CasketView, container: HTMLDivElement) => {
+        
+        function loadHistory(content: string){
+            const state = codemirror.state;
+            const trans = state.update({ changes: [{ from: 0, to: state.doc.length, insert: content }] });
+            codemirror.update([trans]);
+            codemirror.focus();
+        }
+        
+        const dialog = createVNode(
+            DSave, {
+                confirm: loadHistory,
+                container: container
+            }
+        );
+
+        render(dialog, container);
+    }
+};
+
 export const ToolGroupTitle: ToolGroup = [ ToolIncrease, ToolDecrease, ToolHorizontal ];
 
 export const ToolGroupInline: ToolGroup = [ ToolBold, ToolItalic, ToolStrikethrough, ToolMath ];
@@ -674,7 +724,7 @@ export const ToolGroupBlock: ToolGroup = [ ToolQuote, ToolUList, ToolOList, Tool
 
 export const ToolGroupCasket: ToolGroup = [ ToolOnlyEdit, ToolOnlyView, ToolFullScreen ];
 
-export const ToolGroupHelp: ToolGroup = [ ToolHelp ];
+export const ToolGroupHelp: ToolGroup = [ ToolHelp, AutoSave ];
 
 export function getDefaultToolbarL(): Toolbar {
     return [

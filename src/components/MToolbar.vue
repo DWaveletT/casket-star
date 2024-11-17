@@ -3,9 +3,7 @@
         <div v-if="props.toolbarL">
             <span v-for="group, i in props.toolbarL" :key="i" class="cs-toolbar-group">
                 <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" :class="{ 'active': checkToolActive(tool) }" @click="doToolClick(tool)">
-                    <span class="cs-toolbar-tool-button">
-                        <font-awesome-icon :icon="tool.icon" class="cs-icon" />
-                    </span>
+                    <font-awesome-icon :icon="tool.icon" class="cs-icon" />
                     <span class="cs-tooltip">{{ i18n(tool.name) }}</span>
                 </span>
             </span>
@@ -13,9 +11,7 @@
         <div v-if="props.toolbarR">
             <span v-for="group, i in props.toolbarR" :key="i" class="cs-toolbar-group">
                 <span v-for="tool in group" :key="tool.name" class="cs-toolbar-tool" :class="{ 'active': checkToolActive(tool) }" @click="doToolClick(tool)">
-                    <span class="cs-toolbar-tool-button">
-                        <font-awesome-icon :icon="tool.icon" class="cs-icon" />
-                    </span>
+                    <font-awesome-icon :icon="tool.icon" class="cs-icon" />
                     <span class="cs-tooltip">{{ i18n(tool.name) }}</span>
                 </span>
             </span>
